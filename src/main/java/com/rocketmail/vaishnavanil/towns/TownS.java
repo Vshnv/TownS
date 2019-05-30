@@ -27,7 +27,6 @@ public final class TownS extends JavaPlugin {
     //MAPPING
     //Private/*CLAIM MAP*/ HashMap<Claim,Town> CM = new HashMap<>();
 
-
     private/*TOWN MAP*/ HashMap<String, Town> TM = new HashMap<>();
 
     private/*CLAIM MAP*/ HashMap<String, Claim> Map = new HashMap<>();//FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
