@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
 
 public class InvClickListen implements Listener {
     int s0 = 2;
@@ -15,14 +14,15 @@ public class InvClickListen implements Listener {
     int s2 = 0;
     int s3 = -1;
     int s4 = -2;
+
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         if (ChatColor.stripColor(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName()).equalsIgnoreCase("MAP MENU")) {
             e.setCancelled(true);
             Player player = (Player) e.getWhoClicked();
-            int slotxRAW = (e.getSlot()-e.getSlot()%9)/9;
+            int slotxRAW = (e.getSlot() - e.getSlot() % 9) / 9;
             int slotx = 0;
-            switch (slotxRAW){
+            switch (slotxRAW) {
                 case 0:
                     slotx = s0;
                     break;
@@ -38,15 +38,16 @@ public class InvClickListen implements Listener {
                 case 4:
                     slotx = s4;
                     break;
-                default: return;
+                default:
+                    return;
             }
-            if(e.getSlot()%9 == 0 || e.getSlot()%9 == 1)return;
-            int sloty = e.getSlot()%9-4;
-            Chunk cur = player.getWorld().getChunkAt(player.getLocation().getChunk().getX()+slotx,player.getLocation().getChunk().getZ()+sloty);
-           if(TownS.g().isClaimed(cur)){
-               player.openInventory(FlagShow.get.create(player,TownS.g().getClaim(cur)));
-               player.updateInventory();
-           }
+            if (e.getSlot() % 9 == 0 || e.getSlot() % 9 == 1) return;
+            int sloty = e.getSlot() % 9 - 4;
+            Chunk cur = player.getWorld().getChunkAt(player.getLocation().getChunk().getX() + slotx, player.getLocation().getChunk().getZ() + sloty);
+            if (TownS.g().isClaimed(cur)) {
+                player.openInventory(FlagShow.get.create(player, TownS.g().getClaim(cur)));
+                player.updateInventory();
+            }
             return;
         }
         if (ChatColor.stripColor(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName()).equalsIgnoreCase("Flag List")) {

@@ -7,10 +7,12 @@ public enum Flag {
     EDIT("Build permission for town members");
 
     String name;
-    Flag(String name){
+
+    Flag(String name) {
         this.name = name;
     }
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
 }

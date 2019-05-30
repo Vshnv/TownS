@@ -3,6 +3,7 @@ package com.rocketmail.vaishnavanil.towns.MapGUI.ItemName;
 import java.util.List;
 
 public enum NameStyle {
+
     NO_STYLE(new NoStyle()),
     HIGHLIGHT(new HighLight()),
     DESIGNED(new Designed()),

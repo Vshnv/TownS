@@ -22,8 +22,9 @@ public class Claim {
     //DATA
 
     private List<Flag> EnabledFlags = new ArrayList<>();
+
     //CONSTRUCTORS
-    protected Claim(Chunk chunk,Town town){
+    protected Claim(Chunk chunk, Town town) {
         world = chunk.getWorld().getName();
         CX = chunk.getX();
         CZ = chunk.getZ();
@@ -32,14 +33,15 @@ public class Claim {
         TownS.g().aCtT(this);
     }
 
-    public void setOwner(Player player){
+    public void setOwner(Player player) {
         setOwner(player.getUniqueId());
     }
-    public void setOwner(UUID id){
+
+    public void setOwner(UUID id) {
         ownerID = id;
     }
 
-    protected Claim(Chunk chunk, Town town, Player owner){
+    protected Claim(Chunk chunk, Town town, Player owner) {
         world = chunk.getWorld().getName();
         CX = chunk.getX();
         CZ = chunk.getZ();
@@ -47,10 +49,12 @@ public class Claim {
         ownerID = owner.getUniqueId();
         TownS.g().aCtT(this);
     }
-    public Chunk getChunk(){
-        return Bukkit.getWorld(world).getChunkAt(x(),z());
+
+    public Chunk getChunk() {
+        return Bukkit.getWorld(world).getChunkAt(x(), z());
     }
-    public World getWorld(){
+
+    public World getWorld() {
         return Bukkit.getWorld(world);
     }
 
@@ -58,16 +62,19 @@ public class Claim {
         return world;
     }
 
-    public int x(){
+    public int x() {
         return CX;
     }
-    public int z(){
+
+    public int z() {
         return CZ;
     }
-    public void setTown(Town town){
+
+    public void setTown(Town town) {
         town_name = town.getName();
     }
-    protected Claim(Chunk chunk, Town town, Player owner, List<Flag> flags){
+
+    protected Claim(Chunk chunk, Town town, Player owner, List<Flag> flags) {
         world = chunk.getWorld().getName();
         CX = chunk.getX();
         CZ = chunk.getZ();
@@ -77,28 +84,33 @@ public class Claim {
     }
     //END CONSTRUCTORS
 
-    public Town getTown(){
-        if(TownS.g().townExists(town_name)) return TownS.g().getTown(town_name);
+    public Town getTown() {
+        if (TownS.g().townExists(town_name)) return TownS.g().getTown(town_name);
         return null;
     }
 
-    public void setFS(boolean FS,double Cost){
+    public void setFS(boolean FS, double Cost) {
         fs = FS;
         cost = Cost;
     }
-    public List<Flag> getFlags(){
+
+    public List<Flag> getFlags() {
         return EnabledFlags;
     }
-    public Player getOwner(){
+
+    public Player getOwner() {
         return Bukkit.getPlayer(ownerID);
     }
-    public boolean isFS(){
+
+    public boolean isFS() {
         return fs;
     }
-    public void addFlag(Flag flag){
+
+    public void addFlag(Flag flag) {
         EnabledFlags.add(flag);
     }
-    public void removeFlag(Flag flag){
+
+    public void removeFlag(Flag flag) {
         EnabledFlags.remove(flag);
     }
 }
