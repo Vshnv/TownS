@@ -4,7 +4,7 @@ public enum Flag {
 
     PVP("Disable PvP"),
     MOBS("Disable Mobs"),
-    FIRE("Disable Fire"),
+    FIRE_PROTECTION("Disable Fire Damage and Spread"),
     EDIT("Allow Permission to Build for Town Members"),
     CONTAINER("Allow Town Members access to Containers"),
     EXPLOSION("Allows Explosions"),
