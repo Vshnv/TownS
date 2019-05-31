@@ -42,7 +42,7 @@ public final class TownS extends JavaPlugin {
 
     public void/*ADD CLAIM TO CLAIM MAP*/ aCtT(Claim claim) {
         // CM.put(claim,town);
-        Map.put(claim.x() + "::" + claim.z() + "" + claim.getWorldName(), claim);
+        Map.put(claim.x() + "::" + claim.z() + "::" + claim.getWorldName(), claim);
     }
 
     public void/*REMOVE CLAIM FROM CLAIM MAP*/rCfT(Claim claim) {

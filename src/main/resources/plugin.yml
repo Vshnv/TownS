@@ -9,3 +9,4 @@ website: www.test.com
 #depend: [Vault]
 commands:
   towns:
+  plot:
