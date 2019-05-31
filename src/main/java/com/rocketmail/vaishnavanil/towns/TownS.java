@@ -3,6 +3,7 @@ package com.rocketmail.vaishnavanil.towns;
 import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownCmd;
 import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
+import com.rocketmail.vaishnavanil.towns.Listeners.FireProtectionListener;
 import com.rocketmail.vaishnavanil.towns.Listeners.ExplodeEventListener;
 import com.rocketmail.vaishnavanil.towns.Listeners.MoveEventListener;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
@@ -150,6 +151,7 @@ public final class TownS extends JavaPlugin {
         regListen(new InvClickListen());
         regListen(new MoveEventListener());
         regListen(new ExplodeEventListener());
+        regListen(new FireProtectionListener());
 
         ConfigManager.get.LoadUp();
     }
