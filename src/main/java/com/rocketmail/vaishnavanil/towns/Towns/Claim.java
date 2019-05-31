@@ -15,6 +15,7 @@ public class Claim {
     private int CX;
     private int CZ;
     private String world;
+    private String claim_name = "";
     private String town_name;
     private UUID ownerID;
     private boolean fs = false;
@@ -121,6 +122,14 @@ public class Claim {
     public void setFS(boolean FS, double Cost) {
         fs = FS;
         cost = Cost;
+    }
+
+    public void setName(String name){
+        claim_name = name;
+    }
+
+    public String getName(){
+        return claim_name;
     }
 
     public List<Flag> getFlags() {

@@ -3,6 +3,7 @@ package com.rocketmail.vaishnavanil.towns;
 import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownCmd;
 import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
+import com.rocketmail.vaishnavanil.towns.Listeners.PlayerMoveEventListener;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
@@ -42,7 +43,7 @@ public final class TownS extends JavaPlugin {
 
     public void/*ADD CLAIM TO CLAIM MAP*/ aCtT(Claim claim) {
         // CM.put(claim,town);
-        Map.put(claim.x() + "::" + claim.z() + "" + claim.getWorldName(), claim);
+        Map.put(claim.x() + "::" + claim.z() + "::" + claim.getWorldName(), claim);
     }
 
     public void/*REMOVE CLAIM FROM CLAIM MAP*/rCfT(Claim claim) {
@@ -148,6 +149,7 @@ public final class TownS extends JavaPlugin {
         registerCMD("towns", new TownCmd());
         registerCMD("plot", new PlotCmd());
         regListen(new InvClickListen());
+        regListen(new PlayerMoveEventListener());
 
         ConfigManager.get.LoadUp();
     }
