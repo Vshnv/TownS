@@ -9,3 +9,8 @@ website: www.test.com
 #depend: [Vault]
 commands:
   towns:
+    description: Town Commands
+    usage: /towns <args>
+  plot:
+    description: Plot Commands
+    usage: /plot <args>
