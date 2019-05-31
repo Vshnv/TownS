@@ -1,12 +1,16 @@
 package com.rocketmail.vaishnavanil.towns.MapGUI;
 
+import com.rocketmail.vaishnavanil.towns.MapGUI.ItemName.NameStyle;
 import com.rocketmail.vaishnavanil.towns.TownS;
+import com.rocketmail.vaishnavanil.towns.Towns.Claim;
+import com.rocketmail.vaishnavanil.towns.Towns.Flag;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 
 public class InvClickListen implements Listener {
     int s0 = 2;
@@ -17,7 +21,8 @@ public class InvClickListen implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if (ChatColor.stripColor(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName()).equalsIgnoreCase("MAP MENU")) {
+        if(e.getClickedInventory().getType() == InventoryType.CREATIVE)return;
+        if (NameStyle.HIGHLIGHT.use("MAP MENU").equalsIgnoreCase(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName())){
             e.setCancelled(true);
             Player player = (Player) e.getWhoClicked();
             int slotxRAW = (e.getSlot() - e.getSlot() % 9) / 9;
@@ -50,8 +55,23 @@ public class InvClickListen implements Listener {
             }
             return;
         }
-        if (ChatColor.stripColor(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName()).equalsIgnoreCase("Flag List")) {
+        if (NameStyle.HIGHLIGHT.use("Flag List").equalsIgnoreCase(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName())) {
             e.setCancelled(true);
+            if(e.getClickedInventory() != e.getView().getTopInventory())return;
+            if(e.getSlot() == 0)return;
+            int x = Integer.valueOf(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(2).split("::")[0]);
+            int z = Integer.valueOf(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(2).split("::")[1]);
+
+            Chunk ch = e.getWhoClicked().getLocation().getWorld().getChunkAt(x,z);
+            if(!TownS.g().isClaimed(ch))return;
+            Flag f = Flag.getFlag(ChatColor.stripColor(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName()));
+            Claim m = TownS.g().getClaim(ch);
+            if(m.hasFlag(f))m.removeFlag(f);
+            else m.addFlag(f);
+            ((Player) e.getWhoClicked()).closeInventory();
+            ((Player) e.getWhoClicked()).openInventory(FlagShow.get.create((Player) e.getWhoClicked(),m));
+            ((Player) e.getWhoClicked()).updateInventory();
+
         }
     }
 }

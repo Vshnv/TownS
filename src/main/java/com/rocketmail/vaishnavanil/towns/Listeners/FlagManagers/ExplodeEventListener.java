@@ -1,4 +1,4 @@
-package com.rocketmail.vaishnavanil.towns.Listeners;
+package com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
@@ -27,7 +27,8 @@ public class ExplodeEventListener implements Listener {
         //List<BlockState> blockStateList = new ArrayList<>();
         for (Block block : event.blockList()) {
             if (TownS.g().isClaimed(block.getChunk())) {
-                event.setCancelled(true);
+                //event.setCancelled(true);
+                event.blockList().remove(block);
                 return;
             }
         }
@@ -38,7 +39,9 @@ public class ExplodeEventListener implements Listener {
         //List<BlockState> blockStateList = new ArrayList<>();
         for (Block block : event.blockList()) {
             if (TownS.g().isClaimed(block.getChunk())) {
-                event.setCancelled(true);
+               //event.setCancelled(true);
+                event.blockList().remove(block);
+
                 return;
             }
         }

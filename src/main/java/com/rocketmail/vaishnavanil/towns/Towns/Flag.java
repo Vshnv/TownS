@@ -2,13 +2,13 @@ package com.rocketmail.vaishnavanil.towns.Towns;
 
 public enum Flag {
 
-    PVP("Disable PvP"),
-    MOBS("Disable Mobs"),
-    FIRE_PROTECTION("Disable Fire Damage and Spread"),
-    EDIT("Allow Permission to Build for Town Members"),
+    PVP("Allows PvP"), //DONE
+    MOBS("Allows Mobs"),//DONE
+    FIRE_PROTECTION("Disable Fire Damage and Spread"), //DONE
+    EDIT("Allow Permission to Build for Town Members"), //DONE
     CONTAINER("Allow Town Members access to Containers"),
-    EXPLOSION("Allows Explosions"),
-    USE("Allow Block Use");
+    EXPLOSION("Allows Explosions"), //DONE????
+    USE("Allow Block Use"); //DONE
 
     String name;
 
@@ -18,5 +18,14 @@ public enum Flag {
 
     public String getName() {
         return this.name;
+    }
+
+    public static Flag getFlag(String name){
+        for(Flag f:Flag.values()){
+            if(f.getName().equals(name)){
+                return f;
+            }
+        }
+        return null;
     }
 }

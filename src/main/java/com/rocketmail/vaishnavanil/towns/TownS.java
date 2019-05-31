@@ -3,9 +3,9 @@ package com.rocketmail.vaishnavanil.towns;
 import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownCmd;
 import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
-import com.rocketmail.vaishnavanil.towns.Listeners.FireProtectionListener;
-import com.rocketmail.vaishnavanil.towns.Listeners.ExplodeEventListener;
-import com.rocketmail.vaishnavanil.towns.Listeners.MoveEventListener;
+import com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers.*;
+import com.rocketmail.vaishnavanil.towns.Listeners.MobClearLoop;
+import com.rocketmail.vaishnavanil.towns.Listeners.TitleManager.MoveEventListener;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
@@ -152,8 +152,14 @@ public final class TownS extends JavaPlugin {
         regListen(new MoveEventListener());
         regListen(new ExplodeEventListener());
         regListen(new FireProtectionListener());
-
+        regListen(new ContainerUseEventListener());
+        regListen(new MobManagingEventListener());
+        regListen(new PVPEventListener());
+        regListen(new UtilityUSEEventListener());
         ConfigManager.get.LoadUp();
+
+
+        MobClearLoop.get.start();
     }
 
 

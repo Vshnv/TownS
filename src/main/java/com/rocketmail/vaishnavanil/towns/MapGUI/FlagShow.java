@@ -21,11 +21,13 @@ public enum FlagShow {
     public Inventory create(Player sndr, Claim claim) {
         Inventory flaginv = Bukkit.createInventory(null, 9 * 1, "Flags");
         List<String> lore = new ArrayList<>();
-        lore.add("Ownership ->>");
-        if (claim.getOwner() == sndr) lore.add("Your Claim!");
+        lore.add("*Details*");
+        if (claim.getOwner() == sndr) lore.add("Claim Owner ->> " +"Your Claim!");
 
         else lore.add("Claim Owner ->> " + claim.getOwner().getName());
 
+
+        lore.add(claim.x()+"::"+claim.z());
 
         ItemStack Detection = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                 .setNameStyle(NameStyle.HIGHLIGHT)
