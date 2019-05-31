@@ -10,13 +10,13 @@ public enum TitleSender {
             title = ChatColor.translateAlternateColorCodes('&', title);
         if(subTitle != null)
             subTitle = ChatColor.translateAlternateColorCodes('&', subTitle);
-        player.sendTitle(title, subTitle, 10, 40, 20);
+        player.sendTitle(title, subTitle, 10, 40, 5);
     }
 
     public void sendTitle(Player player, String title){
         if(title != null)
             title = ChatColor.translateAlternateColorCodes('&', title);
-        player.sendTitle(title, null, 10, 40, 20);
+        player.sendTitle(title, "", 10, 40, 5);
     }
 
 }

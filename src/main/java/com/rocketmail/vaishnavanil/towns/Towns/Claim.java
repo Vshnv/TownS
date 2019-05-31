@@ -138,6 +138,8 @@ public class Claim {
     }
 
     public String getName(){
+        if(claim_name == null)
+            return "";
         return claim_name;
     }
 
