@@ -7,31 +7,27 @@ import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Panda;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public enum Map {
-//5*9
+    //5*9
     get;
     int s0 = 2;
     int s1 = 1;
     int s2 = 0;
     int s3 = -1;
     int s4 = -2;
-    public Inventory create(Player player){
-        Inventory Map = Bukkit.createInventory(null,9*5,"Towny Map");
-        int center  = 22;
+
+    public Inventory create(Player player) {
+        Inventory Map = Bukkit.createInventory(null, 9 * 5, "Towny Map");
+        int center = 22;
         ItemStack centerItem = new ItemBuilder(Material.YELLOW_STAINED_GLASS_PANE)
                 .setNameStyle(NameStyle.DESIGNED)
                 .setLoreStyle(LoreStyle.INFO)
@@ -39,23 +35,23 @@ public enum Map {
                 .setLore(getDetails(player.getLocation().getChunk()))
                 .pack();
 
-        Map.setItem(22,centerItem);
+        Map.setItem(22, centerItem);
 
-        for(int n = 0;n <=Map.getSize()-1;n++){
-            int y = n%9+1;
-            if(y == 1 || y == 2 || y == 8||y==9){
+        for (int n = 0; n <= Map.getSize() - 1; n++) {
+            int y = n % 9 + 1;
+            if (y == 1 || y == 2 || y == 8 || y == 9) {
                 Map.setItem(n, GenerateDetection());
                 continue;
             }
-            if(n == center)continue;
-            Chunk cur = getChunkFromSlot(n,player);
+            if (n == center) continue;
+            Chunk cur = getChunkFromSlot(n, player);
             ItemStack item = new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
                     .setNameStyle(NameStyle.HIGHLIGHT)
                     .setLoreStyle(LoreStyle.INFO)
                     .setDisplayName("Chunk")
                     .setLore(getDetails(cur))
                     .pack();
-            Map.setItem(n,item);
+            Map.setItem(n, item);
         }
         /*for(int r1 = 2;r1<=6;r1++){
             Chunk cur = getChunkFromSlot(r1,player);
@@ -119,7 +115,7 @@ public enum Map {
     }
 
 
-    private ItemStack GenerateDetection(){
+    private ItemStack GenerateDetection() {
         ItemStack stack = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                 .setNameStyle(NameStyle.HIGHLIGHT)
                 .setLoreStyle(LoreStyle.DETECTION)
@@ -128,9 +124,10 @@ public enum Map {
                 .pack();
         return stack;
     }
-    private List<String> getDetails(Chunk chunk){
+
+    private List<String> getDetails(Chunk chunk) {
         List<String> lore = new ArrayList<>();
-        if(!TownS.g().isClaimed(chunk)){
+        if (!TownS.g().isClaimed(chunk)) {
             lore.add("Not Claimed!");
             return lore;
         }
@@ -141,10 +138,11 @@ public enum Map {
         lore.add("&l->>Click To View Flags<<-");
         return lore;
     }
-    public Chunk getChunkFromSlot(int slot,Player player){
-        int slotxRAW = (slot-slot%9)/9;
+
+    public Chunk getChunkFromSlot(int slot, Player player) {
+        int slotxRAW = (slot - slot % 9) / 9;
         int slotx = 0;
-        switch (slotxRAW){
+        switch (slotxRAW) {
             case 0:
                 slotx = s0;
                 break;
@@ -160,11 +158,12 @@ public enum Map {
             case 4:
                 slotx = s4;
                 break;
-            default: return null;
+            default:
+                return null;
         }
-        int sloty = slot%9-4;
-        Chunk cur = player.getWorld().getChunkAt(player.getLocation().getChunk().getX()+slotx,player.getLocation().getChunk().getZ()+sloty);
-return cur;
+        int sloty = slot % 9 - 4;
+        Chunk cur = player.getWorld().getChunkAt(player.getLocation().getChunk().getX() + slotx, player.getLocation().getChunk().getZ() + sloty);
+        return cur;
     }
 
 }

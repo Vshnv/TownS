@@ -12,13 +12,15 @@ import java.util.UUID;
 public interface Message {
     void a(Player p, List<String> list);
 
-    void a(Player p,String s);
+    void a(Player p, String s);
 
-    default void a(UUID id, String s){
-        a(Bukkit.getPlayer(id),s);
+    default void a(UUID id, String s) {
+        a(Bukkit.getPlayer(id), s);
     }
+
     void b(Town town, String s);
-    default String c(String msg){
-        return ChatColor.translateAlternateColorCodes('&',msg);
+
+    default String c(String msg) {
+        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 }

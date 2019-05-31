@@ -19,10 +19,6 @@ public class Claim {
     private UUID ownerID;
     private boolean fs = false;
     private double cost = 100;
-    private List<UUID> ContainerTrust = new ArrayList<>();
-    private List<UUID> BuildTrust = new ArrayList<>();
-
-
     //DATA
 
     private List<Flag> EnabledFlags = new ArrayList<>();
@@ -35,29 +31,7 @@ public class Claim {
         ownerID = town.getMayor().getUniqueId();
         TownS.g().aCtT(this);
     }
-    public void BuildTrust(Player p){
-        BuildTrust.add(p.getUniqueId());
-    }
-    public void unBuildTrust(Player p){
-        BuildTrust.remove(p.getUniqueId());
-    }
-    public void BuildTrust(UUID id){
-        BuildTrust.add(id);
-    }
-    public void unBuildTrust(UUID id){
-        BuildTrust.remove(id);
-    }
 
-
-    public boolean canBuild(Player p){
-        return (BuildTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId()) || (this.hasFlag(Flag.EDIT));
-    }
-    public boolean canUseContainer(Player p){
-        return (ContainerTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId());
-    }
-    public boolean hasFlag(Flag f){
-        return getFlags().contains(f);
-    }
     public void setOwner(Player player){
         setOwner(player.getUniqueId());
     }

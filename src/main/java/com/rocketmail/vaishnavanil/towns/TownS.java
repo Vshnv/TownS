@@ -2,10 +2,8 @@ package com.rocketmail.vaishnavanil.towns;
 
 import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownCmd;
-import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
-import com.rocketmail.vaishnavanil.towns.Towns.Rank;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
 import org.bukkit.Chunk;
 import org.bukkit.command.CommandExecutor;
@@ -15,8 +13,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.xml.bind.Marshaller;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 public final class TownS extends JavaPlugin {
@@ -38,8 +34,6 @@ public final class TownS extends JavaPlugin {
     private/*CLAIM MAP*/ HashMap<String,Claim> Map = new HashMap<>();//FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
 
     private/*P-T Map*/ HashMap<UUID, Town> quickPlayer = new HashMap<>();
-
-    private HashMap<String,Rank> RankList = new HashMap<>();
 
     //
     public void/*ADD CLAIM TO CLAIM MAP*/ aCtT(Claim claim){
@@ -117,9 +111,7 @@ public void regListen(Listener lis){
         TM.remove(town.getName());
     }
     //
-public Rank getRank(String name){
-        return RankList.get(name);
-}
+
 //MAPPING
 
     //ENABLE DISABLE
@@ -132,13 +124,8 @@ public Rank getRank(String name){
         registerCMD("plot",new PlotCmd());
         regListen(new InvClickListen());
 
-        ConfigManager.get.LoadUp();
     }
 
-
-    public void RegisterRanks(Rank rank){
-       RankList.put(rank.getName(),rank);
-    }
     @Override
     public void onDisable() {
         // Plugin shutdown logic
