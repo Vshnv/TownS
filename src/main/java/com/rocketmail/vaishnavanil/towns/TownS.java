@@ -3,7 +3,8 @@ package com.rocketmail.vaishnavanil.towns;
 import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownCmd;
 import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
-import com.rocketmail.vaishnavanil.towns.Listeners.PlayerMoveEventListener;
+import com.rocketmail.vaishnavanil.towns.Listeners.ExplodeEventListener;
+import com.rocketmail.vaishnavanil.towns.Listeners.MoveEventListener;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
@@ -15,8 +16,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 public final class TownS extends JavaPlugin {
@@ -149,7 +148,8 @@ public final class TownS extends JavaPlugin {
         registerCMD("towns", new TownCmd());
         registerCMD("plot", new PlotCmd());
         regListen(new InvClickListen());
-        regListen(new PlayerMoveEventListener());
+        regListen(new MoveEventListener());
+        regListen(new ExplodeEventListener());
 
         ConfigManager.get.LoadUp();
     }

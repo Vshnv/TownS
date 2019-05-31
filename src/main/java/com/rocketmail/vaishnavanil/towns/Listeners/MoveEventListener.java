@@ -11,10 +11,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class PlayerMoveEventListener implements Listener {
+public class MoveEventListener implements Listener {
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event){
+    public void onPlayerMove(org.bukkit.event.player.PlayerMoveEvent event){
         if( event.getFrom().getChunk() != event.getTo().getChunk() ){
 
             Player player = event.getPlayer();
