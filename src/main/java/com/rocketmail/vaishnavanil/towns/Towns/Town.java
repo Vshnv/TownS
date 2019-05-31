@@ -52,7 +52,7 @@ public class Town {
     }
 
     public void claim(Chunk chunk, Player owner) {
-        new Claim(chunk, this, owner);
+        new Claim(chunk, this, owner.getUniqueId());
     }
 
     public void unclaim(Chunk chunk) {

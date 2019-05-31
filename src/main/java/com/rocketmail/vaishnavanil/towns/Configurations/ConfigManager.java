@@ -29,6 +29,7 @@ private void setUP(){
     }
 
     public void reload(){
+    setUP();
         TownS.g().reloadConfig();
         setupConstraints();
         setupranks();

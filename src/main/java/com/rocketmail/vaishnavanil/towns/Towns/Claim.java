@@ -80,6 +80,15 @@ public class Claim {
         TownS.g().aCtT(this);
     }
 
+    protected Claim(Chunk chunk, Town town, UUID owner) {
+        world = chunk.getWorld().getName();
+        CX = chunk.getX();
+        CZ = chunk.getZ();
+        town_name = town.getName();
+        ownerID = owner;
+        TownS.g().aCtT(this);
+    }
+
     public Chunk getChunk() {
         return Bukkit.getWorld(world).getChunkAt(x(), z());
     }
