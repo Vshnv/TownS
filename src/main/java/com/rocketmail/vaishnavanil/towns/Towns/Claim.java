@@ -36,6 +36,7 @@ public class Claim {
         ownerID = town.getMayor().getUniqueId();
         TownS.g().aCtT(this);
     }
+    //TEST
     public void BuildTrust(Player p){
         BuildTrust.add(p.getUniqueId());
     }
