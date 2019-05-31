@@ -6,6 +6,7 @@ import com.rocketmail.vaishnavanil.towns.Towns.Flag;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class ExplodeEventListener implements Listener {
@@ -22,7 +23,18 @@ public class ExplodeEventListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockExplode(EntityExplodeEvent event) {
+    public void onKnownCauseExplode(EntityExplodeEvent event) {
+        //List<BlockState> blockStateList = new ArrayList<>();
+        for (Block block : event.blockList()) {
+            if (TownS.g().isClaimed(block.getChunk())) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onUnknownCauseExplode(BlockExplodeEvent event) {
         //List<BlockState> blockStateList = new ArrayList<>();
         for (Block block : event.blockList()) {
             if (TownS.g().isClaimed(block.getChunk())) {
