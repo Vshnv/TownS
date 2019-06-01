@@ -12,6 +12,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class UtilityUSEEventListener implements Listener {
     @EventHandler
     public void onButtonHit(PlayerInteractEvent e){
+        try {
+            if (e.getClickedBlock() == null) return;
+        }catch (Exception exceptIONlol){
+            return;
+        }
         if(!TownS.g().isClaimed(e.getClickedBlock().getLocation().getChunk()))return;
         if(e.getAction() == Action.RIGHT_CLICK_BLOCK){
 

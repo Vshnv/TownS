@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.inventory.InventoryType;
 
 public class InvClickListen implements Listener {
@@ -22,6 +23,7 @@ public class InvClickListen implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         if(e.getClickedInventory().getType() == InventoryType.CREATIVE)return;
+        if(e instanceof InventoryCreativeEvent)return;
         if (NameStyle.HIGHLIGHT.use("MAP MENU").equalsIgnoreCase(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName())){
             e.setCancelled(true);
             Player player = (Player) e.getWhoClicked();
@@ -59,8 +61,8 @@ public class InvClickListen implements Listener {
             e.setCancelled(true);
             //if(e.getClickedInventory() != e.getView().getTopInventory())return;
             if(e.getSlot() == 0)return;
-            int x = Integer.valueOf(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(3).split("::")[0]);
-            int z = Integer.valueOf(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(3).split("::")[1]);
+            int x = Integer.valueOf(ChatColor.stripColor(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(3).split("::")[0]));
+            int z = Integer.valueOf(ChatColor.stripColor(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(3).split("::")[1]));
 
             Chunk ch = e.getWhoClicked().getLocation().getWorld().getChunkAt(x,z);
             if(!TownS.g().isClaimed(ch))return;
