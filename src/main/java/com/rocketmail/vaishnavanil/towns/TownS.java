@@ -6,6 +6,7 @@ import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
 import com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.MobClearLoop;
 import com.rocketmail.vaishnavanil.towns.Listeners.TitleManager.MoveEventListener;
+import com.rocketmail.vaishnavanil.towns.Listeners.TownRestricter;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
@@ -156,6 +157,7 @@ public final class TownS extends JavaPlugin {
         regListen(new MobManagingEventListener());
         regListen(new PVPEventListener());
         regListen(new UtilityUSEEventListener());
+        regListen(new TownRestricter());
         ConfigManager.get.LoadUp();
 
 
