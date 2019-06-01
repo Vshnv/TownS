@@ -20,7 +20,7 @@ private void setUP(){
         TownS.g().getConfig().addDefault("Constraints.Usables",Arrays.asList("Button","Lever"));
         TownS.g().getConfig().addDefault("Constraints.NoAllow",Arrays.asList("Obsidian","Bedrock"));
 
-        TownS.g().getConfig().addDefault("FlagConfig.Mob.Disallow",Arrays.asList(EntityType.SKELETON.toString(),EntityType.ZOMBIE.toString()));
+        TownS.g().getConfig().addDefault("FlagConfig.Mob.Disallow",Arrays.asList(EntityType.SKELETON.name(),EntityType.ZOMBIE.name()));
 
         TownS.g().getConfig().addDefault("Ranks.Assistant",Arrays.asList("Claim","Unclaim","BuildALL","FS","NFS","ContainerALL","FlagSetALL"));
         TownS.g().getConfig().addDefault("Ranks.MVP",Arrays.asList("Change","This","Later","lel"));
@@ -34,7 +34,7 @@ private void setUP(){
     public void loadDisaalowedMobs(){
     List<String> sLiT = (List<String>) TownS.g().getConfig().get("FlagConfig.Mob.Disallow");
     for(String s:sLiT){
-        DAimFlag.add(EntityType.valueOf(s));
+        DAimFlag.add(EntityType.fromName(s));
     }
     }
     public boolean isAllowed(EntityType type){
