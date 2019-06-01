@@ -19,15 +19,15 @@ public class PVPEventListener implements Listener {
         if(!(A instanceof Player && B instanceof Player))return;
 
         //PVP
-        Player Attack = (Player)A;
+        Player Attacker = (Player)A;
         Player Defender = (Player)B;
         if(!TownS.g().isClaimed(Defender.getLocation().getChunk()))return;
         Claim claim = TownS.g().getClaim(Defender.getLocation().getChunk());
 
         if(!claim.hasFlag(Flag.PVP)){
             e.setCancelled(true);
-            B.setVelocity(B.getLocation().toVector().subtract(A.getLocation().toVector()).normalize());
-            ActionBar.use.send(Attack,"&4PVP disabled in this claim!");
+            Attacker.setVelocity(B.getLocation().toVector().subtract(A.getLocation().toVector()).normalize());
+            ActionBar.use.send(Attacker,"&4PVP disabled in this claim!");
         }
 
     }
