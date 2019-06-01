@@ -38,12 +38,12 @@ public enum FlagShow {
 
         flaginv.setItem(0, Detection);
 
-        List<Flag> e = claim.getFlags();
+
         int curE = 1;
         for (Flag f : Flag.values()) {
-            ItemStack i = new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setNameStyle(NameStyle.NORMALIZED_HIGHLIGHT).setLoreStyle(LoreStyle.DISABLE_ENABLE).setDisplayName(f.getName()).setLore(Arrays.asList(String.valueOf(e.contains(f)))).pack();
+            ItemStack i = new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setNameStyle(NameStyle.NORMALIZED_HIGHLIGHT).setLoreStyle(LoreStyle.DISABLE_ENABLE).setDisplayName(f.getName()).setLore(Arrays.asList(String.valueOf(claim.hasFlag(f)))).pack();
 
-            if (e.contains(f)) i.setType(Material.LIME_STAINED_GLASS_PANE);
+            if (claim.hasFlag(f)) i.setType(Material.LIME_STAINED_GLASS_PANE);
 
             flaginv.setItem(curE++, i);
 
