@@ -16,7 +16,7 @@ public class MobManagingEventListener implements Listener {
 
         Claim claim = TownS.g().getClaim(e.getEntity().getLocation().getChunk());
 
-        if(claim.hasFlag(Flag.MOBS)){
+        if(!claim.hasFlag(Flag.MOBS)){
 
             if(ConfigManager.get.isAllowed(e.getEntityType()))return;
             e.setCancelled(true);
