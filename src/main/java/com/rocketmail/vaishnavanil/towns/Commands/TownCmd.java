@@ -76,7 +76,6 @@ public class TownCmd implements CommandExecutor {
                 sndr.openInventory(Map.get.create(sndr));
                 Format.CmdInfoFrmt.use().a(sndr, "You have opened the Town Map!");
                 break;
-
             case "spawn":
                 if(!TownS.g().hasTown(sndr)){
                     Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
@@ -91,6 +90,24 @@ public class TownCmd implements CommandExecutor {
                     }
                 }
                 break;
+            case "setspawn":
+
+                if (!TownS.g().hasTown(sndr)) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                    return true;
+                }
+                if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                    return true;
+                }
+                Town senders_town = TownS.g().getTown(sndr);
+                senders_town.setWarpPoint(senders_town, "spawn", sndr.getLocation());
+                Format.AlrtFrmt.use().a(sndr, "Successfully set Spawn Point.");
+                break;
+            //TOWN SETWARP SPAWN
+
             case "claim":
                 if (!TownS.g().hasTown(sndr)) {
                     /*MSG ADDED A.I.T.*/

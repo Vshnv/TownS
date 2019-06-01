@@ -82,7 +82,7 @@ public class Town {
     public void setWarpPoint(Town town, String spawn_name, Location location){
         if(TownS.g().isClaimed(location.getChunk())){
             Claim claim = TownS.g().getClaim(location.getChunk());
-            if(claim.getTown().equals(town)){
+            if(claim != null && claim.getTown().equals(town)){
                 town.warpPointMap.put(spawn_name, location);
                 return;
             }
