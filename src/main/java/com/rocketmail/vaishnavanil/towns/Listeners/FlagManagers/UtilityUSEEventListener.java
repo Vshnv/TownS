@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class UtilityUSEEventListener implements Listener {
     @EventHandler
     public void onButtonHit(PlayerInteractEvent e){
-        if(!TownS.g().isClaimed(e.getClickedBlock().getChunk()))return;
+        if(!TownS.g().isClaimed(e.getClickedBlock().getLocation().getChunk()))return;
         if(e.getAction() == Action.RIGHT_CLICK_BLOCK){
 
            Claim claim = TownS.g().getClaim(e.getClickedBlock().getLocation().getChunk());
