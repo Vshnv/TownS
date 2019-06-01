@@ -19,6 +19,7 @@ public class Town {
     private List<UUID> Members = new ArrayList<>();
     private List<Town> Allies = new ArrayList<>();
     private List<Town> Enemies = new ArrayList<>();
+    private Chunk spawnChunk;
 
     public String getName() {
         return town_name;
@@ -55,6 +56,22 @@ public class Town {
 
     public void claim(Chunk chunk, Player owner) {
         new Claim(chunk, this, owner.getUniqueId());
+    }
+
+    public boolean setSpawnChunk(Town town, Chunk chunk){
+        if(TownS.g().isClaimed(chunk)){
+            Claim claim = TownS.g().getClaim(chunk);
+            if(claim.getTown().equals(town)){
+                town.spawnChunk = chunk;
+            }
+        }
+        return false;
+    }
+
+    public boolean isSpawnChunk(Chunk chunk){
+        if(spawnChunk == null || chunk == null)
+            return false;
+        return chunk.equals(spawnChunk);
     }
 
     public void unclaim(Chunk chunk) {

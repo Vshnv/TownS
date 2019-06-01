@@ -104,6 +104,7 @@ public class TownCmd implements CommandExecutor {
                 }
                 Town senders_town = TownS.g().getTown(sndr);
                 senders_town.setWarpPoint(senders_town, "spawn", sndr.getLocation());
+                senders_town.setSpawnChunk(senders_town, sndr.getChunk());
                 Format.AlrtFrmt.use().a(sndr, "Successfully set Spawn Point.");
                 break;
             //TOWN SETWARP SPAWN
@@ -154,9 +155,14 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "This claim does not belong to your town!");
                     return true;
                 }
-                unclaim(sndr);
-                Format.CmdInfoFrmt.use().a(sndr, "You have unclaimed the current chunk!");
-                break;
+                if(TownS.g().getTown(sndr).isSpawnChunk(sndr.getChunk())){
+                    Format.CmdErrFrmt.use().a(sndr, "You cannot unclaim the town's spawn chunk");
+                    return true;
+                }else{
+                    unclaim(sndr);
+                    Format.CmdInfoFrmt.use().a(sndr, "You have unclaimed the current chunk!");
+                    return true;
+                }
             //UNCLAIM
             //FS
             case "fs":
@@ -247,6 +253,7 @@ public class TownCmd implements CommandExecutor {
         Town newT = new Town(townName, p);
         newT.claim(p.getLocation().getChunk(), p);
         newT.setWarpPoint(newT, "spawn", p.getLocation());
+        newT.setSpawnChunk(newT, p.getChunk());
     }
 
     public void deleteTown(Player sndr) {
