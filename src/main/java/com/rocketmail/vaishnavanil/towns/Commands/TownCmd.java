@@ -76,6 +76,39 @@ public class TownCmd implements CommandExecutor {
                 sndr.openInventory(Map.get.create(sndr));
                 Format.CmdInfoFrmt.use().a(sndr, "You have opened the Town Map!");
                 break;
+            case "spawn":
+                if(!TownS.g().hasTown(sndr)){
+                    Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                    return true;
+                }else{
+                    Town sender_town = TownS.g().getTown(sndr);
+                    if(sender_town.getWarpPoint(sender_town, "spawn") != null){
+                        sndr.teleport( sender_town.getWarpPoint(sender_town, "spawn") );
+                        Format.AlrtFrmt.use().a(sndr, "Teleported to town spawn");
+                    }else{
+                        Format.CmdErrFrmt.use().a(sndr, "Warp Point: SPAWN not found.");
+                    }
+                }
+                break;
+            case "setspawn":
+
+                if (!TownS.g().hasTown(sndr)) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                    return true;
+                }
+                if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                    return true;
+                }
+                Town senders_town = TownS.g().getTown(sndr);
+                senders_town.setWarpPoint(senders_town, "spawn", sndr.getLocation());
+                senders_town.setSpawnChunk(senders_town, sndr.getChunk());
+                Format.AlrtFrmt.use().a(sndr, "Successfully set Spawn Point.");
+                break;
+            //TOWN SETWARP SPAWN
+
             case "claim":
                 if (!TownS.g().hasTown(sndr)) {
                     /*MSG ADDED A.I.T.*/
@@ -122,9 +155,14 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "This claim does not belong to your town!");
                     return true;
                 }
-                unclaim(sndr);
-                Format.CmdInfoFrmt.use().a(sndr, "You have unclaimed the current chunk!");
-                break;
+                if(TownS.g().getTown(sndr).isSpawnChunk(sndr.getChunk())){
+                    Format.CmdErrFrmt.use().a(sndr, "You cannot unclaim the town's spawn chunk");
+                    return true;
+                }else{
+                    unclaim(sndr);
+                    Format.CmdInfoFrmt.use().a(sndr, "You have unclaimed the current chunk!");
+                    return true;
+                }
             //UNCLAIM
             //FS
             case "fs":
@@ -214,6 +252,8 @@ public class TownCmd implements CommandExecutor {
     public void create(Player p, String townName) {
         Town newT = new Town(townName, p);
         newT.claim(p.getLocation().getChunk(), p);
+        newT.setWarpPoint(newT, "spawn", p.getLocation());
+        newT.setSpawnChunk(newT, p.getChunk());
     }
 
     public void deleteTown(Player sndr) {

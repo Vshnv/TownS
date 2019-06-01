@@ -3,6 +3,7 @@ package com.rocketmail.vaishnavanil.towns.Towns;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -14,9 +15,11 @@ public class Town {
     private String town_name;
     private UUID Mayor_ID;
     private HashMap<UUID, Rank> rankMap = new HashMap<>();
+    private HashMap<String, Location> warpPointMap = new HashMap<>();
     private List<UUID> Members = new ArrayList<>();
     private List<Town> Allies = new ArrayList<>();
     private List<Town> Enemies = new ArrayList<>();
+    private Chunk spawnChunk;
 
     public String getName() {
         return town_name;
@@ -55,6 +58,22 @@ public class Town {
         new Claim(chunk, this, owner.getUniqueId());
     }
 
+    public boolean setSpawnChunk(Town town, Chunk chunk){
+        if(TownS.g().isClaimed(chunk)){
+            Claim claim = TownS.g().getClaim(chunk);
+            if(claim.getTown().equals(town)){
+                town.spawnChunk = chunk;
+            }
+        }
+        return false;
+    }
+
+    public boolean isSpawnChunk(Chunk chunk){
+        if(spawnChunk == null || chunk == null)
+            return false;
+        return chunk.equals(spawnChunk);
+    }
+
     public void unclaim(Chunk chunk) {
         TownS.g().rCfT(TownS.g().getClaim(chunk));
     }
@@ -75,6 +94,36 @@ public class Town {
 
     public void unEnemy(Town t) {
         Enemies.remove(t);
+    }
+
+    public void setWarpPoint(Town town, String spawn_name, Location location){
+        if(TownS.g().isClaimed(location.getChunk())){
+            Claim claim = TownS.g().getClaim(location.getChunk());
+            if(claim != null && claim.getTown().equals(town)){
+                town.warpPointMap.put(spawn_name, location);
+                return;
+            }
+        }
+        Bukkit.broadcastMessage("[TOWNS] Failed to set warp point: "+spawn_name+" Town: "+town.getName());
+    }
+
+    public Location getWarpPoint(Town town, String spawn_name){
+        if(warpPointMap.get(spawn_name) != null){
+            Location warp_location = warpPointMap.get(spawn_name);
+            if(TownS.g().isClaimed(warp_location.getChunk())){
+                Town town_at_location = TownS.g().getTown(warp_location.getChunk());
+                if(town_at_location.equals(town)){
+                    return warpPointMap.get(spawn_name);
+                }else{
+                    warpPointMap.remove(spawn_name);
+                    return null;
+                }
+            }else{
+                warpPointMap.remove(spawn_name);
+                return null;
+            }
+        }
+        return null;
     }
 
     public void deleteTown() {
