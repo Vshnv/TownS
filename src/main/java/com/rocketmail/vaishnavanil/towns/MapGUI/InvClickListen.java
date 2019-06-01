@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.inventory.InventoryType;
 
 public class InvClickListen implements Listener {
@@ -22,6 +23,7 @@ public class InvClickListen implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         if(e.getClickedInventory().getType() == InventoryType.CREATIVE)return;
+        if(e instanceof InventoryCreativeEvent)return;
         if (NameStyle.HIGHLIGHT.use("MAP MENU").equalsIgnoreCase(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName())){
             e.setCancelled(true);
             Player player = (Player) e.getWhoClicked();
