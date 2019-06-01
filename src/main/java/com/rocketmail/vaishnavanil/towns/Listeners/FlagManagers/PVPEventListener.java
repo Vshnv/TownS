@@ -26,7 +26,7 @@ public class PVPEventListener implements Listener {
 
         if(!claim.hasFlag(Flag.PVP)){
             e.setCancelled(true);
-            Attacker.setVelocity(B.getLocation().toVector().subtract(A.getLocation().toVector()).normalize());
+            Attacker.setVelocity(B.getLocation().toVector().subtract(A.getLocation().toVector()).normalize().setY(0));
             ActionBar.use.send(Attacker,"&4PVP disabled in this claim!");
         }
 
