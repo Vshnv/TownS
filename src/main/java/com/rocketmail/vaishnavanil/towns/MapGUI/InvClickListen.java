@@ -57,7 +57,7 @@ public class InvClickListen implements Listener {
         }
         if (NameStyle.HIGHLIGHT.use("Flag List").equalsIgnoreCase(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName())) {
             e.setCancelled(true);
-            if(e.getClickedInventory() != e.getView().getTopInventory())return;
+            //if(e.getClickedInventory() != e.getView().getTopInventory())return;
             if(e.getSlot() == 0)return;
             int x = Integer.valueOf(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(2).split("::")[0]);
             int z = Integer.valueOf(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(2).split("::")[1]);
@@ -66,8 +66,11 @@ public class InvClickListen implements Listener {
             if(!TownS.g().isClaimed(ch))return;
             Flag f = Flag.getFlag(ChatColor.stripColor(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName()));
             Claim m = TownS.g().getClaim(ch);
+
             if(m.hasFlag(f))m.removeFlag(f);
             else m.addFlag(f);
+
+            
             ((Player) e.getWhoClicked()).closeInventory();
             ((Player) e.getWhoClicked()).openInventory(FlagShow.get.create((Player) e.getWhoClicked(),m));
             ((Player) e.getWhoClicked()).updateInventory();
