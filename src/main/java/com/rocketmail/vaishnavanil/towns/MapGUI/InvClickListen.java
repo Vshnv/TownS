@@ -59,8 +59,8 @@ public class InvClickListen implements Listener {
             e.setCancelled(true);
             //if(e.getClickedInventory() != e.getView().getTopInventory())return;
             if(e.getSlot() == 0)return;
-            int x = Integer.valueOf(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(2).split("::")[0]);
-            int z = Integer.valueOf(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(2).split("::")[1]);
+            int x = Integer.valueOf(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(3).split("::")[0]);
+            int z = Integer.valueOf(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(3).split("::")[1]);
 
             Chunk ch = e.getWhoClicked().getLocation().getWorld().getChunkAt(x,z);
             if(!TownS.g().isClaimed(ch))return;
@@ -70,7 +70,7 @@ public class InvClickListen implements Listener {
             if(m.hasFlag(f))m.removeFlag(f);
             else m.addFlag(f);
 
-            
+
             ((Player) e.getWhoClicked()).closeInventory();
             ((Player) e.getWhoClicked()).openInventory(FlagShow.get.create((Player) e.getWhoClicked(),m));
             ((Player) e.getWhoClicked()).updateInventory();
