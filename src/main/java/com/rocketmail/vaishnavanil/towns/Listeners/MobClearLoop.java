@@ -25,7 +25,7 @@ public enum MobClearLoop {
                         if(TownS.g().isClaimed(e.getLocation().getChunk())){
                             Claim c1 = TownS.g().getClaim(e.getLocation().getChunk());
                             if(c1.hasFlag(Flag.MOBS))continue;
-                            e.remove();
+                            ((LivingEntity)e).remove();
                         }
                     }
                 }

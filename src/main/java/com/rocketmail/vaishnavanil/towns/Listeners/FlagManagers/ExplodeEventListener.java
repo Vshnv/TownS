@@ -9,6 +9,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ExplodeEventListener implements Listener {
 
     @EventHandler
@@ -25,26 +28,31 @@ public class ExplodeEventListener implements Listener {
     @EventHandler
     public void onKnownCauseExplode(EntityExplodeEvent event) {
         //List<BlockState> blockStateList = new ArrayList<>();
+        List<Block> ToR = new ArrayList<>();
         for (Block block : event.blockList()) {
             if (TownS.g().isClaimed(block.getChunk())) {
                 //event.setCancelled(true);
-                event.blockList().remove(block);
+                if(TownS.g().getClaim(block.getChunk()).hasFlag(Flag.EXPLOSION))continue;
+                ToR.add(block);
                 return;
             }
         }
+        event.blockList().removeAll(ToR);
     }
 
     @EventHandler
     public void onUnknownCauseExplode(BlockExplodeEvent event) {
         //List<BlockState> blockStateList = new ArrayList<>();
+        List<Block> ToR = new ArrayList<>();
         for (Block block : event.blockList()) {
             if (TownS.g().isClaimed(block.getChunk())) {
                //event.setCancelled(true);
-                event.blockList().remove(block);
-
+                if(TownS.g().getClaim(block.getChunk()).hasFlag(Flag.EXPLOSION))continue;
+                ToR.add(block);
                 return;
             }
         }
+        event.blockList().removeAll(ToR);
     }
 
 }

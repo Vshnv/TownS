@@ -6,11 +6,12 @@ import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Flag;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
 public class MobManagingEventListener implements Listener {
     @EventHandler
-    public void onSpawn(EntitySpawnEvent e){
+    public void onSpawn(CreatureSpawnEvent e){
         if(!TownS.g().isClaimed(e.getEntity().getLocation().getChunk()))return;
 
         Claim claim = TownS.g().getClaim(e.getEntity().getLocation().getChunk());
