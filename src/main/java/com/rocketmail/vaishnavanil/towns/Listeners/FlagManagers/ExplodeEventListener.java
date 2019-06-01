@@ -34,7 +34,6 @@ public class ExplodeEventListener implements Listener {
                 //event.setCancelled(true);
                 if(TownS.g().getClaim(block.getChunk()).hasFlag(Flag.EXPLOSION))continue;
                 ToR.add(block);
-                return;
             }
         }
         event.blockList().removeAll(ToR);
@@ -49,7 +48,6 @@ public class ExplodeEventListener implements Listener {
                //event.setCancelled(true);
                 if(TownS.g().getClaim(block.getChunk()).hasFlag(Flag.EXPLOSION))continue;
                 ToR.add(block);
-                return;
             }
         }
         event.blockList().removeAll(ToR);
