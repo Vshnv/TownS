@@ -22,8 +22,20 @@ public class InvClickListen implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if(e.getClickedInventory().getType() == InventoryType.CREATIVE)return;
-        if(e instanceof InventoryCreativeEvent)return;
+        try {
+            if (e.getClickedInventory().getType() == InventoryType.CREATIVE) return;
+            if (e instanceof InventoryCreativeEvent) return;
+            if (e.getView() == null) return;
+            if (e.getView().getTopInventory() == null) return;
+            if (e.getView().getTopInventory().getItem(0) == null) return;
+            if (e.getView().getTopInventory().getItem(0).getItemMeta() == null) return;
+            if (e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName() == null) return;
+        }catch(Exception welp){
+            return;
+        }
+
+
+
         if (NameStyle.HIGHLIGHT.use("MAP MENU").equalsIgnoreCase(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName())){
             e.setCancelled(true);
             Player player = (Player) e.getWhoClicked();
@@ -69,12 +81,16 @@ public class InvClickListen implements Listener {
             Flag f = Flag.getFlag(ChatColor.stripColor(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName()));
             Claim m = TownS.g().getClaim(ch);
 
-            if(m.hasFlag(f))m.removeFlag(f);
-            else m.addFlag(f);
+            if(m.hasFlag(f)){
+                m.removeFlag(f);
+            }
+            else{
+                m.addFlag(f);
+            }
 
 
-            ((Player) e.getWhoClicked()).closeInventory();
-            ((Player) e.getWhoClicked()).openInventory(FlagShow.get.create((Player) e.getWhoClicked(),m));
+            ( e.getWhoClicked()).closeInventory();
+            ( e.getWhoClicked()).openInventory(FlagShow.get.create((Player) e.getWhoClicked(),m));
             ((Player) e.getWhoClicked()).updateInventory();
 
         }

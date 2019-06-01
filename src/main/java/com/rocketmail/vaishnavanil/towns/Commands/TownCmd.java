@@ -238,7 +238,7 @@ public class TownCmd implements CommandExecutor {
                 break;
 
         }
-        return false;
+        return true;
     }
 
     public void nfs(Player sndr) {
@@ -253,7 +253,7 @@ public class TownCmd implements CommandExecutor {
         Town newT = new Town(townName, p);
         newT.claim(p.getLocation().getChunk(), p);
         newT.setWarpPoint(newT, "spawn", p.getLocation());
-        newT.setSpawnChunk(newT, p.getChunk());
+        newT.setSpawnChunk(newT, p.getLocation().getChunk());
     }
 
     public void deleteTown(Player sndr) {
