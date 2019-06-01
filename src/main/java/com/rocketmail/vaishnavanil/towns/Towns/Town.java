@@ -3,6 +3,7 @@ package com.rocketmail.vaishnavanil.towns.Towns;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class Town {
     private String town_name;
     private UUID Mayor_ID;
     private HashMap<UUID, Rank> rankMap = new HashMap<>();
+    private HashMap<String, Location> spawnPointMap = new HashMap<>();
     private List<UUID> Members = new ArrayList<>();
     private List<Town> Allies = new ArrayList<>();
     private List<Town> Enemies = new ArrayList<>();
@@ -76,6 +78,10 @@ public class Town {
     public void unEnemy(Town t) {
         Enemies.remove(t);
     }
+
+    public void setSpawnPoint(String spawn_name, Location location){ spawnPointMap.put(spawn_name, location); }
+
+    public Location getSpawnPoint(String spawn_name){ return spawnPointMap.get(spawn_name);}
 
     public void deleteTown() {
         TownS.g().rPfT(Mayor_ID);
