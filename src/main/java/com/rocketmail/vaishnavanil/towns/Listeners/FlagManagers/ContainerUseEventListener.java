@@ -12,8 +12,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class ContainerUseEventListener implements Listener {
     @EventHandler
     public void onContainerUse(PlayerInteractEvent e){
-        if(e.getAction() != Action.PHYSICAL || e.getAction() != Action.RIGHT_CLICK_BLOCK)return;
-        if(!TownS.g().isClaimed(e.getClickedBlock().getLocation().getChunk()))
+        if(!(e.getAction() == Action.PHYSICAL || e.getAction() == Action.RIGHT_CLICK_BLOCK))return;
+        if(!TownS.g().isClaimed(e.getClickedBlock().getLocation().getChunk()))return;
         if(Constraints.Container.isRestricted(e.getClickedBlock().getType())){
             Claim claim = TownS.g().getClaim(e.getClickedBlock().getLocation().getChunk());
                 if(claim.hasFlag(Flag.CONTAINER)){
