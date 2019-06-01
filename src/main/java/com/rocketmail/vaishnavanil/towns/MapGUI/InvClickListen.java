@@ -13,6 +13,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.inventory.InventoryType;
 
+import static java.lang.System.out;
+
 public class InvClickListen implements Listener {
     int s0 = 2;
     int s1 = 1;
@@ -30,6 +32,7 @@ public class InvClickListen implements Listener {
             if (e.getView().getTopInventory().getItem(0) == null) return;
             if (e.getView().getTopInventory().getItem(0).getItemMeta() == null) return;
             if (e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName() == null) return;
+
         }catch(Exception welp){
             return;
         }
@@ -68,17 +71,20 @@ public class InvClickListen implements Listener {
                 player.updateInventory();
             }
             return;
-        }
+        }if(e.getCurrentItem() == null)return;
         if (NameStyle.HIGHLIGHT.use("Flag List").equalsIgnoreCase(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName())) {
             e.setCancelled(true);
             //if(e.getClickedInventory() != e.getView().getTopInventory())return;
             if(e.getSlot() == 0)return;
+            if(e.getClickedInventory() != e.getView().getTopInventory()){
+                return;
+            }
             int x = Integer.valueOf(ChatColor.stripColor(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(3).split("::")[0]));
             int z = Integer.valueOf(ChatColor.stripColor(e.getView().getTopInventory().getItem(0).getItemMeta().getLore().get(3).split("::")[1]));
 
             Chunk ch = e.getWhoClicked().getLocation().getWorld().getChunkAt(x,z);
             if(!TownS.g().isClaimed(ch))return;
-            Flag f = Flag.getFlag(ChatColor.stripColor(e.getView().getTopInventory().getItem(0).getItemMeta().getDisplayName()));
+            Flag f = Flag.getFlag(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
             Claim m = TownS.g().getClaim(ch);
 
             if(m.hasFlag(f)){

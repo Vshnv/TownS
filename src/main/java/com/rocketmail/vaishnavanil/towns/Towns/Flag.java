@@ -22,7 +22,7 @@ public enum Flag {
 
     public static Flag getFlag(String name){
         for(Flag f:Flag.values()){
-            if(f.getName().equals(name)){
+            if(f.getName().equalsIgnoreCase(name)){
                 return f;
             }
         }

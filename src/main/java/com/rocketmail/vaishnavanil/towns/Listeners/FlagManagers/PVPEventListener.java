@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.util.Vector;
 
 public class PVPEventListener implements Listener {
     @EventHandler
@@ -26,7 +27,7 @@ public class PVPEventListener implements Listener {
 
         if(!claim.hasFlag(Flag.PVP)){
             e.setCancelled(true);
-            Attacker.setVelocity(B.getLocation().toVector().subtract(A.getLocation().toVector()).normalize().setY(0));
+            Attacker.setVelocity(A.getLocation().toVector().subtract(B.getLocation().toVector()).add(new Vector(0, 1, 0)).normalize());
             ActionBar.use.send(Attacker,"&4PVP disabled in this claim!");
         }
 
