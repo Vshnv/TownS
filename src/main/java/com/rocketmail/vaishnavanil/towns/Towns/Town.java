@@ -15,7 +15,7 @@ public class Town {
     private String town_name;
     private UUID Mayor_ID;
     private HashMap<UUID, Rank> rankMap = new HashMap<>();
-    private HashMap<String, Location> spawnPointMap = new HashMap<>();
+    private HashMap<String, Location> warpPointMap = new HashMap<>();
     private List<UUID> Members = new ArrayList<>();
     private List<Town> Allies = new ArrayList<>();
     private List<Town> Enemies = new ArrayList<>();
@@ -79,9 +79,35 @@ public class Town {
         Enemies.remove(t);
     }
 
-    public void setSpawnPoint(String spawn_name, Location location){ spawnPointMap.put(spawn_name, location); }
+    public void setWarpPoint(Town town, String spawn_name, Location location){
+        if(TownS.g().isClaimed(location.getChunk())){
+            Claim claim = TownS.g().getClaim(location.getChunk());
+            if(claim.getTown().equals(town)){
+                town.warpPointMap.put(spawn_name, location);
+                return;
+            }
+        }
+        Bukkit.broadcastMessage("[TOWNS] Failed to set warp point: "+spawn_name+" Town: "+town.getName());
+    }
 
-    public Location getSpawnPoint(String spawn_name){ return spawnPointMap.get(spawn_name);}
+    public Location getWarpPoint(Town town, String spawn_name){
+        if(warpPointMap.get(spawn_name) != null){
+            Location warp_location = warpPointMap.get(spawn_name);
+            if(TownS.g().isClaimed(warp_location.getChunk())){
+                Town town_at_location = TownS.g().getTown(warp_location.getChunk());
+                if(town_at_location.equals(town)){
+                    return warpPointMap.get(spawn_name);
+                }else{
+                    warpPointMap.remove(spawn_name);
+                    return null;
+                }
+            }else{
+                warpPointMap.remove(spawn_name);
+                return null;
+            }
+        }
+        return null;
+    }
 
     public void deleteTown() {
         TownS.g().rPfT(Mayor_ID);

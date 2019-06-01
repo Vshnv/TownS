@@ -76,6 +76,21 @@ public class TownCmd implements CommandExecutor {
                 sndr.openInventory(Map.get.create(sndr));
                 Format.CmdInfoFrmt.use().a(sndr, "You have opened the Town Map!");
                 break;
+
+            case "spawn":
+                if(!TownS.g().hasTown(sndr)){
+                    Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                    return true;
+                }else{
+                    Town sender_town = TownS.g().getTown(sndr);
+                    if(sender_town.getWarpPoint(sender_town, "spawn") != null){
+                        sndr.teleport( sender_town.getWarpPoint(sender_town, "spawn") );
+                        Format.AlrtFrmt.use().a(sndr, "Teleported to town spawn");
+                    }else{
+                        Format.CmdErrFrmt.use().a(sndr, "Warp Point: SPAWN not found.");
+                    }
+                }
+                break;
             case "claim":
                 if (!TownS.g().hasTown(sndr)) {
                     /*MSG ADDED A.I.T.*/
@@ -214,6 +229,7 @@ public class TownCmd implements CommandExecutor {
     public void create(Player p, String townName) {
         Town newT = new Town(townName, p);
         newT.claim(p.getLocation().getChunk(), p);
+        newT.setWarpPoint(newT, "spawn", p.getLocation());
     }
 
     public void deleteTown(Player sndr) {
