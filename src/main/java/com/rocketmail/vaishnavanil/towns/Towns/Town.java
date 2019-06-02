@@ -127,6 +127,8 @@ public class Town {
         return null;
     }
 
+    public UUID getTownUUID(){ return town_uuid; }
+
     public void deleteTown() {
         TownS.g().rPfT(Mayor_ID);
 
