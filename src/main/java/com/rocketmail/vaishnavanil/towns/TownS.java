@@ -3,7 +3,10 @@ package com.rocketmail.vaishnavanil.towns;
 import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownCmd;
 import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
+import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
 import com.rocketmail.vaishnavanil.towns.Listeners.*;
+import com.rocketmail.vaishnavanil.towns.Listeners.MobClearLoop;
+import com.rocketmail.vaishnavanil.towns.Listeners.TownRestricter;
 import com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.TitleManager.MoveEventListener;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
@@ -11,12 +14,17 @@ import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
 import com.rocketmail.vaishnavanil.towns.Towns.RegenBuilder;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
+
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -24,7 +32,8 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.*;
 
 import static java.lang.System.out;
-
+import java.util.HashMap;
+import java.util.UUID;
 public final class TownS extends JavaPlugin {
     //SINGLETON
     private static TownS instance;
@@ -55,6 +64,8 @@ public final class TownS extends JavaPlugin {
     public Set<RegenBuilder> getActiveRegenerators(){
         return RegenWorkers;
     }
+
+    private static Economy econ = null;
 
 
     public void/*ADD CLAIM TO CLAIM MAP*/ aCtT(Claim claim) {
@@ -166,12 +177,35 @@ public final class TownS extends JavaPlugin {
     public Rank getRank(String name) {
         return RankList.get(name);
     }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+    public static Economy getEconomy() {
+        return econ;
+    }
 //MAPPING
 
 
     //ENABLE DISABLE
     @Override
     public void onEnable() {
+
+        if (!setupEconomy() ) {
+            Bukkit.getConsoleSender().sendMessage(getDescription().getName() + " - Disabled due to no Vault dependency found!");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         instance = this;
         ConfigManager.get.LoadUp();
 
@@ -190,7 +224,7 @@ public final class TownS extends JavaPlugin {
         regListen(new BlockPhysics());
         regListen(new ChunkLoadListener());
         regListen(new RegenChunkInteractEvent());
-
+        ConfigManager.get.LoadUp();
 
         MobClearLoop.get.start();
         RegenBuilder.ContinueRegens();

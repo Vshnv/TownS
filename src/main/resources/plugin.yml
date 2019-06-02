@@ -6,7 +6,7 @@ prefix: [TownS]
 authors: [Vaishnav, RishabhRaghunath]
 description: A plugin that introduces Town-Based roleplay system into your game.
 website: www.test.com
-#depend: [Vault]
+depend: [Vault]
 commands:
   towns:
     description: Town Commands
