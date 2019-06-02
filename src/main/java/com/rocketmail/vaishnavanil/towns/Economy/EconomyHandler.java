@@ -17,8 +17,8 @@ public enum EconomyHandler {
         }
     }
 
-    public Boolean createTownBank(Player town_owner, Town town) {
-        return TownS.getEconomy().createBank(town.getTownUUID().toString(), town_owner).transactionSuccess();
+    public Boolean createTownBank(Town town) {
+        return TownS.getEconomy().createBank(town.getTownUUID().toString(), town.getMayor()).transactionSuccess();
     }
 
     public Boolean deleteTownBank(Town town){
@@ -29,7 +29,7 @@ public enum EconomyHandler {
         if (amount > 0) {
             return TownS.getEconomy().bankDeposit(town.getTownUUID().toString(), amount).transactionSuccess();
         } else {
-            return TownS.getEconomy().bankDeposit(town.getTownUUID().toString(), amount).transactionSuccess();
+            return TownS.getEconomy().bankWithdraw(town.getTownUUID().toString(), amount).transactionSuccess();
         }
     }
 
