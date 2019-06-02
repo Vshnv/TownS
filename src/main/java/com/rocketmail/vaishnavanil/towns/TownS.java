@@ -156,6 +156,10 @@ public final class TownS extends JavaPlugin {
         econ = rsp.getProvider();
         return econ != null;
     }
+
+    public static Economy getEconomy() {
+        return econ;
+    }
 //MAPPING
 
 
