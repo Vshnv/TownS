@@ -11,10 +11,13 @@ import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -40,6 +43,8 @@ public final class TownS extends JavaPlugin {
     private/*P-T Map*/ HashMap<UUID, Town> quickPlayer = new HashMap<>();
 
     private HashMap<String, Rank> RankList = new HashMap<>();
+
+    private static Economy econ = null;
 
 
     public void/*ADD CLAIM TO CLAIM MAP*/ aCtT(Claim claim) {
@@ -157,6 +162,13 @@ public final class TownS extends JavaPlugin {
     //ENABLE DISABLE
     @Override
     public void onEnable() {
+
+        if (!setupEconomy() ) {
+            Bukkit.getConsoleSender().sendMessage(getDescription().getName() + " - Disabled due to no Vault dependency found!");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         instance = this;
         // Plugin startup logic
         registerCMD("towns", new TownCmd());
