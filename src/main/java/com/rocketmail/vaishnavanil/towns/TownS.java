@@ -139,6 +139,18 @@ public final class TownS extends JavaPlugin {
     public Rank getRank(String name) {
         return RankList.get(name);
     }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
 //MAPPING
 
 
