@@ -167,8 +167,7 @@ public class RegenBuilder {
                             if(loaded_data[x][y][z] == Material.TALL_GRASS || loaded_data[x][y][z] == Material.TALL_SEAGRASS){
                                 continue;
                             }
-                            toRegen.getBlock(x, y, z).setType(loaded_data[x][y][z]);
-
+                            toRegen.getBlock(x, y, z).setType(loaded_data[x][y][z], false);
                             return;
                         }
                     }
