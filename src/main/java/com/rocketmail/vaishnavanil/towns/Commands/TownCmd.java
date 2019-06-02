@@ -5,6 +5,7 @@ import com.rocketmail.vaishnavanil.towns.MapGUI.Map;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -255,6 +256,12 @@ public class TownCmd implements CommandExecutor {
         newT.claim(p.getLocation().getChunk(), p);
         newT.setWarpPoint(newT, "spawn", p.getLocation());
         newT.setSpawnChunk(newT, p.getLocation().getChunk());
+        //TESTING
+        if(!EconomyHandler.INSTANCE.createTownBank(newT)){
+            Bukkit.getConsoleSender().sendMessage("[TOWNS] Error Occured while creating town bank");
+        }
+        EconomyHandler.INSTANCE.changeTownBalance(newT, 1200);
+        System.out.println(EconomyHandler.INSTANCE.getTownBalance(newT));
     }
 
     public void deleteTown(Player sndr) {
@@ -263,6 +270,11 @@ public class TownCmd implements CommandExecutor {
 
     public void claim(Player sndr) {
         TownS.g().getTown(sndr).claim(sndr.getLocation().getChunk(), sndr);
+    }
+
+    public void claim(Player sndr, String plot_name) {
+        TownS.g().getTown(sndr).claim(sndr.getLocation().getChunk(), sndr);
+        TownS.g().getClaim(sndr.getLocation().getChunk()).setName(plot_name);
     }
 
     public void unclaim(Player sndr) {

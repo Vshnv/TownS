@@ -2,6 +2,7 @@ package com.rocketmail.vaishnavanil.towns.Economy;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public enum EconomyHandler {
@@ -26,7 +27,8 @@ public enum EconomyHandler {
 
     /* Method to create a town's bank. Used on initial town creation. */
     public Boolean createTownBank(Town town) {
-        return TownS.getEconomy().createBank(town.getTownUUID().toString(), town.getMayor()).transactionSuccess();
+
+        return TownS.getEconomy().createBank(town.getTownUUID().toString(), (OfflinePlayer) town.getMayor()).transactionSuccess();
     }
 
     /* Method to remove town's bank */
@@ -45,7 +47,7 @@ public enum EconomyHandler {
 
     /* Method to get town bank balance */
     public Double getTownBalance(Town town) {
-        return TownS.getEconomy().bankBalance(town.getTownUUID().toString()).amount;
+        return TownS.getEconomy().bankBalance(town.getTownUUID().toString()).balance;
     }
 
 }
