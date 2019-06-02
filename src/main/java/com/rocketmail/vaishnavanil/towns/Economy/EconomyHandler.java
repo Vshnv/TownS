@@ -2,8 +2,6 @@ package com.rocketmail.vaishnavanil.towns.Economy;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 
 public enum EconomyHandler {
