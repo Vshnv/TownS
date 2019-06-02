@@ -33,7 +33,6 @@ public class TownCmd implements CommandExecutor {
         switch (sub_cmd) {
             /*CREATE*/
             case "create":
-                EconomyHandler.INSTANCE.changePlayerBalance(sndr, -10);
                 if (!(args.length > 1)) {
                     /*MSG ADDED N.E.A.*/
                     Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
