@@ -2,33 +2,34 @@ package com.rocketmail.vaishnavanil.towns.Economy;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 
 public enum EconomyHandler {
     INSTANCE;
 
-    public EconomyResponse changePlayerBalance(Player player, Integer amount) {
+    public Boolean changePlayerBalance(Player player, Integer amount) {
         if (amount > 0) {
-            return TownS.getEconomy().depositPlayer(player, amount);
+            return TownS.getEconomy().depositPlayer(player, amount).transactionSuccess();
         } else {
-            return TownS.getEconomy().withdrawPlayer(player, amount);
+            return TownS.getEconomy().withdrawPlayer(player, amount).transactionSuccess();
         }
     }
 
-    public EconomyResponse createTownBank(Player town_owner, Town town) {
-        return TownS.getEconomy().createBank(town.getTownUUID().toString(), town_owner);
+    public Boolean createTownBank(Player town_owner, Town town) {
+        return TownS.getEconomy().createBank(town.getTownUUID().toString(), town_owner).transactionSuccess();
     }
 
-    public EconomyResponse deleteTownBank(Town town){
-        return TownS.getEconomy().deleteBank(town.getTownUUID().toString());
+    public Boolean deleteTownBank(Town town){
+        return TownS.getEconomy().deleteBank(town.getTownUUID().toString()).transactionSuccess();
     }
 
-    public EconomyResponse changeTownBalance(Town town, Integer amount) {
+    public Boolean changeTownBalance(Town town, Integer amount) {
         if (amount > 0) {
-            return TownS.getEconomy().bankDeposit(town.getTownUUID().toString(), amount);
+            return TownS.getEconomy().bankDeposit(town.getTownUUID().toString(), amount).transactionSuccess();
         } else {
-            return TownS.getEconomy().bankDeposit(town.getTownUUID().toString(), amount);
+            return TownS.getEconomy().bankDeposit(town.getTownUUID().toString(), amount).transactionSuccess();
         }
     }
 
