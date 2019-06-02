@@ -147,6 +147,9 @@ public class Claim {
     public List<Flag> getFlags() {
         return EnabledFlags;
     }
+    public UUID getOwnerID() {
+        return ownerID;
+    }
 
     public Player getOwner() {
         return Bukkit.getPlayer(ownerID);

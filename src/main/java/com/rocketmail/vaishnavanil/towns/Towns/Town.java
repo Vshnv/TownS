@@ -1,10 +1,13 @@
 package com.rocketmail.vaishnavanil.towns.Towns;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
+import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,7 +78,15 @@ public class Town {
     }
 
     public void unclaim(Chunk chunk) {
+
         TownS.g().rCfT(TownS.g().getClaim(chunk));
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                new RegenBuilder((Material[][][]) LoadManager.get.loadObject("ChunkSaves",chunk.getX()+"TT"+chunk.getZ()+"TT"+chunk.getWorld().getName()+".dat"),chunk).Build();
+
+            }
+        }.runTask(TownS.g());
     }
 
     public void Ally(Town t) {
