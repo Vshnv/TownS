@@ -36,6 +36,8 @@ public class RegenBuilder {
         X = regen.getX();
         Z = regen.getZ();
         world = regen.getWorld().getName();
+        this.saveUnfinishedData();
+
     }
     public Chunk getChunk(){
         return TownS.g().getServer().getWorld(world).getChunkAt(X,Z);
@@ -47,17 +49,21 @@ public class RegenBuilder {
         loaded_data = (Material[][][]) LoadManager.get.loadObject("ChunkSaves",X+"TT"+Z+"TT"+world+".dat");
         if(loaded_data == null){
             out.println("No saved data found to countinue an Unfinished Regen!");
+            TownS.g().finishRegenWork(this);
+            this.RegenComplete();
         }
+        this.saveUnfinishedData();
     }
 
     public static void ContinueRegens(){
+        TownS.g().alertQueue();
         for(World w:TownS.g().getServer().getWorlds()){
             Set<Integer[]> ChunkCoordList = loadUnfinData(w.getName());
             if(ChunkCoordList == null)continue;
             if(ChunkCoordList.isEmpty())continue;
             if(!ConfigManager.get.isRegenWorld(w))continue;
             for(Integer[] ChunkCoords:ChunkCoordList){
-                new RegenBuilder(ChunkCoords,w.getName()).Build();
+                new RegenBuilder(ChunkCoords,w.getName());
             }
 
         }
@@ -133,9 +139,9 @@ public class RegenBuilder {
 
     }
     public void Build() {
-        this.saveUnfinishedData();
         if(loaded_data == null){
             out.println("No saved data found! cannot build!");
+            this.RegenComplete();
             return;
         }
 
@@ -164,7 +170,7 @@ public class RegenBuilder {
                             return;
                         }
                         if (toRegen.getBlock(x, y, z).getType() != loaded_data[x][y][z]) {
-                            if(loaded_data[x][y][z] == Material.TALL_GRASS || loaded_data[x][y][z] == Material.TALL_SEAGRASS){
+                           if(loaded_data[x][y][z] == Material.TALL_GRASS || loaded_data[x][y][z] == Material.TALL_SEAGRASS){
                                 continue;
                             }
                             toRegen.getBlock(x, y, z).setType(loaded_data[x][y][z], false);
