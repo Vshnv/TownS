@@ -156,7 +156,7 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "This claim does not belong to your town!");
                     return true;
                 }
-                if(TownS.g().getTown(sndr).isSpawnChunk(sndr.getChunk())){
+                if(TownS.g().getTown(sndr).isSpawnChunk(sndr.getLocation().getChunk())){
                     Format.CmdErrFrmt.use().a(sndr, "You cannot unclaim the town's spawn chunk");
                     return true;
                 }else{
@@ -266,7 +266,7 @@ public class TownCmd implements CommandExecutor {
     }
 
     public void unclaim(Player sndr) {
-        TownS.g().getTown(sndr).unclaim(sndr.getChunk());
+        TownS.g().getTown(sndr).unclaim(sndr.getLocation().getChunk());
     }
 
 

@@ -16,8 +16,8 @@ public class ExplodeEventListener implements Listener {
 
     @EventHandler
     public void onExplosionByEntity(EntityExplodeEvent event) {
-        if (TownS.g().isClaimed(event.getEntity().getChunk())) {
-            Claim claim = TownS.g().getClaim(event.getEntity().getChunk());
+        if (TownS.g().isClaimed(event.getEntity().getLocation().getChunk())) {
+            Claim claim = TownS.g().getClaim(event.getEntity().getLocation().getChunk());
             if (!claim.hasFlag(Flag.EXPLOSION)) {
                 event.setYield(0);
                 event.setCancelled(true);
@@ -30,7 +30,7 @@ public class ExplodeEventListener implements Listener {
         //List<BlockState> blockStateList = new ArrayList<>();
         List<Block> ToR = new ArrayList<>();
         for (Block block : event.blockList()) {
-            if (TownS.g().isClaimed(block.getChunk())) {
+            if (TownS.g().isClaimed(block.getLocation().getChunk())) {
                 //event.setCancelled(true);
                 if(TownS.g().getClaim(block.getChunk()).hasFlag(Flag.EXPLOSION))continue;
                 ToR.add(block);
@@ -44,9 +44,9 @@ public class ExplodeEventListener implements Listener {
         //List<BlockState> blockStateList = new ArrayList<>();
         List<Block> ToR = new ArrayList<>();
         for (Block block : event.blockList()) {
-            if (TownS.g().isClaimed(block.getChunk())) {
+            if (TownS.g().isClaimed(block.getLocation().getChunk())) {
                //event.setCancelled(true);
-                if(TownS.g().getClaim(block.getChunk()).hasFlag(Flag.EXPLOSION))continue;
+                if(TownS.g().getClaim(block.getLocation().getChunk()).hasFlag(Flag.EXPLOSION))continue;
                 ToR.add(block);
             }
         }

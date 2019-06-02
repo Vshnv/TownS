@@ -4,26 +4,36 @@ import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownCmd;
 import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
 import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
-import com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers.*;
+import com.rocketmail.vaishnavanil.towns.Listeners.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.MobClearLoop;
-import com.rocketmail.vaishnavanil.towns.Listeners.TitleManager.MoveEventListener;
 import com.rocketmail.vaishnavanil.towns.Listeners.TownRestricter;
+import com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers.*;
+import com.rocketmail.vaishnavanil.towns.Listeners.TitleManager.MoveEventListener;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
+import com.rocketmail.vaishnavanil.towns.Towns.RegenBuilder;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+
+import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
+
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
+import java.util.*;
+
+import static java.lang.System.out;
 import java.util.HashMap;
 import java.util.UUID;
-
 public final class TownS extends JavaPlugin {
     //SINGLETON
     private static TownS instance;
@@ -36,14 +46,24 @@ public final class TownS extends JavaPlugin {
     public static String PREFIX = "[TownS]";
     //MAPPING
     //Private/*CLAIM MAP*/ HashMap<Claim,Town> CM = new HashMap<>();
-
     private/*TOWN MAP*/ HashMap<String, Town> TM = new HashMap<>();
 
     private/*CLAIM MAP*/ HashMap<String, Claim> Map = new HashMap<>();//FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
 
     private/*P-T Map*/ HashMap<UUID, Town> quickPlayer = new HashMap<>();
 
+    private Set<RegenBuilder> RegenWorkers = new HashSet<>();
+
     private HashMap<String, Rank> RankList = new HashMap<>();
+    public void registerRegenBuilder(RegenBuilder builder){
+        RegenWorkers.add(builder);
+    }
+    public void finishRegenWork(RegenBuilder builder){
+        RegenWorkers.remove(builder);
+    }
+    public Set<RegenBuilder> getActiveRegenerators(){
+        return RegenWorkers;
+    }
 
     private static Economy econ = null;
 
@@ -95,10 +115,22 @@ public final class TownS extends JavaPlugin {
             Claim claim = Map.get(CX + "::" + CZ + "::" + wName);
             try {
                 if (claim.getTown() == null) {
+
+                    Chunk chunk = claim.getChunk();
                     Map.remove(CX + "::" + CZ + "::" + wName);
+                    new BukkitRunnable(){
+                        @Override
+                        public void run() {
+                            new RegenBuilder((Material[][][]) LoadManager.get.loadObject("ChunkSaves",chunk.getX()+"TT"+chunk.getZ()+"TT"+chunk.getWorld().getName()+".dat"),chunk).Build();
+
+                        }
+                    }.runTask(this);
+
                     return false;
                 }
             } catch (Exception e) {
+                Chunk chunk = claim.getChunk();
+                Map.remove(CX + "::" + CZ + "::" + wName);
                 Map.remove(CX + "::" + CZ + "::" + wName);
                 return false;
             }
@@ -175,7 +207,9 @@ public final class TownS extends JavaPlugin {
         }
 
         instance = this;
-        // Plugin startup logic
+        ConfigManager.get.LoadUp();
+
+
         registerCMD("towns", new TownCmd());
         registerCMD("plot", new PlotCmd());
         regListen(new InvClickListen());
@@ -187,10 +221,13 @@ public final class TownS extends JavaPlugin {
         regListen(new PVPEventListener());
         regListen(new UtilityUSEEventListener());
         regListen(new TownRestricter());
+        regListen(new BlockPhysics());
+        regListen(new ChunkLoadListener());
+        regListen(new RegenChunkInteractEvent());
         ConfigManager.get.LoadUp();
 
-
         MobClearLoop.get.start();
+        RegenBuilder.ContinueRegens();
     }
 
 
