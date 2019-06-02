@@ -13,6 +13,7 @@ import java.util.UUID;
 
 public class Town {
     private String town_name;
+    private UUID town_uuid;
     private UUID Mayor_ID;
     private HashMap<UUID, Rank> rankMap = new HashMap<>();
     private HashMap<String, Location> warpPointMap = new HashMap<>();
@@ -146,12 +147,14 @@ public class Town {
 
     public Town(String name, Player mayor) {
         town_name = name;
+        town_uuid = UUID.randomUUID();
         Mayor_ID = mayor.getUniqueId();
         TownS.g().aTtM(this);
     }
 
     public Town(String name, Player mayor, List<UUID> MemberL, List<UUID> AssistantL) {
         town_name = name;
+        town_uuid = UUID.randomUUID();
         Mayor_ID = mayor.getUniqueId();
         Members = MemberL;
         //Assistants = AssistantL;
@@ -160,6 +163,7 @@ public class Town {
 
     public Town(String name, Player mayor, List<UUID> MemberL, List<UUID> AssistantL, List<Claim> claims) {
         town_name = name;
+        town_uuid = UUID.randomUUID();
         Mayor_ID = mayor.getUniqueId();
         Members = MemberL;
         // Assistants = AssistantL;
