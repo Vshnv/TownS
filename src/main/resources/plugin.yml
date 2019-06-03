@@ -9,9 +9,9 @@ website: www.test.com
 depend: [Vault]
 commands:
   towns:
+    aliases: [t, town, kingdom, group, team]
     description: Town Commands
-    usage: /towns <args>
+    usage: /town <args>
   plot:
-    aliases: [t, town, kingdom, group]
     description: Plot Commands
     usage: /plot <args>

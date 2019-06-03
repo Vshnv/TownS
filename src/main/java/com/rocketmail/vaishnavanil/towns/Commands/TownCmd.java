@@ -15,15 +15,14 @@ import org.bukkit.entity.Player;
 public class TownCmd implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!cmd.getName().equalsIgnoreCase("towns")) return true;
-        // town
+        //if (!cmd.getName().equalsIgnoreCase("towns")) return true;
         if (!(sender instanceof Player)) {
             //TODO::PLAYER-ONLY COMMAND
             return true;
         }
         Player sndr = (Player) sender;
         if (!(args.length > 0)) {
-            /*MSG ADDED N.E.A.*/
+            /*MSG ADDED .E.A.*/
             Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
             return true;
         }
@@ -104,7 +103,7 @@ public class TownCmd implements CommandExecutor {
                 }
                 break;
             //TOWN DELETE
-            case "deletetown":
+            case "delete":
                 if (!TownS.g().hasTown(sndr)) {
                     /*MSG ADDED A.I.T.*/
                     Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
