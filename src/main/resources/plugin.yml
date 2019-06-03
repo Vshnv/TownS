@@ -12,5 +12,6 @@ commands:
     description: Town Commands
     usage: /towns <args>
   plot:
+    aliases: [t, town, kingdom, group]
     description: Plot Commands
     usage: /plot <args>
