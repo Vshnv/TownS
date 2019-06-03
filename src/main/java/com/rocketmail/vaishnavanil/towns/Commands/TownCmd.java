@@ -54,6 +54,55 @@ public class TownCmd implements CommandExecutor {
                 create(sndr, args[1]);
                 break;
             /*END CREATION*/
+            case "deposit":
+                if(args.length == 2){
+                    String amount = args[1];
+                    try{
+                        Double amount_num = Double.parseDouble(amount);
+                        if(TownS.g().hasTown(sndr)){
+                            if(EconomyHandler.INSTANCE.depositIntoTown(sndr, TownS.g().getTown(sndr), amount_num)){
+                                Format.AlrtFrmt.use().a(sndr, "Successfully deposited "+args[1]+"$ into Town Bank");
+                                System.out.println(TownS.g().getTown(sndr).getTownBalance());
+                            }else{
+                                Format.CmdErrFrmt.use().a(sndr, "Depositing "+args[1]+"$ to Town failed due to insufficient funds.");
+                            }
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        }
+                    }catch (Exception e){
+                        Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town deposit <amount>");
+                    }
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town deposit <amount>");
+                }
+                break;
+            case "withdraw":
+                if(args.length == 2){
+                    String amount = args[1];
+                    try{
+                        Double amount_num = Double.parseDouble(amount);
+                        if(TownS.g().hasTown(sndr)){
+
+                            /* Check for withdraw permission here */
+                            Boolean condition = true;
+                            /* Check for withdraw permission here */
+
+                            if(condition){
+                                if(EconomyHandler.INSTANCE.withdrawFromTown(sndr, TownS.g().getTown(sndr), amount_num)){
+                                    Format.AlrtFrmt.use().a(sndr, "Successfully withdrawn "+args[1]+"$ from Town Bank");
+                                }else{ Format.CmdErrFrmt.use().a(sndr, "Insufficient funds in Town"); }
+                            }
+
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        }
+                    }catch (Exception e){
+                        Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town withdraw <amount>");
+                    }
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town withdraw <amount>");
+                }
+                break;
             //TOWN DELETE
             case "deletetown":
                 if (!TownS.g().hasTown(sndr)) {
