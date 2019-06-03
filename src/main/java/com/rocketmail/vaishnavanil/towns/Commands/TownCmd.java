@@ -153,7 +153,7 @@ public class TownCmd implements CommandExecutor {
                 }
                 Town senders_town = TownS.g().getTown(sndr);
                 senders_town.setWarpPoint(senders_town, "spawn", sndr.getLocation());
-                senders_town.setSpawnChunk(senders_town, sndr.getChunk());
+                senders_town.setSpawnChunk(senders_town, sndr.getLocation().getChunk());
                 Format.AlrtFrmt.use().a(sndr, "Successfully set Spawn Point.");
                 break;
             //TOWN SETWARP SPAWN
