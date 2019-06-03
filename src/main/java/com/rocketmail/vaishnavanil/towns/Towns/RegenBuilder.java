@@ -30,7 +30,8 @@ public class RegenBuilder {
     private String world;
     public RegenBuilder(Material[][][] data,Chunk regen){
         if(data == null){
-            out.println("No saved data found!");
+        RegenComplete();
+        return;
         }
         loaded_data = data;
         X = regen.getX();
@@ -48,9 +49,9 @@ public class RegenBuilder {
         this.world = world;
         loaded_data = (Material[][][]) LoadManager.get.loadObject("ChunkSaves",X+"TT"+Z+"TT"+world+".dat");
         if(loaded_data == null){
-            out.println("No saved data found to countinue an Unfinished Regen!");
             TownS.g().finishRegenWork(this);
             this.RegenComplete();
+            return;
         }
         this.saveUnfinishedData();
     }
@@ -58,10 +59,11 @@ public class RegenBuilder {
     public static void ContinueRegens(){
         TownS.g().alertQueue();
         for(World w:TownS.g().getServer().getWorlds()){
+            if(!ConfigManager.get.isRegenWorld(w))continue;
             Set<Integer[]> ChunkCoordList = loadUnfinData(w.getName());
             if(ChunkCoordList == null)continue;
             if(ChunkCoordList.isEmpty())continue;
-            if(!ConfigManager.get.isRegenWorld(w))continue;
+
             for(Integer[] ChunkCoords:ChunkCoordList){
                 new RegenBuilder(ChunkCoords,w.getName());
             }
@@ -116,10 +118,18 @@ public class RegenBuilder {
 
                 Set<Integer[]> unfin = loadUnfinData();
                 Integer[] arr = new Integer[]{X,Z};
+                boolean go = true;
+                for(Integer[] list:unfin){
+                    if(list[0] ==X && list[1] == Z){
+                        go = false;
+                        break;
+                    }
+                }
+                TownS.g().registerRegenBuilder(this);
+                if(!go)return;
                 unfin.add(arr);
 
                 SaveManager.use.Save(unfin,"PendingRegens\\"+world,"Regens.dat");
-                TownS.g().registerRegenBuilder(this);
 
     }
     public void RegenComplete(){
@@ -130,6 +140,7 @@ public class RegenBuilder {
                 for(Integer[] ChunkCoords : unfin){
                     if(ChunkCoords[0] == X && ChunkCoords[1] == Z){
                         rem =(ChunkCoords);
+                        break;
                     }
                 }
                 unfin.remove(rem);
@@ -140,14 +151,13 @@ public class RegenBuilder {
     }
     public void Build() {
         if(loaded_data == null){
-            out.println("No saved data found! cannot build!");
             this.RegenComplete();
             return;
         }
 
         Chunk toRegen = TownS.g().getServer().getWorld(world).getChunkAt(X,Z);
         if(toRegen == null){
-            out.println("Error getting chunk from data! cannot build!");
+            this.RegenComplete();
             return;
         }
         if(!toRegen.isLoaded()){
@@ -155,7 +165,7 @@ public class RegenBuilder {
         }
 
         if(toRegen == null){
-            out.println("Error getting chunk from data! cannot build!");
+            this.RegenComplete();
             return;
         }
         new BukkitRunnable() {
@@ -166,7 +176,6 @@ public class RegenBuilder {
                 for (int x = 0; x <= 15; x++) {
                     for (int z = 0; z <= 15; z++) {
                         if(toRegen.getBlock(x,y,z) == null){
-                            out.println("Null in build");
                             return;
                         }
                         if (toRegen.getBlock(x, y, z).getType() != loaded_data[x][y][z]) {

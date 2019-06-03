@@ -3,6 +3,7 @@ package com.rocketmail.vaishnavanil.towns.Listeners;
 import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Utilities.SaveManager;
+import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -11,6 +12,10 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.System.out;
 
@@ -18,17 +23,19 @@ public class ChunkLoadListener implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent e){
         if(!ConfigManager.get.isRegenWorld(e.getWorld()))return;
-        ChunkSnapshot toSave = e.getChunk().getChunkSnapshot();
-        File f =new File(TownS.g().getDataFolder().getPath() + "\\ChunkSaves",toSave.getX()+"::" + toSave.getZ() + "::" + toSave.getWorldName()+".dat");
-        if(f.exists()){
+        Chunk to = e.getChunk();
+        File f =new File(TownS.g().getDataFolder().getPath() + "\\ChunkSaves",to.getX()+"TT" + to.getZ() + "TT" + to.getWorld().getName()+".dat");
+        if(f.exists()) {
             f = null;
             return;
         }
-        f = null;
 
+        f = null;
+        ChunkSnapshot toSave = e.getChunk().getChunkSnapshot();
         new BukkitRunnable(){
             @Override
             public void run() {
+
                 Material[][][] MatMaping = new Material[16][256][16];
 
                 for(int y = 0;y<=255;y++) {
@@ -42,6 +49,7 @@ public class ChunkLoadListener implements Listener {
 
 
                 SaveManager.use.Save(MatMaping,"ChunkSaves",toSave.getX()+"TT" + toSave.getZ() + "TT" + toSave.getWorldName()+".dat");
+
                 this.cancel();
 
             }
