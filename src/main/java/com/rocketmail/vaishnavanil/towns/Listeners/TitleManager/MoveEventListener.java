@@ -8,6 +8,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class MoveEventListener implements Listener {
@@ -43,12 +44,20 @@ public class MoveEventListener implements Listener {
                 String plot_owner = toClaim.getOwner().getName();
                 String plot_name = toClaim.getName();
                 String plot_town = toClaim.getTown().getName();
-                if (plot_name.equals("")) {
-                    TitleSender.INSTANCE.sendTitle(player, "", "&2Owner: &a" + plot_owner);
-                } else {
-                    TitleSender.INSTANCE.sendTitle(player, "", "&2Area: &a" + plot_name + " &8&l| &eOwner: &6" + plot_owner);
+
+                if(fromClaim.getOwner().equals(toClaim.getOwner())){
+                    if (!plot_name.equals("")) {
+                        TitleSender.INSTANCE.sendTitle(player, "", "&2Area: &a" + plot_name);
+                    }
+                }else{
+                    if (plot_name.equals("")) {
+                        TitleSender.INSTANCE.sendTitle(player, "", "&2Owner: &a" + plot_owner);
+                    } else {
+                        TitleSender.INSTANCE.sendTitle(player, "", "&2Area: &a" + plot_name + " &8&l| &eOwner: &6" + plot_owner);
+                    }
                 }
                 drawChunkBorder(player, toChunk);
+
             }
 
         }
