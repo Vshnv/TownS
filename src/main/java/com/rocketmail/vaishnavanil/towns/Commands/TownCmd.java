@@ -260,10 +260,10 @@ public class TownCmd implements CommandExecutor {
                 newT.setSpawnChunk(newT, p.getLocation().getChunk());
                 Format.AlrtFrmt.use().a(p, "Created new town with name -> " + townName);
             }else{
-                Format.CmdInfoFrmt.use().a(p, "An Error Occurred while trying to pay for the new Town.");
+                Format.CmdErrFrmt.use().a(p, "An Error Occurred while trying to pay for the new Town.");
             }
         }else{
-            Format.CmdInfoFrmt.use().a(p, "Creating a new Town costs: "+TownS.TownCost.toString()+"$");
+            Format.CmdErrFrmt.use().a(p, "Creating a new Town costs: "+TownS.TownCost.toString()+"$");
         }
     }
 
