@@ -12,6 +12,11 @@ public class RegenChunkInteractEvent implements Listener {
     @EventHandler
     public void onRCI(PlayerInteractEvent e){
         try {
+            if(TownS.g().Cur.equals(e.getClickedBlock().getLocation().getChunk())){
+                e.setCancelled(true);
+                Format.AlrtFrmt.use().a(e.getPlayer(),"That chunk is undergoing restoration! Please wait till it finishes!");
+                return;
+            }
             for (RegenBuilder b : TownS.g().getActiveRegenerators()) {
                 if (b.getChunk().equals(e.getClickedBlock().getLocation().getChunk())) {
                     e.setCancelled(true);

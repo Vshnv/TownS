@@ -3,7 +3,6 @@ package com.rocketmail.vaishnavanil.towns;
 import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownCmd;
 import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
-import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
 import com.rocketmail.vaishnavanil.towns.Listeners.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.MobClearLoop;
 import com.rocketmail.vaishnavanil.towns.Listeners.TownRestricter;
@@ -31,9 +30,11 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 
-import static java.lang.System.out;
 import java.util.HashMap;
 import java.util.UUID;
+
+import static java.lang.System.out;
+
 public final class TownS extends JavaPlugin {
     //SINGLETON
     private static TownS instance;
@@ -44,7 +45,7 @@ public final class TownS extends JavaPlugin {
 
     //SINGLETON
     public static String PREFIX = "[TownS]";
-    public static Double TownCost = 100.0;
+    private BukkitTask QueueTask;
     //MAPPING
     //Private/*CLAIM MAP*/ HashMap<Claim,Town> CM = new HashMap<>();
     private/*TOWN MAP*/ HashMap<String, Town> TM = new HashMap<>();
@@ -52,17 +53,43 @@ public final class TownS extends JavaPlugin {
     private/*CLAIM MAP*/ HashMap<String, Claim> Map = new HashMap<>();//FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
 
     private/*P-T Map*/ HashMap<UUID, Town> quickPlayer = new HashMap<>();
-
-    private Set<RegenBuilder> RegenWorkers = new HashSet<>();
-
+    public RegenBuilder Cur;
+    private Queue<RegenBuilder> RegenWorkers = new LinkedList<>();
     private HashMap<String, Rank> RankList = new HashMap<>();
     public void registerRegenBuilder(RegenBuilder builder){
         RegenWorkers.add(builder);
     }
-    public void finishRegenWork(RegenBuilder builder){
-        RegenWorkers.remove(builder);
+    public void alertQueue(){
+        out.println("[TownS-Regenerator]Started Regenerator Queue!");
+        QueueTask = new BukkitRunnable(){
+
+            @Override
+            public void run() {
+                if(RegenWorkers.peek() == null)return;
+
+                if(Cur==null){
+
+                    out.println("[TownS-Regenerator]Queue moved to next Region!");
+
+                    Cur = RegenWorkers.poll();
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            out.println("[TownS-Regenerator]Started next Chunk Regen!");
+
+                            Cur.Build();
+                        }
+                    }.runTask(TownS.g());
+                    return;
+                }
+                return;
+            }
+        }.runTaskTimerAsynchronously(TownS.g(),0,20);
     }
-    public Set<RegenBuilder> getActiveRegenerators(){
+    public void finishRegenWork(RegenBuilder builder){
+        if(Cur == builder)Cur = null;
+    }
+    public Queue<RegenBuilder> getActiveRegenerators(){
         return RegenWorkers;
     }
 
@@ -122,7 +149,7 @@ public final class TownS extends JavaPlugin {
                     new BukkitRunnable(){
                         @Override
                         public void run() {
-                            new RegenBuilder((Material[][][]) LoadManager.get.loadObject("ChunkSaves",chunk.getX()+"TT"+chunk.getZ()+"TT"+chunk.getWorld().getName()+".dat"),chunk).Build();
+                            new RegenBuilder((Material[][][]) LoadManager.get.loadObject("ChunkSaves",chunk.getX()+"TT"+chunk.getZ()+"TT"+chunk.getWorld().getName()+".dat"),chunk);
 
                         }
                     }.runTask(this);
@@ -228,6 +255,7 @@ public final class TownS extends JavaPlugin {
         ConfigManager.get.LoadUp();
 
         MobClearLoop.get.start();
+
         RegenBuilder.ContinueRegens();
     }
 
@@ -238,6 +266,7 @@ public final class TownS extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        QueueTask.cancel();
         // Plugin shutdown logic
     }
 

@@ -85,8 +85,7 @@ public class Town {
         new BukkitRunnable(){
             @Override
             public void run() {
-                new RegenBuilder((Material[][][]) LoadManager.get.loadObject("ChunkSaves",chunk.getX()+"TT"+chunk.getZ()+"TT"+chunk.getWorld().getName()+".dat"),chunk).Build();
-
+                new RegenBuilder((Material[][][]) LoadManager.get.loadObject("ChunkSaves",chunk.getX()+"TT"+chunk.getZ()+"TT"+chunk.getWorld().getName()+".dat"),chunk);
             }
         }.runTask(TownS.g());
     }
