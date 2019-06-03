@@ -58,7 +58,11 @@ public final class TownS extends JavaPlugin {
     private Queue<RegenBuilder> RegenWorkers = new LinkedList<>();
     private HashMap<String, Rank> RankList = new HashMap<>();
     public void registerRegenBuilder(RegenBuilder builder){
-        RegenWorkers.add(builder);
+        for(RegenBuilder b:RegenWorkers) {
+           if(b.getChunk() == builder.getChunk()){
+               return;
+           }
+        } RegenWorkers.add(builder);
     }
     public void alertQueue(){
         out.println("[TownS-Regenerator]Started Regenerator Queue!");
@@ -66,6 +70,7 @@ public final class TownS extends JavaPlugin {
 
             @Override
             public void run() {
+                if(Cur != null)return;
                 if(RegenWorkers.peek() == null)return;
 
                 if(Cur==null){
@@ -79,6 +84,9 @@ public final class TownS extends JavaPlugin {
                             out.println("[TownS-Regenerator]Started next Chunk Regen!");
 
                             Cur.Build();
+
+
+                            this.cancel();
                         }
                     }.runTask(TownS.g());
                     return;
