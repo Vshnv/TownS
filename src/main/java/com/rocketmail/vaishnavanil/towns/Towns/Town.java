@@ -18,6 +18,7 @@ public class Town {
     private String town_name;
     private UUID town_uuid;
     private UUID Mayor_ID;
+    private Double town_balance;
     private HashMap<UUID, Rank> rankMap = new HashMap<>();
     private HashMap<String, Location> warpPointMap = new HashMap<>();
     private List<UUID> Members = new ArrayList<>();
@@ -160,6 +161,7 @@ public class Town {
 
     public Town(String name, Player mayor) {
         town_name = name;
+        town_balance = 0.0;
         town_uuid = UUID.randomUUID();
         Mayor_ID = mayor.getUniqueId();
         TownS.g().aTtM(this);
@@ -167,6 +169,7 @@ public class Town {
 
     public Town(String name, Player mayor, List<UUID> MemberL, List<UUID> AssistantL) {
         town_name = name;
+        town_balance = 0.0;
         town_uuid = UUID.randomUUID();
         Mayor_ID = mayor.getUniqueId();
         Members = MemberL;
@@ -176,6 +179,7 @@ public class Town {
 
     public Town(String name, Player mayor, List<UUID> MemberL, List<UUID> AssistantL, List<Claim> claims) {
         town_name = name;
+        town_balance = 0.0;
         town_uuid = UUID.randomUUID();
         Mayor_ID = mayor.getUniqueId();
         Members = MemberL;
@@ -186,5 +190,11 @@ public class Town {
         }
         TownS.g().aTtM(this);
     }
+
+    /* Not to be used directly */
+    public void setTownBalance(Double value){ this.town_balance = value; }
+    public Double getTownBalance(){ return this.town_balance; }
+    public void changeTownBalanceBy(Double amount){ this.town_balance += amount; }
+    /* Not to be used directly */
 
 }

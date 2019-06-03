@@ -2,14 +2,18 @@ package com.rocketmail.vaishnavanil.towns.Economy;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
+import java.util.UUID;
 
 public enum EconomyHandler {
     INSTANCE;
 
     /* Method to add and remove player balances */
-    public Boolean changePlayerBalance(Player player, Integer amount) {
+    public Boolean changePlayerBalance(Player player, Double amount) {
         if (amount > 0) {
             return TownS.getEconomy().depositPlayer(player, amount).transactionSuccess();
         } else {
@@ -17,23 +21,12 @@ public enum EconomyHandler {
         }
     }
     /* Method to add and remove town bank balances */
-    public Boolean changeTownBalance(Town town, Integer amount) {
+    public Boolean changeTownBalance(Town town, Double amount) {
         if (amount > 0) {
             return TownS.getEconomy().bankDeposit(town.getTownUUID().toString(), amount).transactionSuccess();
         } else {
             return TownS.getEconomy().bankWithdraw(town.getTownUUID().toString(), Math.abs(amount)).transactionSuccess();
         }
-    }
-
-    /* Method to create a town's bank. Used on initial town creation. */
-    public Boolean createTownBank(Town town) {
-
-        return TownS.getEconomy().createBank(town.getTownUUID().toString(), (OfflinePlayer) town.getMayor()).transactionSuccess();
-    }
-
-    /* Method to remove town's bank */
-    public Boolean deleteTownBank(Town town){
-        return TownS.getEconomy().deleteBank(town.getTownUUID().toString()).transactionSuccess();
     }
 
     /* Method to get player's bank balance */
@@ -45,9 +38,35 @@ public enum EconomyHandler {
         }
     }
 
-    /* Method to get town bank balance */
-    public Double getTownBalance(Town town) {
-        return TownS.getEconomy().bankBalance(town.getTownUUID().toString()).balance;
+    /* Method to let player deposit money into town bank */
+    public Boolean depositIntoTown(Player player, Town  town, Double amount){
+        if( EconomyHandler.INSTANCE.getPlayerBalance(player) > amount ){
+            if(EconomyHandler.INSTANCE.changePlayerBalance(player, -amount)){
+                town.changeTownBalanceBy(amount);
+                return true;
+            }else { return false; }
+        }else{ return false; }
     }
+
+    /*  Method to let player deposit percentage of their own money into town bank */
+    public Boolean depositIntoTownByPercent(Player player, Town  town, Double amount, Double percent){
+        if( EconomyHandler.INSTANCE.getPlayerBalance(player) > amount*percent ){
+            if(EconomyHandler.INSTANCE.changePlayerBalance(player, -amount*percent)){
+                town.changeTownBalanceBy(amount*percent);
+                return true;
+            }else { return false; }
+        }else{ return false; }
+    }
+
+    /* Method to let player withdraw money from town bank */
+    public Boolean withdrawFromTown(Player player, Town town, Double amount){
+        if(  town.getTownBalance() > amount ){
+            if(EconomyHandler.INSTANCE.changePlayerBalance(player, amount)){
+                town.changeTownBalanceBy(-amount);
+                return true;
+            }else{ return false; }
+        }else { return false; }
+    }
+
 
 }

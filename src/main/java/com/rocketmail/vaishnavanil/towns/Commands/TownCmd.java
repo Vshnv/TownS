@@ -52,7 +52,6 @@ public class TownCmd implements CommandExecutor {
 
 
                 create(sndr, args[1]);
-                Format.AlrtFrmt.use().a(sndr, "Created new town with name -> " + args[1]);
                 break;
             /*END CREATION*/
             //TOWN DELETE
@@ -252,16 +251,20 @@ public class TownCmd implements CommandExecutor {
     }
 
     public void create(Player p, String townName) {
-        Town newT = new Town(townName, p);
-        newT.claim(p.getLocation().getChunk(), p);
-        newT.setWarpPoint(newT, "spawn", p.getLocation());
-        newT.setSpawnChunk(newT, p.getLocation().getChunk());
-        //TESTING
-        if(!EconomyHandler.INSTANCE.createTownBank(newT)){
-            Bukkit.getConsoleSender().sendMessage("[TOWNS] Error Occured while creating town bank");
+
+        if(EconomyHandler.INSTANCE.getPlayerBalance(p) >= TownS.TownCost){
+            if(EconomyHandler.INSTANCE.changePlayerBalance(p, -TownS.TownCost)){
+                Town newT = new Town(townName, p);
+                newT.claim(p.getLocation().getChunk(), p);
+                newT.setWarpPoint(newT, "spawn", p.getLocation());
+                newT.setSpawnChunk(newT, p.getLocation().getChunk());
+                Format.AlrtFrmt.use().a(p, "Created new town with name -> " + townName);
+            }else{
+                Format.CmdInfoFrmt.use().a(p, "An Error Occurred while trying to pay for the new Town.");
+            }
+        }else{
+            Format.CmdInfoFrmt.use().a(p, "Creating a new Town costs: "+TownS.TownCost.toString()+"$");
         }
-        EconomyHandler.INSTANCE.changeTownBalance(newT, 1200);
-        System.out.println(EconomyHandler.INSTANCE.getTownBalance(newT));
     }
 
     public void deleteTown(Player sndr) {
