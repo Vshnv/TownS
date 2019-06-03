@@ -45,7 +45,7 @@ public class MoveEventListener implements Listener {
                 String plot_name = toClaim.getName();
                 String plot_town = toClaim.getTown().getName();
 
-                if(fromClaim.getOwner().equals(toClaim.getOwner())){
+                if(fromClaim.getOwner().equals(toClaim.getOwner()) && toClaim.getOwner().equals(player)){
                     if (!plot_name.equals("")) {
                         TitleSender.INSTANCE.sendTitle(player, "", "&2Area: &a" + plot_name);
                     }
