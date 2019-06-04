@@ -32,8 +32,9 @@ public class YNtest extends SimpleInterface {
             }
 
         };
-
-        super.inv = new StackFunc[] {new StackFunc(yes,fYes),new StackFunc(no,fNo)};
+        StackFunc fY = new StackFunc(yes,fYes);
+        StackFunc fN = new StackFunc(no,fNo);
+        super.inv = new StackFunc[] {fY,fY,fY,fY,fN,fN,fN,fN,fN};
 
 
         super.init();

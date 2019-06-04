@@ -17,10 +17,8 @@ name = n;
 
     }
     public void init(){
-        System.out.println(inv.length+(9-inv.length%9));
-        System.out.println((int) (Math.ceil(inv.length/9)*9));
 
-        size = inv.length+(9-inv.length%9);
+        if(inv.length>9){size = inv.length+(9-inv.length%9);}else{size =9;}
         FunctionRunner runner = FunctionRunner.get();
         for(StackFunc func:inv){
             runner.register(func.getStack(),func.getFunction(),name);
