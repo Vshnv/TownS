@@ -140,6 +140,65 @@ public class TownCmd implements CommandExecutor {
                     }
                 }
                 break;
+            case "warp":
+                if(args.length==2){
+                    if(!TownS.g().hasTown(sndr)){
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+                    }else{
+                        String warp_name = args[1];
+                        Town sender_town = TownS.g().getTown(sndr);
+                        if(sender_town.getWarpPoint(sender_town, warp_name) != null){
+                            sndr.teleport( sender_town.getWarpPoint(sender_town, warp_name) );
+                            Format.AlrtFrmt.use().a(sndr, "Teleported to Town Warp: "+warp_name.toUpperCase());
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr, "Warp Point: "+warp_name.toUpperCase()+" not found.");
+                        }
+                    }
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town warp <name>");
+                }
+                break;
+            case "setwarp":
+                if(args.length==2){
+                    String warp_name = args[1];
+                    if (!TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+                    }
+                    if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                        return true;
+                    }
+                    Town senders_town = TownS.g().getTown(sndr);
+                    senders_town.setWarpPoint(senders_town, warp_name, sndr.getLocation());
+                    Format.AlrtFrmt.use().a(sndr, "Successfully set Warp: "+warp_name);
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setwarp <name>");
+                }
+                break;
+            case "delwarp":
+                if(args.length==2){
+                    String warp_name = args[1];
+                    if (!TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+                    }
+                    if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                        return true;
+                    }
+                    Town senders_town = TownS.g().getTown(sndr);
+                    senders_town.deleteWarpPoint(warp_name);
+                    Format.AlrtFrmt.use().a(sndr, "Successfully removed Warp: "+warp_name);
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town delwarp <name>");
+                }
+                break;
             case "setspawn":
 
                 if (!TownS.g().hasTown(sndr)) {
