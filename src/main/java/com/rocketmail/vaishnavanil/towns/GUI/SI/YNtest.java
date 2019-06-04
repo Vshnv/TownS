@@ -33,7 +33,7 @@ public class YNtest extends SimpleInterface {
 
         };
 
-        super.inv = new StackFunc[] {};
+        super.inv = new StackFunc[] {new StackFunc(yes,fYes),new StackFunc(no,fNo)};
 
 
         super.init();
