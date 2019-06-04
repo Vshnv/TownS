@@ -180,7 +180,6 @@ public class TownCmd implements CommandExecutor {
                     return true;
                 }
                 claim(sndr);
-                Format.CmdInfoFrmt.use().a(sndr, "You have claimed land for your town! -> /towns map <- for neaby claims");
                 break;
             //UNCLAIM
             case "unclaim":
@@ -320,12 +319,33 @@ public class TownCmd implements CommandExecutor {
     }
 
     public void claim(Player sndr) {
-        TownS.g().getTown(sndr).claim(sndr.getLocation().getChunk(), sndr);
+
+        if(EconomyHandler.INSTANCE.getPlayerBalance(sndr) >= TownS.PlotCost){
+            if(EconomyHandler.INSTANCE.changePlayerBalance(sndr, -TownS.PlotCost)){
+                TownS.g().getTown(sndr).claim(sndr.getLocation().getChunk(), sndr);
+                Format.CmdInfoFrmt.use().a(sndr, "You have claimed land for your town! -> /towns map <- for neaby claims");
+            }else{
+                Format.CmdErrFrmt.use().a(sndr, "An Error Occurred while trying to pay for the new area.");
+            }
+        }else{
+            Format.CmdErrFrmt.use().a(sndr, "Claiming a new Area costs: "+TownS.PlotCost.toString()+"$");
+        }
+
+
     }
 
     public void claim(Player sndr, String plot_name) {
-        TownS.g().getTown(sndr).claim(sndr.getLocation().getChunk(), sndr);
-        TownS.g().getClaim(sndr.getLocation().getChunk()).setName(plot_name);
+        if(EconomyHandler.INSTANCE.getPlayerBalance(sndr) >= TownS.PlotCost){
+            if(EconomyHandler.INSTANCE.changePlayerBalance(sndr, -TownS.PlotCost)){
+                TownS.g().getTown(sndr).claim(sndr.getLocation().getChunk(), sndr);
+                TownS.g().getClaim(sndr.getLocation().getChunk()).setName(plot_name);
+                Format.CmdInfoFrmt.use().a(sndr, "You have claimed land for your town! -> /towns map <- for neaby claims");
+            }else{
+                Format.CmdErrFrmt.use().a(sndr, "An Error Occurred while trying to pay for the new area.");
+            }
+        }else{
+            Format.CmdErrFrmt.use().a(sndr, "Claiming a new Area costs: "+TownS.PlotCost.toString()+"$");
+        }
     }
 
     public void unclaim(Player sndr) {

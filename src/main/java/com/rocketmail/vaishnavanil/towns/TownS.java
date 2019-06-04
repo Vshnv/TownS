@@ -43,7 +43,9 @@ public final class TownS extends JavaPlugin {
 
     //SINGLETON
     public static String PREFIX = "[TownS]";
-    public static Double TownCost = 100.0;
+    public static Double TownCost = 200.0;
+    public static Double PlotCost = 1000.0;
+    
     private BukkitTask QueueTask;
     //MAPPING
     //Private/*CLAIM MAP*/ HashMap<Claim,Town> CM = new HashMap<>();

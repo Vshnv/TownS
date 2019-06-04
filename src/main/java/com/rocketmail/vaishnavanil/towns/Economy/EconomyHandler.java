@@ -2,12 +2,8 @@ package com.rocketmail.vaishnavanil.towns.Economy;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.util.Map;
-import java.util.UUID;
 
 public enum EconomyHandler {
     INSTANCE;
