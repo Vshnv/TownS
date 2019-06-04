@@ -28,7 +28,7 @@ public class MoveEventListener implements Listener {
             if (!toChunkClaimed && fromChunkClaimed) {
                 //Player Entered Wilderness from Claimed Region
                 TitleSender.INSTANCE.sendTitle(player, "", "&2Entering Wilderness");
-                ParticleManager.INSTANCE.drawChunkBorder(player, fromChunk);
+                ParticleManager.INSTANCE.drawChunkBorder(player, fromChunk, Color.WHITE);
             } else if (toChunkClaimed && !fromChunkClaimed) {
                 //Player Entered Claimed Area from Wilderness
                 toClaim.setName("l33t Plot Name");
@@ -37,7 +37,7 @@ public class MoveEventListener implements Listener {
                 String plot_name = toClaim.getName();
                 String plot_town = toClaim.getTown().getName();
                 TitleSender.INSTANCE.sendTitle(player, "&a" + plot_name, "&cTown: &6" + plot_town + " &8&l| &eOwner: &6" + plot_owner);
-                ParticleManager.INSTANCE.drawChunkBorder(player, toChunk);
+                ParticleManager.INSTANCE.drawChunkBorder(player, toChunk, Color.WHITE);
             } else if (toChunkClaimed && fromChunkClaimed) {
                 String plot_owner = toClaim.getOwner().getName();
                 String plot_name = toClaim.getName();
@@ -54,7 +54,7 @@ public class MoveEventListener implements Listener {
                         TitleSender.INSTANCE.sendTitle(player, "", "&2Area: &a" + plot_name + " &8&l| &eOwner: &6" + plot_owner);
                     }
                 }
-                ParticleManager.INSTANCE.drawChunkBorder(player, toChunk);
+                ParticleManager.INSTANCE.drawChunkBorder(player, toChunk, Color.WHITE);
 
             }
 

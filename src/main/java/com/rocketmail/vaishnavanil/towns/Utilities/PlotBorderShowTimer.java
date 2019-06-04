@@ -2,6 +2,7 @@ package com.rocketmail.vaishnavanil.towns.Utilities;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -18,7 +19,9 @@ public enum  PlotBorderShowTimer {
                 for(Player player: Bukkit.getOnlinePlayers()){
                     if(TownS.g().getTownPlayer(player).showBorder()){
                         if(TownS.g().isClaimed(player.getLocation().getChunk())){
-                            ParticleManager.INSTANCE.drawChunkBorder(player, player.getLocation().getChunk());
+                            ParticleManager.INSTANCE.drawChunkBorder(player, player.getLocation().getChunk(), Color.WHITE);
+                        }else {
+                            ParticleManager.INSTANCE.drawChunkBorder(player, player.getLocation().getChunk(), Color.LIME);
                         }
                     }
                 }

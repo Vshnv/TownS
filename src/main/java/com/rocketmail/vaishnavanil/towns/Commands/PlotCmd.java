@@ -55,7 +55,6 @@ public class PlotCmd implements CommandExecutor {
                 break;
             case "border":
                 TownS.g().getTownPlayer(sndr).toggleBorder();
-                Bukkit.broadcastMessage(  String.valueOf(TownS.g().getTownPlayer(sndr).showBorder())  );
                 if(TownS.g().getTownPlayer(sndr).showBorder())
                     Format.AlrtFrmt.use().a(sndr, "Plot Borders are now visible");
                 else
