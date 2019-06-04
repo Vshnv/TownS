@@ -20,14 +20,6 @@ public enum EconomyHandler {
             return TownS.getEconomy().withdrawPlayer(player, Math.abs(amount)).transactionSuccess();
         }
     }
-    /* Method to add and remove town bank balances */
-    public Boolean changeTownBalance(Town town, Double amount) {
-        if (amount > 0) {
-            return TownS.getEconomy().bankDeposit(town.getTownUUID().toString(), amount).transactionSuccess();
-        } else {
-            return TownS.getEconomy().bankWithdraw(town.getTownUUID().toString(), Math.abs(amount)).transactionSuccess();
-        }
-    }
 
     /* Method to get player's bank balance */
     public Double getPlayerBalance(Player player) {
