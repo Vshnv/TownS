@@ -58,6 +58,7 @@ public final class TownS extends JavaPlugin {
 
     public void addTownPlayer(Player player){ townPlayerMap.put(player.getUniqueId(), new TownPlayer(player)); }
     public void removeTownPlayer(Player player){ townPlayerMap.remove(player.getUniqueId()); }
+    public TownPlayer getTownPlayer(Player player){ return townPlayerMap.get(player.getUniqueId()); }
 
     public void registerRegenBuilder(RegenBuilder builder){
         for(RegenBuilder b:RegenWorkers) {
