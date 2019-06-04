@@ -2,6 +2,7 @@ package com.rocketmail.vaishnavanil.towns.Listeners.TitleManager;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
+import com.rocketmail.vaishnavanil.towns.Utilities.Protocol;
 import com.rocketmail.vaishnavanil.towns.Utilities.TitleSender;
 import org.apache.commons.lang.Validate;
 import org.bukkit.*;
@@ -62,7 +63,7 @@ public class MoveEventListener implements Listener {
         }
     }
 
-    public void drawLine(Location point1, Location point2, double space) {
+    public void drawLine(Player player, Location point1, Location point2, double space) {
         World world = point1.getWorld();
         Validate.isTrue(point2.getWorld().equals(world), "Lines cannot be in different worlds!");
         double distance = point1.distance(point2);
@@ -72,7 +73,8 @@ public class MoveEventListener implements Listener {
         double length = 0;
         for (; length < distance; p1.add(vector)) {
             Particle.DustOptions dustOptions = new Particle.DustOptions(Color.WHITE, 1);
-            world.spawnParticle(Particle.REDSTONE, p1.getX(), p1.getY(), p1.getZ(), 1, dustOptions);
+            Protocol.INSTANCE.sendRedstoneParticle(player, new Location(player.getWorld(),p1.getX(), p1.getY(), p1.getZ()), Color.WHITE);
+            //world.spawnParticle(Particle.REDSTONE, p1.getX(), p1.getY(), p1.getZ(), 1, dustOptions);
             length += space;
         }
     }
@@ -84,10 +86,10 @@ public class MoveEventListener implements Listener {
         Location point3 = new Location(player.getWorld(), chunk.getX()*16, player.getLocation().add(0,height,0).getY(),chunk.getZ()*16+16);
         Location point4 = new Location(player.getWorld(), chunk.getX()*16+16, player.getLocation().add(0,height,0).getY(),chunk.getZ()*16+16);
         Float space = 0.2F;
-        drawLine(point1,point2, space);
-        drawLine(point1, point3, space);
-        drawLine(point2, point4, space);
-        drawLine(point3, point4, space);
+        drawLine(player, point1,point2, space);
+        drawLine(player, point1, point3, space);
+        drawLine(player, point2, point4, space);
+        drawLine(player, point3, point4, space);
     }
 
 }
