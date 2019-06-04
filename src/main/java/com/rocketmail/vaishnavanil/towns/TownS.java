@@ -9,10 +9,7 @@ import com.rocketmail.vaishnavanil.towns.Listeners.TownRestricter;
 import com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.TitleManager.MoveEventListener;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
-import com.rocketmail.vaishnavanil.towns.Towns.Claim;
-import com.rocketmail.vaishnavanil.towns.Towns.Rank;
-import com.rocketmail.vaishnavanil.towns.Towns.RegenBuilder;
-import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import com.rocketmail.vaishnavanil.towns.Towns.*;
 
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
 
@@ -54,9 +51,14 @@ public final class TownS extends JavaPlugin {
     private/*CLAIM MAP*/ HashMap<String, Claim> Map = new HashMap<>();//FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
 
     private/*P-T Map*/ HashMap<UUID, Town> quickPlayer = new HashMap<>();
+    private HashMap<UUID, TownPlayer> townPlayerMap =  new HashMap<>();
     public RegenBuilder Cur;
     private Queue<RegenBuilder> RegenWorkers = new LinkedList<>();
     private HashMap<String, Rank> RankList = new HashMap<>();
+
+    public void addTownPlayer(Player player){ townPlayerMap.put(player.getUniqueId(), new TownPlayer(player)); }
+    public void removeTownPlayer(Player player){ townPlayerMap.remove(player.getUniqueId()); }
+
     public void registerRegenBuilder(RegenBuilder builder){
         for(RegenBuilder b:RegenWorkers) {
            if(b.getChunk() == builder.getChunk()){
