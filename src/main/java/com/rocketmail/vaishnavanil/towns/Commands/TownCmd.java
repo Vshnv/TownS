@@ -1,6 +1,7 @@
 package com.rocketmail.vaishnavanil.towns.Commands;
 
 import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
+import com.rocketmail.vaishnavanil.towns.GUI.GUI;
 import com.rocketmail.vaishnavanil.towns.MapGUI.Map;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
@@ -284,6 +285,8 @@ public class TownCmd implements CommandExecutor {
                 nfs(sndr);
                 Format.CmdInfoFrmt.use().a(sndr, "This claim is no longer available for sale!");
                 break;
+            case "test":
+                sndr.openInventory(GUI.YN.get());
 
         }
         return true;
