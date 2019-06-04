@@ -13,6 +13,7 @@ import com.rocketmail.vaishnavanil.towns.Towns.*;
 
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
 
+import com.rocketmail.vaishnavanil.towns.Utilities.PlotBorderShowTimer;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -51,14 +52,22 @@ public final class TownS extends JavaPlugin {
     private/*CLAIM MAP*/ HashMap<String, Claim> Map = new HashMap<>();//FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
 
     private/*P-T Map*/ HashMap<UUID, Town> quickPlayer = new HashMap<>();
-    private HashMap<UUID, TownPlayer> townPlayerMap =  new HashMap<>();
     public RegenBuilder Cur;
     private Queue<RegenBuilder> RegenWorkers = new LinkedList<>();
     private HashMap<String, Rank> RankList = new HashMap<>();
 
+    private HashMap<UUID, TownPlayer> townPlayerMap =  new HashMap<>();
     public void addTownPlayer(Player player){ townPlayerMap.put(player.getUniqueId(), new TownPlayer(player)); }
-    public void removeTownPlayer(Player player){ townPlayerMap.remove(player.getUniqueId()); }
-    public TownPlayer getTownPlayer(Player player){ return townPlayerMap.get(player.getUniqueId()); }
+    public void removeTownPlayer(Player player){
+        townPlayerMap.remove(player.getUniqueId());
+    }
+    public TownPlayer getTownPlayer(Player player){
+        if(townPlayerMap.get(player)==null)
+            addTownPlayer(player);
+        return townPlayerMap.get(player.getUniqueId());
+    }
+
+
 
     public void registerRegenBuilder(RegenBuilder builder){
         for(RegenBuilder b:RegenWorkers) {
@@ -264,6 +273,8 @@ public final class TownS extends JavaPlugin {
         regListen(new BlockPhysics());
         regListen(new ChunkLoadListener());
         regListen(new RegenChunkInteractEvent());
+        regListen(new PlayerJoinQuitListener());
+        PlotBorderShowTimer.INSTANCE.startBorderShow();
         ConfigManager.get.LoadUp();
 
         MobClearLoop.get.start();

@@ -3,8 +3,8 @@ package com.rocketmail.vaishnavanil.towns.Towns;
 import org.bukkit.entity.Player;
 
 public class TownPlayer {
-    boolean showBorder;
-    Player player;
+    private boolean showBorder;
+    private Player player;
 
     public TownPlayer(Player player){
         this.player =  player;

@@ -3,6 +3,8 @@ package com.rocketmail.vaishnavanil.towns.Commands;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
+import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -50,10 +52,19 @@ public class PlotCmd implements CommandExecutor {
                 //TODO:: ADD ECO TRANSACTION
                 plotclaim(TownS.g().getClaim(sndr.getLocation().getChunk()), sndr);
                 Format.AlrtFrmt.use().a(sndr, "You have claimed this plot. Congrats!");
+                break;
+            case "border":
+                TownS.g().getTownPlayer(sndr).toggleBorder();
+                Bukkit.broadcastMessage(  String.valueOf(TownS.g().getTownPlayer(sndr).showBorder())  );
+                if(TownS.g().getTownPlayer(sndr).showBorder())
+                    Format.AlrtFrmt.use().a(sndr, "Plot Borders are now visible");
+                else
+                    Format.AlrtFrmt.use().a(sndr, "Plot Borders are now hidden");
+                break;
         }
 
 
-        return false;
+        return true;
     }
 
     public void plotclaim(Claim claim, Player player) {
