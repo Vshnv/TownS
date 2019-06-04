@@ -62,7 +62,7 @@ public final class TownS extends JavaPlugin {
         townPlayerMap.remove(player.getUniqueId());
     }
     public TownPlayer getTownPlayer(Player player){
-        if(townPlayerMap.get(player)==null)
+        if(townPlayerMap.get(player.getUniqueId())==null)
             addTownPlayer(player);
         return townPlayerMap.get(player.getUniqueId());
     }
