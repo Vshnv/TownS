@@ -10,7 +10,7 @@ public enum  PlotBorderShowTimer {
     INSTANCE;
 
     public void startBorderShow(){
-        new BukkitRunnable(){
+        TownS.g().BorderTask = new BukkitRunnable(){
 
             @Override
             public void run() {
