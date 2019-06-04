@@ -55,7 +55,7 @@ public final class TownS extends JavaPlugin {
 
     private/*CLAIM MAP*/ HashMap<String, Claim> Map = new HashMap<>();//FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
 
-    private/*P-T Map*/ HashMap<UUID, Town> quickPlayer = new HashMap<>();
+    public/*P-T Map*/ HashMap<UUID, Town> quickPlayer = new HashMap<>();
     public RegenBuilder Cur;
     private Queue<RegenBuilder> RegenWorkers = new LinkedList<>();
     private HashMap<String, Rank> RankList = new HashMap<>();

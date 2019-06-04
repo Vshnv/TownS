@@ -153,7 +153,23 @@ public class Town {
         }
         TownS.g().rTfM(this);
     }
+    public boolean addMember(Player p){
+        if(TownS.g().getTown(p) != null)return false;
+        TownS.g().quickPlayer.put(p.getUniqueId(),this);
+        TownS.g().getTownPlayer(p).silentUnvite(this);
+        if(!Members.contains(p.getUniqueId()))this.Members.add(p.getUniqueId());
 
+        return true;
+    }
+
+    public boolean removePlayer(Player p){
+        if(!belongs(p))return false;
+
+        if(TownS.g().quickPlayer.containsKey(p.getUniqueId()))TownS.g().quickPlayer.remove(p.getUniqueId());
+        this.Members.remove(p.getUniqueId());
+        this.rankMap.remove(p.getUniqueId());
+        return true;
+    }
     public boolean belongs(Player player) {
         if (Members.contains(player.getUniqueId()) || rankMap.containsKey(player.getUniqueId()) || Mayor_ID == player.getUniqueId())
             return true;

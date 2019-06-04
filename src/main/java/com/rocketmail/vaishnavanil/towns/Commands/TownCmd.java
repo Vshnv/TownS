@@ -6,12 +6,15 @@ import com.rocketmail.vaishnavanil.towns.MapGUI.Map;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import com.rocketmail.vaishnavanil.towns.Towns.TownPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.text.Normalizer;
 
 public class TownCmd implements CommandExecutor {
     @Override
@@ -346,7 +349,112 @@ public class TownCmd implements CommandExecutor {
                 break;
             case "test":
                 sndr.openInventory(GUI.YN.get());
+                break;
+            case "invite":
+                if (!TownS.g().hasTown(sndr)) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                    return true;
+                }
+                if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                    return true;
+                }
+                if (!(args.length > 1)) {
+                    /*MSG ADDED N.E.A.*/
+                    Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
+                    return true;
+                }
+                Player p;
+                try {
+                    p =Bukkit.getPlayer(args[1]);
+                }catch (Exception e){
+                    Format.CmdErrFrmt.use().a(sndr, "Could not find player with that name!");
+                    return true;
+                }
+                Town t = TownS.g().getTown(sndr);
+                TownPlayer tp =TownS.g().getTownPlayer(p);
+                if(tp.isInvited(t)){
+                    Format.CmdErrFrmt.use().a(sndr, "Player already invited!");
+                    return true;
+                }
+                tp.invite(t);
+                Format.CmdInfoFrmt.use().a(sndr,"Player "+args[1]+" was invited to your town!");
+                break;
+            case "uninvite":
+                if (!TownS.g().hasTown(sndr)) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                    return true;
+                }
+                if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                    return true;
+                }
+                if (!(args.length > 1)) {
+                    /*MSG ADDED N.E.A.*/
+                    Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
+                    return true;
+                }
+                Player pl;
+                try {
+                    pl =Bukkit.getPlayer(args[1]);
+                }catch (Exception e){
+                    Format.CmdErrFrmt.use().a(sndr, "Could not find player with that name!");
+                    return true;
+                }
+                Town to = TownS.g().getTown(sndr);
+                TownPlayer tpl =TownS.g().getTownPlayer(pl);
+                if(!tpl.isInvited(to)){
+                    Format.CmdErrFrmt.use().a(sndr,"Player already not invited to town!");
+                    return true;
+                }
+                tpl.uninvite(to);
+                Format.CmdInfoFrmt.use().a(sndr,"Player "+args[1]+" was unInvited from you town!");
+                break;
+            case"join":
+                if (TownS.g().hasTown(sndr)) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "You already belong to a town! Leave it to join another town");
+                    return true;
+                }
+                if (!(args.length > 1)) {
+                    /*MSG ADDED N.E.A.*/
+                    Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
+                    return true;
+                }
+                String Tname = args[1];
+                if(TownS.g().getTown(Tname) == null){
+                    Format.CmdErrFrmt.use().a(sndr, "Town not found!");
+                    return true;
+                }
+                Town tWn = TownS.g().getTown(Tname);
+                TownPlayer plT = TownS.g().getTownPlayer(sndr);
+                if(plT.isInvited(tWn)){
+                    tWn.addMember(sndr);
+                    Format.CmdInfoFrmt.use().a(sndr,"You join the Town " + tWn.getName());
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "You are not invited to this town!");
 
+                }
+                break;
+
+            case "leave":
+                if (!TownS.g().hasTown(sndr)) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                    return true;
+                }
+                Town tLve = TownS.g().getTown(sndr);
+                if(tLve.getMayor().getUniqueId() == sndr.getUniqueId()){
+                    Format.CmdErrFrmt.use().a(sndr, "Mayor shall not leave the town!");
+                    return true;
+                }
+                tLve.removePlayer(sndr);
+                Format.CmdInfoFrmt.use().a(sndr,"You left the town " + tLve.getName());
+                break;
         }
         return true;
     }
