@@ -19,8 +19,13 @@ name = n;
     }
     public void init(){
         if(inv.length>0){
-            size = inv.length + (9-(inv.length%9));
+            if(inv.length >=9) {
+                size = (inv.length - inv.length % 9)+9;
+            }else{
+                size = 9;
+            }
         }else {
+
             size = inv.length;
         }
         FunctionRunner runner = FunctionRunner.get();
