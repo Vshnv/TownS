@@ -108,6 +108,8 @@ public class Town {
         Enemies.remove(t);
     }
 
+    public void deleteWarpPoint(String spawn_name){ warpPointMap.remove(spawn_name); }
+
     public void setWarpPoint(Town town, String spawn_name, Location location){
         if(TownS.g().isClaimed(location.getChunk())){
             Claim claim = TownS.g().getClaim(location.getChunk());
