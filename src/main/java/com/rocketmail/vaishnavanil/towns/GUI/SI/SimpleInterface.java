@@ -1,13 +1,12 @@
 package com.rocketmail.vaishnavanil.towns.GUI.SI;
 
-import com.rocketmail.vaishnavanil.towns.GUI.Function;
+
 import com.rocketmail.vaishnavanil.towns.GUI.FunctionRunner;
 import com.rocketmail.vaishnavanil.towns.GUI.StackFunc;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Item;
+
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+
 
 public abstract class SimpleInterface {
     StackFunc[] inv;
@@ -18,16 +17,10 @@ name = n;
 
     }
     public void init(){
-        if(inv.length>0){
-            if(inv.length >=9) {
-                size = (inv.length - inv.length % 9)+9;
-            }else{
-                size = 9;
-            }
-        }else {
+        System.out.println(inv.length+(9-inv.length%9));
+        System.out.println((int) (Math.ceil(inv.length/9)*9));
 
-            size = inv.length;
-        }
+        size = inv.length+(9-inv.length%9);
         FunctionRunner runner = FunctionRunner.get();
         for(StackFunc func:inv){
             runner.register(func.getStack(),func.getFunction(),name);

@@ -21,10 +21,10 @@ public class FunctionRunner implements Listener {
     HashMap<String,HashMap<ItemStack,Function>> registered = new HashMap<>();
     public void register(ItemStack i,Function f,String name){
         HashMap<ItemStack,Function> t = new HashMap<>();
-        if(!registered.containsKey(name)){
+        if(registered.containsKey(name)){
             t = registered.get(name);
         }
-        t.put(i,f);
+         t.put(i,f);
         registered.put(name,t);
     }
 
@@ -33,7 +33,8 @@ public class FunctionRunner implements Listener {
         if(e.getView().getTopInventory().getType() == InventoryType.CREATIVE)return;
         if(e instanceof InventoryCreativeEvent)return;
         if(e.getCurrentItem() == null)return;
-         String inv_name =((Container)e.getClickedInventory().getHolder()).getCustomName();
+         String inv_name =e.getView().getTitle();
+         e.setCancelled(true);
          if(!registered.keySet().contains(inv_name))return;
         if(registered.get(inv_name).keySet().contains(e.getCurrentItem())){
             Function func = registered.get(inv_name).get(e.getCurrentItem());
