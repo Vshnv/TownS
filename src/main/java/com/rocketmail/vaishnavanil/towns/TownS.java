@@ -47,6 +47,7 @@ public final class TownS extends JavaPlugin {
     public static Double PlotCost = 1000.0;
     
     private BukkitTask QueueTask;
+    public BukkitTask BorderTask;
     //MAPPING
     //Private/*CLAIM MAP*/ HashMap<Claim,Town> CM = new HashMap<>();
     private/*TOWN MAP*/ HashMap<String, Town> TM = new HashMap<>();
@@ -292,6 +293,7 @@ public final class TownS extends JavaPlugin {
     @Override
     public void onDisable() {
         QueueTask.cancel();
+        BorderTask.cancel();
         // Plugin shutdown logic
     }
 
