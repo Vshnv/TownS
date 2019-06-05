@@ -9,12 +9,14 @@ import java.util.List;
 public class TownPlayer {
     private List<String> Invites = new ArrayList<>();
     private boolean showBorder;
+    private boolean townChatActive;
     private Player player;
 
     public TownPlayer(Player player){
         this.player =  player;
         /* Defaults */
         this.showBorder = false;
+        this.townChatActive = false;
     }
     public void silentUnvite(Town s){
         if(Invites.contains(s.getName()))Invites.remove(s.getName());
@@ -40,5 +42,7 @@ public class TownPlayer {
     public Player getPlayer(){ return player; }
     public boolean showBorder(){ return showBorder; }
     public void toggleBorder() { showBorder = !showBorder; }
+    public boolean townnChatActive(){ return townChatActive; }
+    public void toggleTownChat() { townChatActive = !townChatActive; }
 
 }

@@ -15,3 +15,6 @@ commands:
   plot:
     description: Plot Commands
     usage: /plot <args>
+  tc:
+    aliases: [townchat, groupchat, teamchat]
+    usage: /townchat <message>

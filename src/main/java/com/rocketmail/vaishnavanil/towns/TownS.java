@@ -1,6 +1,7 @@
 package com.rocketmail.vaishnavanil.towns;
 
 import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
+import com.rocketmail.vaishnavanil.towns.Commands.TownChatCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownCmd;
 import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
 import com.rocketmail.vaishnavanil.towns.GUI.FunctionRunner;
@@ -265,6 +266,7 @@ public final class TownS extends JavaPlugin {
 
         registerCMD("towns", new TownCmd());
         registerCMD("plot", new PlotCmd());
+        registerCMD("tc", new TownChatCmd());
         regListen(new InvClickListen());
         regListen(new MoveEventListener());
         regListen(new ExplodeEventListener());
@@ -278,6 +280,7 @@ public final class TownS extends JavaPlugin {
         regListen(new ChunkLoadListener());
         regListen(new RegenChunkInteractEvent());
         regListen(new PlayerJoinQuitListener());
+        regListen(new PlayerChatListener());
         regListen(FunctionRunner.get());
         PlotBorderShowTimer.INSTANCE.startBorderShow();
         ConfigManager.get.LoadUp();
