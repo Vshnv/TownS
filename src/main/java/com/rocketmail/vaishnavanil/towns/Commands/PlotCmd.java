@@ -5,6 +5,7 @@ import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,7 @@ public class PlotCmd implements CommandExecutor {
             return true;
         }
         Player sndr = (Player) sender;
+        Chunk sndr_chunk = sndr.getLocation().getChunk();
         if (!(args.length > 0)) {
             /*MSG ADDED N.E.A.*/
             Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
@@ -25,7 +27,6 @@ public class PlotCmd implements CommandExecutor {
         }
 
         String sub_cmd = args[0].toLowerCase();
-
         switch (sub_cmd) {
             case "claim":
                 if (!TownS.g().hasTown(sndr)) {
@@ -60,6 +61,39 @@ public class PlotCmd implements CommandExecutor {
                 else
                     Format.AlrtFrmt.use().a(sndr, "Plot Borders are now hidden");
                 break;
+            case "setname":
+                if(args.length == 2){
+                    String new_name = args[1];
+                    if (!TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+
+                    }
+                    if (!TownS.g().isClaimed(sndr.getLocation().getChunk())) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "Your mayor must first claim this chunk for your town!");
+                        return true;
+                    }
+                    if (TownS.g().getTown(sndr.getLocation().getChunk()) != TownS.g().getTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to this town!");
+                        return true;
+                    }
+                    if (!TownS.g().getClaim(sndr_chunk).getOwner().equals(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "This Plot does not belong to you");
+                        return true;
+                    }
+                    //TODO:: ADD ECO TRANSACTION
+                    TownS.g().getClaim(sndr_chunk).setName(new_name);
+                    Format.AlrtFrmt.use().a(sndr, "Successfully Changed to new Plot Name: "+new_name);
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
+                }
+                break;
+
+
         }
 
 
