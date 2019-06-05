@@ -57,6 +57,26 @@ public class TownCmd implements CommandExecutor {
                 create(sndr, args[1]);
                 break;
             /*END CREATION*/
+            case "setname":
+                if(args.length==2){
+                    String town_name = args[1];
+                    if (!TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+                    }
+                    if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                        return true;
+                    }
+                    TownS.g().getTown(sndr).setName(town_name);
+                    Format.AlrtFrmt.use().a(sndr, "Successfully Set Town Name: "+town_name);
+                }else {
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setname <name>");
+                }
+
+                break;
             case "deposit":
                 if(args.length == 2){
                     String amount = args[1];
