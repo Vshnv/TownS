@@ -7,15 +7,11 @@ import com.rocketmail.vaishnavanil.towns.Commands.TownCmd;
 import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
 import com.rocketmail.vaishnavanil.towns.GUI.FunctionRunner;
 import com.rocketmail.vaishnavanil.towns.Listeners.*;
-import com.rocketmail.vaishnavanil.towns.Listeners.MobClearLoop;
-import com.rocketmail.vaishnavanil.towns.Listeners.TownRestricter;
 import com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.TitleManager.MoveEventListener;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
 import com.rocketmail.vaishnavanil.towns.Towns.*;
-
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
-
 import com.rocketmail.vaishnavanil.towns.Utilities.PlotBorderShowTimer;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -29,69 +25,73 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
-
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.UUID;
 
 import static java.lang.System.out;
-import static java.lang.System.setOut;
 
 public final class TownS extends JavaPlugin {
     //SINGLETON
+    public static String PREFIX = "[TownS]";
+    public static Double TownCost = 200.0;
+    public static Double PlotCost = 1000.0;
+    //SINGLETON
     private static TownS instance;
+    private static Economy econ = null;
+    public BukkitTask BorderTask;
+    public HashMap<UUID, Town> quickPlayer = new HashMap<>(); /*P-T Map*/
+    public RegenBuilder Cur;
+    private BukkitTask QueueTask;
+    //MAPPING
+    private HashMap<String, Town> TM = new HashMap<>(); /*TOWN MAP*/
+    private HashMap<String, Claim> Map = new HashMap<>();/*CLAIM MAP*/  //FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
+    private HashMap<UUID, TownPlayer> townPlayerMap = new HashMap<>();
+    private HashMap<String, Rank> RankList = new HashMap<>();
+    private Queue<RegenBuilder> RegenWorkers = new LinkedList<>();
 
     public static TownS g() {
         return instance;
     }
 
-    //SINGLETON
-    public static String PREFIX = "[TownS]";
-    public static Double TownCost = 200.0;
-    public static Double PlotCost = 1000.0;
-    
-    private BukkitTask QueueTask;
-    public BukkitTask BorderTask;
-    //MAPPING
-    //Private/*CLAIM MAP*/ HashMap<Claim,Town> CM = new HashMap<>();
-    private HashMap<String, Town> TM = new HashMap<>(); /*TOWN MAP*/
-    private HashMap<String, Claim> Map = new HashMap<>();/*CLAIM MAP*/  //FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
-    public HashMap<UUID, Town> quickPlayer = new HashMap<>(); /*P-T Map*/
+    public static Economy getEconomy() {
+        return econ;
+    }
 
-    private HashMap<UUID, TownPlayer> townPlayerMap =  new HashMap<>();
-    private HashMap<String, Rank> RankList = new HashMap<>();
+    public void addTownPlayer(Player player) {
+        townPlayerMap.put(player.getUniqueId(), new TownPlayer(player));
+    }
 
-    public RegenBuilder Cur;
-    private Queue<RegenBuilder> RegenWorkers = new LinkedList<>();
-    public void addTownPlayer(Player player){ townPlayerMap.put(player.getUniqueId(), new TownPlayer(player)); }
-    public void removeTownPlayer(Player player){
+    public void removeTownPlayer(Player player) {
         townPlayerMap.remove(player.getUniqueId());
     }
-    public TownPlayer getTownPlayer(Player player){
-        if(townPlayerMap.get(player.getUniqueId())==null)
+
+    public TownPlayer getTownPlayer(Player player) {
+        if (townPlayerMap.get(player.getUniqueId()) == null)
             addTownPlayer(player);
         return townPlayerMap.get(player.getUniqueId());
     }
 
-
-
-    public void registerRegenBuilder(RegenBuilder builder){
-        for(RegenBuilder b:RegenWorkers) {
-           if(b.getChunk() == builder.getChunk()){
-               return;
-           }
-        } RegenWorkers.add(builder);
+    public void registerRegenBuilder(RegenBuilder builder) {
+        for (RegenBuilder b : RegenWorkers) {
+            if (b.getChunk() == builder.getChunk()) {
+                return;
+            }
+        }
+        RegenWorkers.add(builder);
     }
-    public void alertQueue(){
+
+    public void alertQueue() {
         out.println("[TownS-Regenerator]Started Regenerator Queue!");
-        QueueTask = new BukkitRunnable(){
+        QueueTask = new BukkitRunnable() {
 
             @Override
             public void run() {
-                if(Cur != null)return;
-                if(RegenWorkers.peek() == null)return;
+                if (Cur != null) return;
+                if (RegenWorkers.peek() == null) return;
 
-                if(Cur==null){
+                if (Cur == null) {
 
                     out.println("[TownS-Regenerator]Queue moved to next Region!");
 
@@ -111,26 +111,23 @@ public final class TownS extends JavaPlugin {
                 }
                 return;
             }
-        }.runTaskTimerAsynchronously(TownS.g(),0,20);
+        }.runTaskTimerAsynchronously(TownS.g(), 0, 20);
     }
-    public void finishRegenWork(RegenBuilder builder){
-        if(Cur == builder)Cur = null;
+
+    public void finishRegenWork(RegenBuilder builder) {
+        if (Cur == builder) Cur = null;
     }
-    public Queue<RegenBuilder> getActiveRegenerators(){
+
+    public Queue<RegenBuilder> getActiveRegenerators() {
         return RegenWorkers;
     }
 
-    private static Economy econ = null;
-
-
-    public void/*ADD CLAIM TO CLAIM MAP*/ aCtT(Claim claim) {
-        // CM.put(claim,town);
+    public void aCtT(Claim claim) { /*ADD CLAIM TO CLAIM MAP*/
         Map.put(claim.x() + "::" + claim.z() + "::" + claim.getWorldName(), claim);
     }
 
-    public void/*REMOVE CLAIM FROM CLAIM MAP*/rCfT(Claim claim) {
+    public void rCfT(Claim claim) { /*REMOVE CLAIM FROM CLAIM MAP*/
         Map.remove(claim.x() + "::" + claim.z() + "::" + claim.getWorldName());
-        //CM.remove(claim);
     }
 
     public Town getTown(Player p) {
@@ -172,10 +169,10 @@ public final class TownS extends JavaPlugin {
                 if (claim.getTown() == null) {
                     Chunk chunk = claim.getChunk();
                     Map.remove(CX + "::" + CZ + "::" + wName);
-                    new BukkitRunnable(){
+                    new BukkitRunnable() {
                         @Override
                         public void run() {
-                            new RegenBuilder((Material[][][]) LoadManager.get.loadObject("ChunkSaves",chunk.getX()+"TT"+chunk.getZ()+"TT"+chunk.getWorld().getName()+".dat"),chunk);
+                            new RegenBuilder((Material[][][]) LoadManager.get.loadObject("ChunkSaves", chunk.getX() + "TT" + chunk.getZ() + "TT" + chunk.getWorld().getName() + ".dat"), chunk);
 
                         }
                     }.runTask(this);
@@ -200,14 +197,17 @@ public final class TownS extends JavaPlugin {
         return TM.keySet().contains(town_uuid);
     }
 
+    @Deprecated
     public Town getTown(String town_name) {
-        for(Town town: TM.values()){
-            if(town.getName().equals(town_name)){ return town; }
+        for (Town town : TM.values()) {
+            if (town.getName().equals(town_name)) {
+                return town;
+            }
         }
         return null;
     }
 
-    public Town getTown(UUID town_uuid){
+    public Town getTown(UUID town_uuid) {
         return TM.get(town_uuid.toString());
     }
 
@@ -249,18 +249,13 @@ public final class TownS extends JavaPlugin {
         econ = rsp.getProvider();
         return econ != null;
     }
-
-    public static Economy getEconomy() {
-        return econ;
-    }
 //MAPPING
-
 
     //ENABLE DISABLE
     @Override
     public void onEnable() {
 
-        if (!setupEconomy() ) {
+        if (!setupEconomy()) {
             Bukkit.getConsoleSender().sendMessage(getDescription().getName() + " - Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
             return;
