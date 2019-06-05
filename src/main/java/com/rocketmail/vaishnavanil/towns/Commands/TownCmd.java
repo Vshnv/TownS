@@ -475,6 +475,34 @@ public class TownCmd implements CommandExecutor {
                 tLve.removePlayer(sndr);
                 Format.CmdInfoFrmt.use().a(sndr,"You left the town " + tLve.getName());
                 break;
+
+            case "setmayor":
+                if(args.length==2){
+                    String player_name = args[1];
+                    if (!TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+                    }
+                    if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                        return true;
+                    }
+                    if(Bukkit.getPlayer(player_name)!= null){
+                        if(TownS.g().getTown(sndr).setOwner(Bukkit.getPlayer(player_name))){
+                            Format.AlrtFrmt.use().a(sndr, "Successfully made "+player_name+" the new mayor");
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr, "That player does not belong to your Town.");
+                        }
+                    }else{
+                        Format.CmdErrFrmt.use().a(sndr, "Player not Found!");
+                    }
+                }else {
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setmayor <name>");
+                }
+                break;
+
         }
         return true;
     }
