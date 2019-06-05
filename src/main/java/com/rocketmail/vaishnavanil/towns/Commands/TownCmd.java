@@ -175,9 +175,15 @@ public class TownCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
                         return true;
                     }
-                    Town senders_town = TownS.g().getTown(sndr);
-                    senders_town.setWarpPoint(senders_town, warp_name, sndr.getLocation());
-                    Format.AlrtFrmt.use().a(sndr, "Successfully set Warp: "+warp_name);
+                    if(TownS.g().isClaimed(sndr.getLocation().getChunk()) && TownS.g().getTown(sndr.getLocation().getChunk()).equals(TownS.g().getTown(sndr)) ){
+                        Town senders_town = TownS.g().getTown(sndr);
+                        senders_town.setWarpPoint(senders_town, warp_name, sndr.getLocation());
+                        Format.AlrtFrmt.use().a(sndr, "Successfully set Warp: "+warp_name);
+                        return true;
+                    }else {
+                        Format.CmdErrFrmt.use().a(sndr, "This Area does not belong to your Town");
+                    }
+
                 }else{
                     Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setwarp <name>");
                 }
