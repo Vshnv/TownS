@@ -31,8 +31,6 @@ public class MoveEventListener implements Listener {
                 ParticleManager.INSTANCE.drawChunkBorder(player, fromChunk, Color.WHITE);
             } else if (toChunkClaimed && !fromChunkClaimed) {
                 //Player Entered Claimed Area from Wilderness
-                toClaim.setName("l33t Plot Name");
-                // ^ Setting Name is just for testing.
                 String plot_owner = toClaim.getOwner().getName();
                 String plot_name = toClaim.getName();
                 String plot_town = toClaim.getTown().getName();
