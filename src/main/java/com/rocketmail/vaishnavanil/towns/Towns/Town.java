@@ -123,6 +123,7 @@ public class Town {
     public Set<String> getTownWarpKeys(){ return warpPointMap.keySet(); }
 
     public Location getWarpPoint(Town town, String spawn_name){
+        spawn_name = spawn_name.toUpperCase();
         if(warpPointMap.get(spawn_name) != null){
             Location warp_location = warpPointMap.get(spawn_name);
             if(TownS.g().isClaimed(warp_location.getChunk())){

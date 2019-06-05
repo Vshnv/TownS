@@ -3,6 +3,7 @@ package com.rocketmail.vaishnavanil.towns.Commands;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.RegenBuilder;
+import com.rocketmail.vaishnavanil.towns.Towns.Town;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -53,6 +54,16 @@ public class TownAdmin implements CommandExecutor {
                     }
                     break;
                 /*UNCLAIM*/
+
+                case "setspawn":
+                    if(TownS.g().isClaimed(sndr_chunk)){
+                        Town town = TownS.g().getTown(sndr_chunk);
+                        town.setWarpPoint(town, "spawn", sndr.getLocation());
+                        Format.AlrtFrmt.use().a(sndr, "Successfully Set Spawn Point for Town: "+town.getName());
+                    }else{
+                        Format.CmdErrFrmt.use().a(sndr, "Chunk at this location is not claimed.");
+                    }
+                    break;
 
                 /*SETBALANCE*/
                 case "setbalance":
