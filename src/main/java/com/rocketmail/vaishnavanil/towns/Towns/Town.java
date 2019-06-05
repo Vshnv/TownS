@@ -110,10 +110,11 @@ public class Town {
     public void deleteWarpPoint(String spawn_name){ warpPointMap.remove(spawn_name); }
 
     public void setWarpPoint(Town town, String spawn_name, Location location){
+        spawn_name = spawn_name.toLowerCase();
         if(TownS.g().isClaimed(location.getChunk())){
             Claim claim = TownS.g().getClaim(location.getChunk());
             if(claim != null && claim.getTown().equals(town)){
-                town.warpPointMap.put(spawn_name.toUpperCase(), location);
+                town.warpPointMap.put(spawn_name, location);
                 return;
             }
         }
@@ -123,7 +124,7 @@ public class Town {
     public Set<String> getTownWarpKeys(){ return warpPointMap.keySet(); }
 
     public Location getWarpPoint(Town town, String spawn_name){
-        spawn_name = spawn_name.toUpperCase();
+        spawn_name = spawn_name.toLowerCase();
         if(warpPointMap.get(spawn_name) != null){
             Location warp_location = warpPointMap.get(spawn_name);
             if(TownS.g().isClaimed(warp_location.getChunk())){
