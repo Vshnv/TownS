@@ -5,6 +5,7 @@ import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.RegenBuilder;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -90,7 +91,7 @@ public class TownAdmin implements CommandExecutor {
                         String new_town_name = args[2];
                             if(TownS.g().getTown(town_name)!=null){
                                 TownS.g().getTown(town_name).setName(new_town_name);
-                                Format.AlrtFrmt.use().a(sndr, "");
+                                Format.AlrtFrmt.use().a(sndr, "Successfully changed Town Name to: "+new_town_name);
                             }else{
                                 Format.CmdErrFrmt.use().a(sndr, "Town Not Found");
                             }
@@ -98,6 +99,31 @@ public class TownAdmin implements CommandExecutor {
                     }else{ Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!"); }
                     break;
 
+                case "setplotname":
+                    if(args.length==2){
+                        String new_name = args[1];
+                        if(TownS.g().isClaimed(sndr_chunk)){
+                            TownS.g().getClaim(sndr_chunk).setName(new_name);
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr, "Plot Not Claimed");
+                        }
+                    }else {
+                        Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
+                    }
+                    break;
+                case "setplotowner":
+                    if(args.length==2){
+                        String player_name = args[1];
+                        if(Bukkit.getPlayer(player_name)!=null){
+                            TownS.g().getClaim(sndr_chunk).setOwner(Bukkit.getPlayer(player_name));
+                            Format.AlrtFrmt.use().a(sndr, "Successfully changed Plot owner to: "+player_name);
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr, "Cannot find that Player.");
+                        }
+                    }else {
+                        Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
+                    }
+                    break;
             }
         }
         return true;
