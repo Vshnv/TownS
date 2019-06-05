@@ -36,7 +36,7 @@ public class PlayerChatListener implements Listener {
         if(!player.hasPermission(colorTownChatPermission)){ chatMessage = ChatColor.stripColor(chatMessage); }
         chatPrefix = chatPrefix.replaceFirst("#town_name#", player_town.getName());
         for(Player town_player: Bukkit.getOnlinePlayers()){
-            if(TownS.g().getTown(town_player)!=null){
+            if(TownS.g().hasTown(player)){
                 if(TownS.g().getTown(town_player).equals(player_town)){
                     town_player.sendMessage(chatPrefix+chatMessage);
                 }
