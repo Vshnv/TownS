@@ -16,7 +16,7 @@ public class PlayerChatListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event){
         Player player = event.getPlayer();
         TownPlayer tplayer = TownS.g().getTownPlayer(player);
-        if(tplayer.townnChatActive()){
+        if(tplayer.townChatActive()){
 
             if(TownS.g().getTown(player) == null){
                 tplayer.toggleTownChat();

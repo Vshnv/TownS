@@ -42,7 +42,7 @@ public class TownPlayer {
     public Player getPlayer(){ return player; }
     public boolean showBorder(){ return showBorder; }
     public void toggleBorder() { showBorder = !showBorder; }
-    public boolean townnChatActive(){ return townChatActive; }
+    public boolean townChatActive(){ return townChatActive; }
     public void toggleTownChat() { townChatActive = !townChatActive; }
 
 }

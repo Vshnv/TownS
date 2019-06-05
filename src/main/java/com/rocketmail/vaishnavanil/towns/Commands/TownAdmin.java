@@ -115,10 +115,48 @@ public class TownAdmin implements CommandExecutor {
                     if(args.length==2){
                         String player_name = args[1];
                         if(Bukkit.getPlayer(player_name)!=null){
-                            TownS.g().getClaim(sndr_chunk).setOwner(Bukkit.getPlayer(player_name));
-                            Format.AlrtFrmt.use().a(sndr, "Successfully changed Plot owner to: "+player_name);
+                            if(TownS.g().isClaimed(sndr_chunk)){
+                                TownS.g().getClaim(sndr_chunk).setOwner(Bukkit.getPlayer(player_name));
+                                Format.AlrtFrmt.use().a(sndr, "Successfully changed Plot owner to: "+player_name);
+                            }else{
+                                Format.CmdErrFrmt.use().a(sndr, "Plot Not Claimed");
+                            }
                         }else{
                             Format.CmdErrFrmt.use().a(sndr, "Cannot find that Player.");
+                        }
+                    }else {
+                        Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
+                    }
+                    break;
+                case "deletetown":
+                    if(args.length==2){
+                        String town_name = args[1];
+                        if(TownS.g().getTown(town_name) != null){
+                            TownS.g().getTown(town_name).deleteTown();
+                            Format.AlrtFrmt.use().a(sndr, "Successfully deleted Town: "+town_name);
+                        }else {
+                            Format.CmdErrFrmt.use().a(sndr, "Town Not Found");
+                        }
+                    }else {
+                        Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
+                    }
+                    break;
+                case "settownowner":
+                    if(args.length==3){
+                        String town_name = args[1];
+                        String player_name = args[2];
+                        if(TownS.g().getTown(town_name)!=null){
+                            if(Bukkit.getPlayer(player_name)!=null){
+                                if(TownS.g().getTown(town_name).setOwner(Bukkit.getPlayer(player_name))){
+                                    Format.AlrtFrmt.use().a(sndr, "Successfully set Mayor of Town: "+town_name+" to: "+player_name);
+                                }else {
+                                    Format.CmdErrFrmt.use().a(sndr, "Player does not belong to that town.");
+                                }
+                            }else {
+                                Format.CmdErrFrmt.use().a(sndr, "Player Not Found");
+                            }
+                        }else {
+                            Format.CmdErrFrmt.use().a(sndr, "Town Not Found");
                         }
                     }else {
                         Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");

@@ -53,6 +53,17 @@ public class Town {
         return rankMap.keySet().contains(id);
     }
 
+    public boolean setOwner(Player player){
+        if(TownS.g().hasTown(player)){
+            if(TownS.g().getTown(player).equals(this)){
+                Mayor_ID = player.getUniqueId();
+                return true;
+            }else {return false;}
+        }else {
+            return false;
+        }
+    }
+
     public boolean hasPermission(String perm, Player player) {
         if (!hasRank(player)) return false;
         return getRank(player).hasPermission(perm);
