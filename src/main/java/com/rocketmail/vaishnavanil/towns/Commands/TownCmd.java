@@ -288,39 +288,33 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
                     return true;
                 }
-                try {
-                    if (Double.valueOf(args[1]) + "" != args[1]) {
+                if(isNumber(args[1])){
+                    if (!TownS.g().hasTown(sndr)) {
                         /*MSG ADDED A.I.T.*/
-                        Format.CmdErrFrmt.use().a(sndr, "You must specify a cost such as /towns fs 100");
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                         return true;
                     }
-                } catch (Exception e) {
-                    /*MSG ADDED A.I.T.*/
+                    if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                        return true;
+                    }
+                    if (!TownS.g().isClaimed(sndr.getLocation().getChunk())) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "Please stand in claimed land to use this command! use /towns map for map view");
+                        return true;
+                    }
+                    if (TownS.g().getTown(sndr.getLocation().getChunk()) != TownS.g().getTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "This claim does not belong to your town!");
+                        return true;
+                    }
+                    fs(sndr, Double.valueOf(args[1]));
+                    Format.CmdInfoFrmt.use().a(sndr, "Current chunk is now for sale for $" + args[1] + "/- !");
+                }else {
                     Format.CmdErrFrmt.use().a(sndr, "You must specify a cost such as /towns fs 100");
                     return true;
                 }
-                if (!TownS.g().hasTown(sndr)) {
-                    /*MSG ADDED A.I.T.*/
-                    Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
-                    return true;
-                }
-                if (TownS.g().getTown(sndr).getMayor() != sndr) {
-                    /*MSG ADDED A.I.T.*/
-                    Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
-                    return true;
-                }
-                if (!TownS.g().isClaimed(sndr.getLocation().getChunk())) {
-                    /*MSG ADDED A.I.T.*/
-                    Format.CmdErrFrmt.use().a(sndr, "Please stand in claimed land to use this command! use /towns map for map view");
-                    return true;
-                }
-                if (TownS.g().getTown(sndr.getLocation().getChunk()) != TownS.g().getTown(sndr)) {
-                    /*MSG ADDED A.I.T.*/
-                    Format.CmdErrFrmt.use().a(sndr, "This claim does not belong to your town!");
-                    return true;
-                }
-                fs(sndr, Double.valueOf(args[1]));
-                Format.CmdInfoFrmt.use().a(sndr, "Current chunk is now for sale for $" + args[1] + "/- !");
                 break;
             //END FS
             //NFS
@@ -548,5 +542,14 @@ public class TownCmd implements CommandExecutor {
             if (TownS.g().getClaim(four).getTown() == town) return true;
         }
         return false;
+    }
+
+    public boolean isNumber(String number){
+        try{
+            Double.parseDouble(number);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }

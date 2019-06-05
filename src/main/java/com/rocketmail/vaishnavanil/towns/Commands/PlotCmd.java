@@ -1,5 +1,6 @@
 package com.rocketmail.vaishnavanil.towns.Commands;
 
+import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
@@ -51,8 +52,13 @@ public class PlotCmd implements CommandExecutor {
                     return true;
                 }
                 //TODO:: ADD ECO TRANSACTION
-                plotclaim(TownS.g().getClaim(sndr.getLocation().getChunk()), sndr);
-                Format.AlrtFrmt.use().a(sndr, "You have claimed this plot. Congrats!");
+                Double plot_cost = TownS.g().getClaim(sndr_chunk).getPlotCost();
+                if(EconomyHandler.INSTANCE.depositIntoTown(sndr, TownS.g().getTown(sndr), plot_cost)){
+                    plotclaim(TownS.g().getClaim(sndr.getLocation().getChunk()), sndr);
+                    Format.AlrtFrmt.use().a(sndr, "You have claimed this plot. Congrats!");
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "Claiming this Plot costs: $"+plot_cost);
+                }
                 break;
             case "border":
                 TownS.g().getTownPlayer(sndr).toggleBorder();
@@ -104,4 +110,14 @@ public class PlotCmd implements CommandExecutor {
         claim.setOwner(player);
         claim.setFS(false, 0D);
     }
+
+    public boolean isNumber(String number){
+        try{
+            Double.parseDouble(number);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
 }

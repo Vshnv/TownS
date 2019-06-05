@@ -19,7 +19,7 @@ public class Claim {
     private String town_uuid;
     private UUID ownerID;
     private boolean fs = false;
-    private double cost = 100;
+    private double cost = 0;
     private List<UUID> ContainerTrust = new ArrayList<>();
     private List<UUID> BuildTrust = new ArrayList<>();
 
@@ -50,6 +50,7 @@ public class Claim {
     public void unBuildTrust(UUID id){
         BuildTrust.remove(id);
     }
+    public Double getPlotCost(){ return cost; }
 
 
 
