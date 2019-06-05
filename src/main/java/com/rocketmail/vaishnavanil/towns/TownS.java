@@ -1,6 +1,7 @@
 package com.rocketmail.vaishnavanil.towns;
 
 import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
+import com.rocketmail.vaishnavanil.towns.Commands.TownAdmin;
 import com.rocketmail.vaishnavanil.towns.Commands.TownChatCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownCmd;
 import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
@@ -52,16 +53,15 @@ public final class TownS extends JavaPlugin {
     public BukkitTask BorderTask;
     //MAPPING
     //Private/*CLAIM MAP*/ HashMap<Claim,Town> CM = new HashMap<>();
-    private/*TOWN MAP*/ HashMap<String, Town> TM = new HashMap<>();
-
-    private/*CLAIM MAP*/ HashMap<String, Claim> Map = new HashMap<>();//FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
-
-    public/*P-T Map*/ HashMap<UUID, Town> quickPlayer = new HashMap<>();
-    public RegenBuilder Cur;
-    private Queue<RegenBuilder> RegenWorkers = new LinkedList<>();
+    private HashMap<String, Town> TM = new HashMap<>(); /*TOWN MAP*/
+    private HashMap<String, Claim> Map = new HashMap<>();/*CLAIM MAP*/  //FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
+    public HashMap<UUID, Town> quickPlayer = new HashMap<>(); /*P-T Map*/
+    
+    private HashMap<UUID, TownPlayer> townPlayerMap =  new HashMap<>();
     private HashMap<String, Rank> RankList = new HashMap<>();
 
-    private HashMap<UUID, TownPlayer> townPlayerMap =  new HashMap<>();
+    public RegenBuilder Cur;
+    private Queue<RegenBuilder> RegenWorkers = new LinkedList<>();
     public void addTownPlayer(Player player){ townPlayerMap.put(player.getUniqueId(), new TownPlayer(player)); }
     public void removeTownPlayer(Player player){
         townPlayerMap.remove(player.getUniqueId());
@@ -267,6 +267,7 @@ public final class TownS extends JavaPlugin {
         registerCMD("towns", new TownCmd());
         registerCMD("plot", new PlotCmd());
         registerCMD("tc", new TownChatCmd());
+        registerCMD("ta", new TownAdmin());
         regListen(new InvClickListen());
         regListen(new MoveEventListener());
         regListen(new ExplodeEventListener());

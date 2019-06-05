@@ -18,3 +18,7 @@ commands:
   tc:
     aliases: [townchat, groupchat, teamchat]
     usage: /townchat <message>
+  ta:
+    aliases: [townadmin]
+    permission: town.admin
+    description: Towns Admin

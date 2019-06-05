@@ -35,6 +35,8 @@ public class Town {
         rankMap.put(p.getUniqueId(), rank);
     }
 
+    public void setName(String name){ town_name = name; }
+
     public Rank getRank(Player p) {
         return rankMap.get(p.getUniqueId());
     }
@@ -115,7 +117,7 @@ public class Town {
                 return;
             }
         }
-        Bukkit.broadcastMessage("[TOWNS] Failed to set warp point: "+spawn_name+" Town: "+town.getName());
+        Bukkit.getConsoleSender().sendMessage("[TOWNS] Failed to set warp point: "+spawn_name+" Town: "+town.getName());
     }
 
     public Set<String> getTownWarpKeys(){ return warpPointMap.keySet(); }

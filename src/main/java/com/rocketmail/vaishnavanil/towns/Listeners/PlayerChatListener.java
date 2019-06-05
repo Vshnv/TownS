@@ -31,7 +31,7 @@ public class PlayerChatListener implements Listener {
     public void sendTownMessage(Player player, String town_message){
         String  colorTownChatPermission = "townchat.color";
         Town player_town = TownS.g().getTown(player);
-        String chatPrefix = ChatColor.translateAlternateColorCodes('&', "&8[&e#town_name#&8]&f "+player.getName()+" &8&l» &e");
+        String chatPrefix = ChatColor.translateAlternateColorCodes('&', "&8[&6#town_name#&8]&f "+player.getName()+" &8&l» &e");
         String chatMessage = ChatColor.translateAlternateColorCodes('&', town_message);
         if(!player.hasPermission(colorTownChatPermission)){ chatMessage = ChatColor.stripColor(chatMessage); }
         chatPrefix = chatPrefix.replaceFirst("#town_name#", player_town.getName());
