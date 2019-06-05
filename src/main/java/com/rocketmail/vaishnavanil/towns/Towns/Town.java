@@ -9,10 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Town {
     private String town_name;
@@ -120,6 +117,8 @@ public class Town {
         }
         Bukkit.broadcastMessage("[TOWNS] Failed to set warp point: "+spawn_name+" Town: "+town.getName());
     }
+
+    public Set<String> getTownWarpKeys(){ return warpPointMap.keySet(); }
 
     public Location getWarpPoint(Town town, String spawn_name){
         if(warpPointMap.get(spawn_name) != null){
