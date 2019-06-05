@@ -34,26 +34,48 @@ public class MoveEventListener implements Listener {
                 String plot_owner = toClaim.getOwner().getName();
                 String plot_name = toClaim.getName();
                 String plot_town = toClaim.getTown().getName();
-                TitleSender.INSTANCE.sendTitle(player, "&a" + plot_name, "&cTown: &6" + plot_town + " &8&l| &eOwner: &6" + plot_owner);
-                ParticleManager.INSTANCE.drawChunkBorder(player, toChunk, Color.WHITE);
+                Boolean isToPlotFS =  toClaim.isFS();
+                if(isToPlotFS){
+                    Double cost = toClaim.getPlotCost();
+                    if(plot_name.equals("")){
+                        TitleSender.INSTANCE.sendTitle(player, "&aFor Sale! &2$" + cost, "&cTown: &6" + plot_town);
+                        ParticleManager.INSTANCE.drawChunkBorder(player, toChunk, Color.YELLOW);
+                    }else{
+                        TitleSender.INSTANCE.sendTitle(player, "&aFor Sale! &2$" + cost, "&cTown: &6" + plot_town + " &8&l| &eName: &6" + plot_name);
+                        ParticleManager.INSTANCE.drawChunkBorder(player, toChunk, Color.YELLOW);
+                    }
+                }else{
+                    TitleSender.INSTANCE.sendTitle(player, "&a" + plot_name, "&cTown: &6" + plot_town + " &8&l| &eOwner: &6" + plot_owner);
+                    ParticleManager.INSTANCE.drawChunkBorder(player, toChunk, Color.WHITE);
+                }
             } else if (toChunkClaimed && fromChunkClaimed) {
                 String plot_owner = toClaim.getOwner().getName();
                 String plot_name = toClaim.getName();
                 String plot_town = toClaim.getTown().getName();
-
-                if(fromClaim.getOwner().equals(toClaim.getOwner()) && toClaim.getOwner().equals(player)){
-                    if (!plot_name.equals("")) {
-                        TitleSender.INSTANCE.sendTitle(player, "", "&2Area: &a" + plot_name);
+                boolean isToPlotFS =  toClaim.isFS();
+                if(isToPlotFS){
+                    Double cost = toClaim.getPlotCost();
+                    if(plot_name.equals("")){
+                        TitleSender.INSTANCE.sendTitle(player, "&aFor Sale! &2$" + cost, "&cTown: &6" + plot_town);
+                        ParticleManager.INSTANCE.drawChunkBorder(player, toChunk, Color.YELLOW);
+                    }else{
+                        TitleSender.INSTANCE.sendTitle(player, "&aFor Sale! &2$" + cost, "&cTown: &6" + plot_town + " &8&l| &eName: &6" + plot_name);
+                        ParticleManager.INSTANCE.drawChunkBorder(player, toChunk, Color.YELLOW);
                     }
                 }else{
-                    if (plot_name.equals("")) {
-                        TitleSender.INSTANCE.sendTitle(player, "", "&2Owner: &a" + plot_owner);
-                    } else {
-                        TitleSender.INSTANCE.sendTitle(player, "", "&2Area: &a" + plot_name + " &8&l| &eOwner: &6" + plot_owner);
+                    if(fromClaim.getOwner().equals(toClaim.getOwner()) && toClaim.getOwner().equals(player)){
+                        if (!plot_name.equals("")) {
+                            TitleSender.INSTANCE.sendTitle(player, "", "&2Area: &a" + plot_name);
+                        }
+                    }else{
+                        if (plot_name.equals("")) {
+                            TitleSender.INSTANCE.sendTitle(player, "", "&2Owner: &a" + plot_owner);
+                        } else {
+                            TitleSender.INSTANCE.sendTitle(player, "", "&2Area: &a" + plot_name + " &8&l| &eOwner: &6" + plot_owner);
+                        }
                     }
+                    ParticleManager.INSTANCE.drawChunkBorder(player, toChunk, Color.WHITE);
                 }
-                ParticleManager.INSTANCE.drawChunkBorder(player, toChunk, Color.WHITE);
-
             }
 
         }

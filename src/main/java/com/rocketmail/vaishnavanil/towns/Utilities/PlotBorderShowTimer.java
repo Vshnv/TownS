@@ -19,7 +19,11 @@ public enum  PlotBorderShowTimer {
                 for(Player player: Bukkit.getOnlinePlayers()){
                     if(TownS.g().getTownPlayer(player).showBorder()){
                         if(TownS.g().isClaimed(player.getLocation().getChunk())){
-                            ParticleManager.INSTANCE.drawChunkBorder(player, player.getLocation().getChunk(), Color.WHITE);
+                            if(TownS.g().getClaim(player.getLocation().getChunk()).isFS()){
+                                ParticleManager.INSTANCE.drawChunkBorder(player, player.getLocation().getChunk(), Color.YELLOW);
+                            }else{
+                                ParticleManager.INSTANCE.drawChunkBorder(player, player.getLocation().getChunk(), Color.WHITE);
+                            }
                         }else {
                             ParticleManager.INSTANCE.drawChunkBorder(player, player.getLocation().getChunk(), Color.LIME);
                         }
