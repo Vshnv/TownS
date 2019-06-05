@@ -16,7 +16,7 @@ public class Claim {
     private int CZ;
     private String world;
     private String claim_name = "";
-    private String town_name;
+    private String town_uuid;
     private UUID ownerID;
     private boolean fs = false;
     private double cost = 100;
@@ -33,7 +33,7 @@ public class Claim {
         world = chunk.getWorld().getName();
         CX = chunk.getX();
         CZ = chunk.getZ();
-        town_name = town.getName();
+        town_uuid = town.getTownUUID().toString();
         ownerID = town.getMayor().getUniqueId();
         TownS.g().aCtT(this);
     }
@@ -76,17 +76,17 @@ public class Claim {
         world = chunk.getWorld().getName();
         CX = chunk.getX();
         CZ = chunk.getZ();
-        town_name = town.getName();
+        town_uuid = town.getTownUUID().toString();
         ownerID = owner.getUniqueId();
         TownS.g().aCtT(this);
     }
 
-    protected Claim(Chunk chunk, Town town, UUID owner) {
+    protected Claim(Chunk chunk, Town town, UUID owner_uuid) {
         world = chunk.getWorld().getName();
         CX = chunk.getX();
         CZ = chunk.getZ();
-        town_name = town.getName();
-        ownerID = owner;
+        town_uuid = town.getTownUUID().toString();
+        ownerID = owner_uuid;
         TownS.g().aCtT(this);
     }
 
@@ -111,21 +111,23 @@ public class Claim {
     }
 
     public void setTown(Town town) {
-        town_name = town.getName();
+        town_uuid = town.getTownUUID().toString();
     }
 
     protected Claim(Chunk chunk, Town town, Player owner, List<Flag> flags) {
         world = chunk.getWorld().getName();
         CX = chunk.getX();
         CZ = chunk.getZ();
-        town_name = town.getName();
+        town_uuid = town.getTownUUID().toString();
         ownerID = owner.getUniqueId();
         EnabledFlags.addAll(flags);
     }
     //END CONSTRUCTORS
 
     public Town getTown() {
-        if (TownS.g().townExists(town_name)) return TownS.g().getTown(town_name);
+        if (TownS.g().townExists(town_uuid)){
+            return TownS.g().getTown(UUID.fromString(town_uuid));
+        }
         return null;
     }
 

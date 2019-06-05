@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import static java.lang.System.out;
+import static java.lang.System.setOut;
 
 public final class TownS extends JavaPlugin {
     //SINGLETON
@@ -56,7 +57,7 @@ public final class TownS extends JavaPlugin {
     private HashMap<String, Town> TM = new HashMap<>(); /*TOWN MAP*/
     private HashMap<String, Claim> Map = new HashMap<>();/*CLAIM MAP*/  //FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
     public HashMap<UUID, Town> quickPlayer = new HashMap<>(); /*P-T Map*/
-    
+
     private HashMap<UUID, TownPlayer> townPlayerMap =  new HashMap<>();
     private HashMap<String, Rank> RankList = new HashMap<>();
 
@@ -169,7 +170,6 @@ public final class TownS extends JavaPlugin {
             Claim claim = Map.get(CX + "::" + CZ + "::" + wName);
             try {
                 if (claim.getTown() == null) {
-
                     Chunk chunk = claim.getChunk();
                     Map.remove(CX + "::" + CZ + "::" + wName);
                     new BukkitRunnable(){
@@ -196,13 +196,19 @@ public final class TownS extends JavaPlugin {
         return Map.get(chunk.getX() + "::" + chunk.getZ() + "::" + chunk.getWorld().getName());
     }
 
-    public boolean townExists(String name) {
-        return TM.keySet().contains(name);
+    public boolean townExists(String town_uuid) {
+        return TM.keySet().contains(town_uuid);
     }
 
-    public Town getTown(String name) {
-        if (TM.containsKey(name)) return TM.get(name);
+    public Town getTown(String town_name) {
+        for(Town town: TM.values()){
+            if(town.getName().equals(town_name)){ return town; }
+        }
         return null;
+    }
+
+    public Town getTown(UUID town_uuid){
+        return TM.get(town_uuid.toString());
     }
 
     public Town getTown(Chunk chunk) {
@@ -220,11 +226,11 @@ public final class TownS extends JavaPlugin {
 
     //
     public void/*ADD TOWN TO MAP*/ aTtM(Town town) {
-        TM.put(town.getName(), town);
+        TM.put(town.getTownUUID().toString(), town);
     }
 
     public void/*ADD TOWN FROM MAP*/ rTfM(Town town) {
-        TM.remove(town.getName());
+        TM.remove(town.getTownUUID().toString());
     }
 
     //
