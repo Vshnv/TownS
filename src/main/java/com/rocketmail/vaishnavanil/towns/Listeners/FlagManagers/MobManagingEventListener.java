@@ -11,16 +11,15 @@ import org.bukkit.event.entity.EntitySpawnEvent;
 
 public class MobManagingEventListener implements Listener {
     @EventHandler
-    public void onSpawn(CreatureSpawnEvent e){
-        if(!TownS.g().isClaimed(e.getEntity().getLocation().getChunk()))return;
+    public void onSpawn(CreatureSpawnEvent e) {
+        if (!TownS.g().isClaimed(e.getEntity().getLocation().getChunk())) return;
 
         Claim claim = TownS.g().getClaim(e.getEntity().getLocation().getChunk());
 
-        if(!claim.hasFlag(Flag.MOBS)){
+        if (!claim.hasFlag(Flag.MOBS)) {
 
-            if(ConfigManager.get.isAllowed(e.getEntityType()))return;
+            if (ConfigManager.get.isAllowed(e.getEntityType())) return;
             e.setCancelled(true);
-
         }
     }
 }

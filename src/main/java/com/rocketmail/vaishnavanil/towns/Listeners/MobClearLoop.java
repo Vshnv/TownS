@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -27,7 +28,9 @@ public enum MobClearLoop {
                             Claim c1 = TownS.g().getClaim(e.getLocation().getChunk());
                             if(c1.hasFlag(Flag.MOBS))continue;
                             try {
-                                ((LivingEntity) e).remove();
+                                if( (LivingEntity) e instanceof Monster){
+                                    ((LivingEntity) e).remove();
+                                }
                             }catch (Exception ex){
 
                             }
