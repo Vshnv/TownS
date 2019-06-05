@@ -111,7 +111,7 @@ public class Town {
         if(TownS.g().isClaimed(location.getChunk())){
             Claim claim = TownS.g().getClaim(location.getChunk());
             if(claim != null && claim.getTown().equals(town)){
-                town.warpPointMap.put(spawn_name, location);
+                town.warpPointMap.put(spawn_name.toUpperCase(), location);
                 return;
             }
         }
