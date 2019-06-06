@@ -2,14 +2,17 @@ package com.rocketmail.vaishnavanil.towns.Commands;
 
 import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
 import com.rocketmail.vaishnavanil.towns.GUI.GUI;
+import com.rocketmail.vaishnavanil.towns.GUI.SI.DeleteTownConfirm;
 import com.rocketmail.vaishnavanil.towns.GUI.SI.WarpsGUI;
 import com.rocketmail.vaishnavanil.towns.MapGUI.Map;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
+import com.rocketmail.vaishnavanil.towns.Towns.Rank;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
 import com.rocketmail.vaishnavanil.towns.Towns.TownPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -67,13 +70,13 @@ public class TownCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                         return true;
                     }
-                    if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                    if (!TownS.g().getTown(sndr).hasPermission("command:setname",sndr)) {
                         /*MSG ADDED A.I.T.*/
-                        Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                        Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
                         return true;
                     }
                     if(TownS.g().isNameUsed(town_name)){
-                        Format.CmdErrFrmt.use().a(sndr, "Town Name already taken! Please try another name");
+                        Format.CmdErrFrmt.use().a(sndr, "Town name already taken! Please try another name");
                         return true;
                     }
                     TownS.g().getTown(sndr).setName(town_name);
@@ -113,7 +116,7 @@ public class TownCmd implements CommandExecutor {
                         if (TownS.g().hasTown(sndr)) {
 
                             /* Check for withdraw permission here */
-                            Boolean condition = true;
+                            Boolean condition = TownS.g().getTown(sndr).hasPermission("command:withdraw",sndr);
                             /* Check for withdraw permission here */
 
                             if (condition) {
@@ -146,9 +149,15 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
                     return true;
                 }
+                if(args.length == 2){
+                    if(args[1].equalsIgnoreCase("ConfirmFromGUI")){
+                        deleteTown(sndr);
+                        Format.AlrtFrmt.use().a(sndr, "Successfully deleted your town!");
+                    }
+                }
+                sndr.openInventory(GUI.DELETETown.get());
+                Format.CmdInfoFrmt.use().a(sndr,"Are you sure you want to delete your town? [Answer in GUI]");
 
-                deleteTown(sndr);
-                Format.AlrtFrmt.use().a(sndr, "Successfully deleted your town!");
                 break;
             //TOWN DELETE
 
@@ -207,9 +216,9 @@ public class TownCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                         return true;
                     }
-                    if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                    if (TownS.g().getTown(sndr).hasPermission("commands:setwarp",sndr)) {
                         /*MSG ADDED A.I.T.*/
-                        Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                        Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
                         return true;
                     }
                     if (TownS.g().isClaimed(sndr.getLocation().getChunk()) && TownS.g().getTown(sndr.getLocation().getChunk()).equals(TownS.g().getTown(sndr))) {
@@ -233,9 +242,9 @@ public class TownCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                         return true;
                     }
-                    if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                    if (!TownS.g().getTown(sndr).hasPermission("command:delwarp",sndr)) {
                         /*MSG ADDED A.I.T.*/
-                        Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                        Format.CmdErrFrmt.use().a(sndr, "You dont have permission use this command!");
                         return true;
                     }
                     Town senders_town = TownS.g().getTown(sndr);
@@ -252,9 +261,9 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                     return true;
                 }
-                if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                if (!TownS.g().getTown(sndr).hasPermission("command:setspawn",sndr)) {
                     /*MSG ADDED A.I.T.*/
-                    Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                    Format.CmdErrFrmt.use().a(sndr, "You do not have permission to use this command!");
                     return true;
                 }
                 Town senders_town = TownS.g().getTown(sndr);
@@ -270,9 +279,9 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                     return true;
                 }
-                if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                if (!TownS.g().getTown(sndr).hasPermission("command:claim",sndr)) {
                     /*MSG ADDED A.I.T.*/
-                    Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                    Format.CmdErrFrmt.use().a(sndr, "You do not have permission to use this command!");
                     return true;
                 }
                 if (TownS.g().isClaimed(sndr.getLocation().getChunk())) {
@@ -294,9 +303,9 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                     return true;
                 }
-                if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                if (TownS.g().getTown(sndr).hasPermission("commannd:unclaim",sndr)) {
                     /*MSG ADDED A.I.T.*/
-                    Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                    Format.CmdErrFrmt.use().a(sndr, "You do not have permissions use this command!");
                     return true;
                 }
                 if (!TownS.g().isClaimed(sndr.getLocation().getChunk())) {
@@ -331,9 +340,9 @@ public class TownCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                         return true;
                     }
-                    if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                    if (!TownS.g().getTown(sndr).hasPermission("command:fs",sndr)) {
                         /*MSG ADDED A.I.T.*/
-                        Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                        Format.CmdErrFrmt.use().a(sndr, "You do not have permission to use this command!");
                         return true;
                     }
                     if (!TownS.g().isClaimed(sndr.getLocation().getChunk())) {
@@ -361,9 +370,9 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                     return true;
                 }
-                if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                if (!TownS.g().getTown(sndr).hasPermission("command:nfs",sndr)) {
                     /*MSG ADDED A.I.T.*/
-                    Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                    Format.CmdErrFrmt.use().a(sndr, "You do not have permission to use this command!");
                     return true;
                 }
                 if (!TownS.g().isClaimed(sndr.getLocation().getChunk())) {
@@ -393,9 +402,9 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                     return true;
                 }
-                if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                if (!TownS.g().getTown(sndr).hasPermission("command:invite",sndr)) {
                     /*MSG ADDED A.I.T.*/
-                    Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                    Format.CmdErrFrmt.use().a(sndr, "You do not have permission to use this command!");
                     return true;
                 }
                 if (!(args.length > 1)) {
@@ -425,9 +434,9 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                     return true;
                 }
-                if (TownS.g().getTown(sndr).getMayor() != sndr) {
+                if (!TownS.g().getTown(sndr).hasPermission("command:uninvite",sndr)) {
                     /*MSG ADDED A.I.T.*/
-                    Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                    Format.CmdErrFrmt.use().a(sndr, "You do not have permission to use this command!");
                     return true;
                 }
                 if (!(args.length > 1)) {
@@ -492,7 +501,43 @@ public class TownCmd implements CommandExecutor {
                 tLve.removePlayer(sndr);
                 Format.CmdInfoFrmt.use().a(sndr, "You left the town " + tLve.getName());
                 break;
+            case "kick":
+                if(args.length == 2){
+                    OfflinePlayer opl = Bukkit.getOfflinePlayer(args[1]);
+                    if(!opl.hasPlayedBefore()){
+                        Format.CmdErrFrmt.use().a(sndr, "Could not find player with name "+ args[1]);
+                        return false;
+                    }
+                    if (!TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+                    }
 
+                    Town kt = TownS.g().getTown(sndr);
+                    if(kt.hasPermission("command:kick",sndr)){
+                        if(kt.hasRank(opl.getUniqueId()) && kt.hasRank(sndr) && sndr.getUniqueId() != kt.getMayor().getUniqueId()){
+                            Rank cpr = kt.getRank(opl.getUniqueId());
+                            if(cpr.isHigherThan(kt.getRank(sndr))){
+                                Format.CmdErrFrmt.use().a(sndr, "You cannot kick a player with a higher rank!");
+
+                                return true;
+                            }
+                            kt.removePlayer(opl);
+                            Format.CmdErrFrmt.use().a(sndr, "Successfully kicked player with name " + args[1]);
+
+                        }
+
+
+                    }else {
+                        Format.CmdErrFrmt.use().a(sndr, "You do not have permissions to use this command!");
+
+                    }
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town kick <name>");
+
+                }
+                break;
             case "setmayor":
                 if (args.length == 2) {
                     String player_name = args[1];
@@ -517,6 +562,64 @@ public class TownCmd implements CommandExecutor {
                     }
                 } else {
                     Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setmayor <name>");
+                }
+                break;
+            case "setrank":
+                if(args.length ==3){
+                    if (!TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+                    }
+                    Player rnk;
+                    try{
+                        rnk = Bukkit.getPlayer(args[1]);
+                    }catch (Exception e){
+                        Format.CmdErrFrmt.use().a(sndr, "Player not found!");
+                        return true;
+                    }
+                    if(TownS.g().getRank(args[2]) == null && !args[2].equalsIgnoreCase("none")){
+                        Format.CmdErrFrmt.use().a(sndr, "Rank not found!");
+                        return true;
+                    }
+                    Town twn = TownS.g().getTown(sndr);
+                    if((twn.getRank(sndr) == null)){
+                        if(!twn.hasPermission("command:setrank",sndr)){
+                            Format.CmdErrFrmt.use().a(sndr, "You do not have perm for this command!");
+
+                            return true;
+
+                        }
+                    }else{
+                        Rank r = twn.getRank(sndr);
+                        if(twn.hasRank(rnk)){
+                            Rank rnkRank = twn.getRank(rnk);
+                            if(rnkRank.isHigherThan(r)){
+                                Format.CmdErrFrmt.use().a(sndr, "You do not have perm for this set rank of that person!");
+                                return true;
+                            }
+                        }
+                        if (!r.hasPermission("command:setrank")) {
+                            if (twn.getMayor().getUniqueId() != sndr.getUniqueId()) {
+                                Format.CmdErrFrmt.use().a(sndr, "You do not have perm for this command!");
+
+                                return true;
+                            }
+
+                        }
+                    }
+                    if(args[2].equalsIgnoreCase("none")){
+                        twn.setRank(rnk,null);
+                        Format.CmdInfoFrmt.use().a(sndr,"Successfully removed rank of " +   args[1]);
+                        return true;
+                    }
+                    twn.setRank(rnk, TownS.g().getRank(args[2]));
+                    Format.CmdInfoFrmt.use().a(sndr,"Successfully set rank of " +args[1]+" to "+args[2]);
+
+
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setrank <player> <rank>");
+
                 }
                 break;
 

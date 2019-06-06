@@ -5,9 +5,11 @@ import com.rocketmail.vaishnavanil.towns.MapGUI.FlagShow;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
+import com.rocketmail.vaishnavanil.towns.Towns.Rank;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -107,6 +109,176 @@ public class PlotCmd implements CommandExecutor {
                 }
                 sndr.openInventory(FlagShow.get.create(sndr,TownS.g().getClaim(sndr.getLocation().getChunk())));
                 Format.CmdInfoFrmt.use().a(sndr,"Opening Flag List for this claim!");
+                break;
+            case "trust":
+                //TODO:: CLEAR UNNECCESSARY CLAIM TRUSTS ON ENABLE LATER ON ----> VAISHNAV
+                if(args.length == 4){
+                    if (!TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+
+                    }
+                    if (!TownS.g().isClaimed(sndr.getLocation().getChunk())) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "Your mayor must first claim this chunk for your town!");
+                        return true;
+                    }
+                    if (TownS.g().getTown(sndr.getLocation().getChunk()) != TownS.g().getTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to this town!");
+                        return true;
+                    }
+                    if (!TownS.g().getClaim(sndr_chunk).getOwner().equals(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "This Plot does not belong to you");
+                        return true;
+                    }
+                    if(args[1].equalsIgnoreCase("Build")){
+                        if(args[2].equalsIgnoreCase("rank")){
+                            String rnk_name = args[3];
+                            if(TownS.g().getRank(rnk_name) == null){
+                                Format.CmdErrFrmt.use().a(sndr,"Could not find rank with name " + rnk_name);
+                                return true;
+
+                            }
+                            Rank r = TownS.g().getRank(args[3]);
+                            r.addPerm("Allow.Build."+TownS.g().getClaim(sndr.getLocation().getChunk()).getOwnerID()+"."+TownS.getChunkID(sndr.getLocation().getChunk()));
+                            Format.CmdInfoFrmt.use().a(sndr,"Now allowing rank " + rnk_name + " to build here!");
+                            return true;
+                        }else if (args[2].equalsIgnoreCase("player")){
+                            OfflinePlayer TBOplayer = Bukkit.getOfflinePlayer(args[3]);
+                            if(!TBOplayer.hasPlayedBefore()){
+                                Format.CmdErrFrmt.use().a(sndr,"Could not find player with name "+ args[3]);
+                                return true;
+                            }
+                            Claim thisClm = TownS.g().getClaim(sndr.getLocation().getChunk());
+                            thisClm.BuildTrust(TBOplayer.getUniqueId());
+                            Format.CmdInfoFrmt.use().a(sndr,"Now allowing player " + args[3] + " to build here!");
+
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr,"Invalid format! use /plot trust <Build/Container> <rank/player> <rank name/player name>");
+                            return true;
+                        }
+                    }else if(args[1].equalsIgnoreCase("container")){
+                        if(args[2].equalsIgnoreCase("rank")){
+                            String rnk_name = args[3];
+                            if(TownS.g().getRank(rnk_name) == null){
+                                Format.CmdErrFrmt.use().a(sndr,"Could not find rank with name " + rnk_name);
+                                return true;
+
+                            }
+                            Rank r = TownS.g().getRank(args[3]);
+                            r.addPerm("Allow.Container."+TownS.g().getClaim(sndr.getLocation().getChunk()).getOwnerID()+"."+TownS.getChunkID(sndr.getLocation().getChunk()));
+                            Format.CmdInfoFrmt.use().a(sndr,"Now allowing rank " + rnk_name + " to use Containers here!");
+                            return true;
+                        }else if (args[2].equalsIgnoreCase("player")){
+                            OfflinePlayer TBOplayer = Bukkit.getOfflinePlayer(args[3]);
+                            if(!TBOplayer.hasPlayedBefore()){
+                                Format.CmdErrFrmt.use().a(sndr,"Could not find player with name "+ args[3]);
+                                return true;
+                            }
+                            Claim thisClm = TownS.g().getClaim(sndr.getLocation().getChunk());
+                            thisClm.ContainerTrust(TBOplayer.getUniqueId());
+                            Format.CmdInfoFrmt.use().a(sndr,"Now allowing player " + args[3] + " to use Containers here!");
+
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr,"Invalid format! use /plot trust <Build/Container> <rank/player> <rank name/player name>");
+                            return true;
+                        }
+                    }else{
+                        Format.CmdErrFrmt.use().a(sndr,"Invalid format! use /plot trust <Build/Container> <rank/player> <rank name/player name>");
+                        return true;
+                    }
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr,"Invalid format! use /plot trust <Build/Container> <rank/player> <rank name/player name>");
+                    return true;
+                }
+                break;
+            case "untrust":
+                //TODO:: CLEAR UNNECCESSARY CLAIM TRUSTS ON ENABLE LATER ON ----> VAISHNAV
+                if(args.length == 4){
+                    if (!TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+
+                    }
+                    if (!TownS.g().isClaimed(sndr.getLocation().getChunk())) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "Your mayor must first claim this chunk for your town!");
+                        return true;
+                    }
+                    if (TownS.g().getTown(sndr.getLocation().getChunk()) != TownS.g().getTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to this town!");
+                        return true;
+                    }
+                    if (!TownS.g().getClaim(sndr_chunk).getOwner().equals(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "This Plot does not belong to you");
+                        return true;
+                    }
+                    if(args[1].equalsIgnoreCase("Build")){
+                        if(args[2].equalsIgnoreCase("rank")){
+                            String rnk_name = args[3];
+                            if(TownS.g().getRank(rnk_name) == null){
+                                Format.CmdErrFrmt.use().a(sndr,"Could not find rank with name " + rnk_name);
+                                return true;
+
+                            }
+                            Rank r = TownS.g().getRank(args[3]);
+                            r.removePerm("Allow.Build."+TownS.g().getClaim(sndr.getLocation().getChunk()).getOwnerID()+"."+TownS.getChunkID(sndr.getLocation().getChunk()));
+                            Format.CmdInfoFrmt.use().a(sndr,"Not allowing rank " + rnk_name + " to build here anymore!");
+                            return true;
+                        }else if (args[2].equalsIgnoreCase("player")){
+                            OfflinePlayer TBOplayer = Bukkit.getOfflinePlayer(args[3]);
+                            if(!TBOplayer.hasPlayedBefore()){
+                                Format.CmdErrFrmt.use().a(sndr,"Could not find player with name "+ args[3]);
+                                return true;
+                            }
+                            Claim thisClm = TownS.g().getClaim(sndr.getLocation().getChunk());
+                            thisClm.unBuildTrust(TBOplayer.getUniqueId());
+                            Format.CmdInfoFrmt.use().a(sndr,"Not allowing player " + args[3] + " to build here anymore!");
+
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr,"Invalid format! use /plot trust <Build/Container> <rank/player> <rank name/player name>");
+                            return true;
+                        }
+                    }else if(args[1].equalsIgnoreCase("container")){
+                        if(args[2].equalsIgnoreCase("rank")){
+                            String rnk_name = args[3];
+                            if(TownS.g().getRank(rnk_name) == null){
+                                Format.CmdErrFrmt.use().a(sndr,"Could not find rank with name " + rnk_name);
+                                return true;
+
+                            }
+                            Rank r = TownS.g().getRank(args[3]);
+                            r.removePerm("Allow.Container."+TownS.g().getClaim(sndr.getLocation().getChunk()).getOwnerID()+"."+TownS.getChunkID(sndr.getLocation().getChunk()));
+                            Format.CmdInfoFrmt.use().a(sndr,"Not allowing rank " + rnk_name + " to use Containers here anymore!");
+                            return true;
+                        }else if (args[2].equalsIgnoreCase("player")){
+                            OfflinePlayer TBOplayer = Bukkit.getOfflinePlayer(args[3]);
+                            if(!TBOplayer.hasPlayedBefore()){
+                                Format.CmdErrFrmt.use().a(sndr,"Could not find player with name "+ args[3]);
+                                return true;
+                            }
+                            Claim thisClm = TownS.g().getClaim(sndr.getLocation().getChunk());
+                            thisClm.unContainerTrust(TBOplayer.getUniqueId());
+                            Format.CmdInfoFrmt.use().a(sndr,"Not allowing player " + args[3] + " to use Containers here anymore!");
+
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr,"Invalid format! use /plot trust <Build/Container> <rank/player> <rank name/player name>");
+                            return true;
+                        }
+                    }else{
+                        Format.CmdErrFrmt.use().a(sndr,"Invalid format! use /plot trust <Build/Container> <rank/player> <rank name/player name>");
+                        return true;
+                    }
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr,"Invalid format! use /plot trust <Build/Container> <rank/player> <rank name/player name>");
+                    return true;
+                }
                 break;
         }
 

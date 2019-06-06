@@ -23,6 +23,7 @@ public class UtilityUSEEventListener implements Listener {
            Claim claim = TownS.g().getClaim(e.getClickedBlock().getLocation().getChunk());
            if(claim.hasFlag(Flag.USE))return;
            if(claim.getOwnerID() == e.getPlayer().getUniqueId())return;
+           if(claim.getTown().hasPermission("Allow.useALL",e.getPlayer()))return;
            if(TownS.g().getTown(e.getPlayer())!=null) {
                if (claim.getTown() == TownS.g().getTown(e.getPlayer())) return;
            }

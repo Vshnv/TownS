@@ -140,6 +140,7 @@ public final class TownS extends JavaPlugin {
         }
         return null;
     }
+
     public boolean isNameUsed(String townname){
         if(this.getTown(townname) == null)return false;
         return true;
@@ -147,6 +148,13 @@ public final class TownS extends JavaPlugin {
     public boolean hasTown(Player player) {
         try {
             return getTown(player) != null;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public boolean hasTown(UUID id) {
+        try {
+            return getTown(id) != null;
         } catch (Exception e) {
             return false;
         }

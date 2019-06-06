@@ -21,7 +21,7 @@ public class ContainerUseEventListener implements Listener {
                        e.setCancelled(true);
                        return;
                    }
-                   if(claim.getTown().hasPermission("ContainerALL",e.getPlayer())){
+                   if(claim.getTown().hasPermission("Allow.ContainerALL",e.getPlayer())){
                        return;
                    }
                 }else{
