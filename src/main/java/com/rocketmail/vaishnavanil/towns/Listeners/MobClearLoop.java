@@ -38,6 +38,9 @@ public enum MobClearLoop {
                     }
                 }
             }
+
+
+
         }.runTaskTimer(TownS.g(),100,100);
     }
 }
