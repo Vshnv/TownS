@@ -1,5 +1,6 @@
 package com.rocketmail.vaishnavanil.towns.Commands;
 
+import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.RegenBuilder;
@@ -13,6 +14,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import sun.security.krb5.Config;
 
 public class TownAdmin implements CommandExecutor {
     @Override
@@ -34,13 +36,19 @@ public class TownAdmin implements CommandExecutor {
 
                 /*REGEN*/
                 case "regen":
-                    new BukkitRunnable(){
-                        @Override
-                        public void run() {
-                            new RegenBuilder((Material[][][]) LoadManager.get.loadObject("ChunkSaves",sndr_chunk.getX()+"TT"+sndr_chunk.getZ()+"TT"+sndr_chunk.getWorld().getName()+".dat"),sndr_chunk);
-                        }
-                    }.runTask(TownS.g());
-                    Format.AlrtFrmt.use().a(sndr, "Performing Regen on Chunk at location.");
+                    if (ConfigManager.get.isRegenWorld(sndr.getLocation().getWorld())) {
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                new RegenBuilder((Material[][][]) LoadManager.get.loadObject("ChunkSaves", sndr_chunk.getX() + "TT" + sndr_chunk.getZ() + "TT" + sndr_chunk.getWorld().getName() + ".dat"), sndr_chunk);
+                            }
+                        }.runTask(TownS.g());
+                        Format.AlrtFrmt.use().a(sndr, "Performing Regen on Chunk at location.");
+                    } else {
+
+                    }
+                    Format.CmdErrFrmt.use().a(sndr, "Regen Disabled in this world");
+
                     break;
                 /*REGEN*/
 
