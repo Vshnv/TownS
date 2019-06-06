@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
+import java.util.List;
 
 public enum MobClearLoop {
     get;
@@ -21,10 +22,12 @@ public enum MobClearLoop {
         new BukkitRunnable() {
             @Override
             public void run() {
-
-
+List<Player> l = (List<Player>) Bukkit.getOnlinePlayers();
+    if(l.isEmpty())return;
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    for (Entity e : player.getNearbyEntities(32, 256, 32)) {
+                    List<Entity> t =player.getNearbyEntities(32, 256, 32);
+                    if(t.isEmpty())continue;
+                    for (Entity e : t) {
                         if (e instanceof Monster) {
                             if (!TownS.g().getClaim(e.getLocation().getChunk()).hasFlag(Flag.MOBS)) {
                                 try {
