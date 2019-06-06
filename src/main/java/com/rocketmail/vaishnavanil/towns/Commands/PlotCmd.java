@@ -1,6 +1,7 @@
 package com.rocketmail.vaishnavanil.towns.Commands;
 
 import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
+import com.rocketmail.vaishnavanil.towns.MapGUI.FlagShow;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
@@ -98,8 +99,15 @@ public class PlotCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
                 }
                 break;
-
-
+            case "flags":
+                if (!TownS.g().isClaimed(sndr.getLocation().getChunk())) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "You must stand in a Claimed Chunk for this command!");
+                    return true;
+                }
+                sndr.openInventory(FlagShow.get.create(sndr,TownS.g().getClaim(sndr.getLocation().getChunk())));
+                Format.CmdInfoFrmt.use().a(sndr,"Opening Flag List for this claim!");
+                break;
         }
 
 
