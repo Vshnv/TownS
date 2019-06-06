@@ -13,17 +13,21 @@ public abstract class SimpleInterface {
     StackFunc[] inv;
     int size;
     String name;
-    public SimpleInterface(String n, Player player){
-        name = n;
-    }
-
     public SimpleInterface(String n){
         name = n;
     }
 
     public void init(){
 
-        if(inv.length>9){size = inv.length+(9-inv.length%9);}else{size =9;}
+        if(inv.length>9){
+            if(inv.length%9 == 0){
+                size = inv.length;
+            }else {
+                size = inv.length + (9 - inv.length % 9);
+            }
+        }else{
+            size =9;
+        }
         FunctionRunner runner = FunctionRunner.get();
         for(StackFunc func:inv){
             runner.register(func.getStack(),func.getFunction(),name);
