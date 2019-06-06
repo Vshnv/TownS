@@ -179,7 +179,9 @@ public class Town {
     public boolean removePlayer(Player p){
         if(!belongs(p))return false;
 
-        if(TownS.g().quickPlayer.containsKey(p.getUniqueId()))TownS.g().quickPlayer.remove(p.getUniqueId());
+        if(TownS.g().quickPlayer.containsKey(p.getUniqueId())){
+            TownS.g().quickPlayer.remove(p.getUniqueId());
+        }
         this.Members.remove(p.getUniqueId());
         this.rankMap.remove(p.getUniqueId());
         return true;
@@ -195,6 +197,7 @@ public class Town {
         town_balance = 0.0;
         town_uuid = UUID.randomUUID();
         Mayor_ID = mayor.getUniqueId();
+        addMember(Bukkit.getPlayer(Mayor_ID));
         TownS.g().aTtM(this);
     }
 
@@ -204,6 +207,8 @@ public class Town {
         town_uuid = UUID.randomUUID();
         Mayor_ID = mayor.getUniqueId();
         Members = MemberL;
+        addMember(Bukkit.getPlayer(Mayor_ID));
+
         //Assistants = AssistantL;
         TownS.g().aTtM(this);
     }
@@ -214,6 +219,8 @@ public class Town {
         town_uuid = UUID.randomUUID();
         Mayor_ID = mayor.getUniqueId();
         Members = MemberL;
+        addMember(Bukkit.getPlayer(Mayor_ID));
+
         // Assistants = AssistantL;
 
         for (Claim c : claims) {

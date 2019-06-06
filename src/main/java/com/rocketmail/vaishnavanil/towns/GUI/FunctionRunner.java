@@ -34,8 +34,8 @@ public class FunctionRunner implements Listener {
         if(e instanceof InventoryCreativeEvent)return;
         if(e.getCurrentItem() == null)return;
          String inv_name =e.getView().getTitle();
-         e.setCancelled(true);
          if(!registered.keySet().contains(inv_name))return;
+               e.setCancelled(true);
         if(registered.get(inv_name).keySet().contains(e.getCurrentItem())){
             Function func = registered.get(inv_name).get(e.getCurrentItem());
             HashMap<String,String> inp = new HashMap<>();

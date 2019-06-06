@@ -10,7 +10,7 @@ public enum EconomyHandler {
 
     /* Method to add and remove player balances */
     public Boolean changePlayerBalance(Player player, Double amount) {
-        if (amount > 0) {
+        if (amount >= 0) {
             return TownS.getEconomy().depositPlayer(player, amount).transactionSuccess();
         } else {
             return TownS.getEconomy().withdrawPlayer(player, Math.abs(amount)).transactionSuccess();
@@ -28,7 +28,7 @@ public enum EconomyHandler {
 
     /* Method to let player deposit money into town bank */
     public Boolean depositIntoTown(Player player, Town  town, Double amount){
-        if( EconomyHandler.INSTANCE.getPlayerBalance(player) > amount ){
+        if( EconomyHandler.INSTANCE.getPlayerBalance(player) >= amount ){
             if(EconomyHandler.INSTANCE.changePlayerBalance(player, -amount)){
                 town.changeTownBalanceBy(amount);
                 return true;
@@ -38,7 +38,7 @@ public enum EconomyHandler {
 
     /*  Method to let player deposit percentage of their own money into town bank */
     public Boolean depositIntoTownByPercent(Player player, Town  town, Double amount, Double percent){
-        if( EconomyHandler.INSTANCE.getPlayerBalance(player) > amount*percent ){
+        if( EconomyHandler.INSTANCE.getPlayerBalance(player) >= amount*percent ){
             if(EconomyHandler.INSTANCE.changePlayerBalance(player, -amount*percent)){
                 town.changeTownBalanceBy(amount*percent);
                 return true;
@@ -48,7 +48,7 @@ public enum EconomyHandler {
 
     /* Method to let player withdraw money from town bank */
     public Boolean withdrawFromTown(Player player, Town town, Double amount){
-        if(  town.getTownBalance() > amount ){
+        if(  town.getTownBalance() >= amount ){
             if(EconomyHandler.INSTANCE.changePlayerBalance(player, amount)){
                 town.changeTownBalanceBy(-amount);
                 return true;
