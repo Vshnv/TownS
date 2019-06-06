@@ -50,7 +50,10 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "Please stand in unclaimed land to use this command! use /towns map for map view");
                     return true;
                 }
-
+                if(TownS.g().isNameUsed(args[1])){
+                    Format.CmdErrFrmt.use().a(sndr, "Town Name already taken! Please try another name");
+                    return true;
+                }
 
                 create(sndr, args[1]);
                 break;
@@ -66,6 +69,10 @@ public class TownCmd implements CommandExecutor {
                     if (TownS.g().getTown(sndr).getMayor() != sndr) {
                         /*MSG ADDED A.I.T.*/
                         Format.CmdErrFrmt.use().a(sndr, "Only the town Mayor may use this command!");
+                        return true;
+                    }
+                    if(TownS.g().isNameUsed(town_name)){
+                        Format.CmdErrFrmt.use().a(sndr, "Town Name already taken! Please try another name");
                         return true;
                     }
                     TownS.g().getTown(sndr).setName(town_name);

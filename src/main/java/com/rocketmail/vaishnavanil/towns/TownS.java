@@ -141,7 +141,10 @@ public final class TownS extends JavaPlugin {
         }
         return null;
     }
-
+    public boolean isNameUsed(String townname){
+        if(this.getTown(townname) == null)return false;
+        return true;
+    }
     public boolean hasTown(Player player) {
         try {
             return getTown(player) != null;
@@ -185,7 +188,16 @@ public final class TownS extends JavaPlugin {
                 Map.remove(CX + "::" + CZ + "::" + wName);
                 return false;
             }
+            if(TownS.g().hasTown(claim.getOwner())){
+                if(claim.getTown() != TownS.g().getTown(claim.getOwner())){
+                    claim.setOwner(claim.getTown().getMayor().getUniqueId());
+                }
+            }else{
+                claim.setOwner(claim.getTown().getMayor().getUniqueId());
+
+            }
         }
+
         return Map.containsKey(CX + "::" + CZ + "::" + wName);
     }
 

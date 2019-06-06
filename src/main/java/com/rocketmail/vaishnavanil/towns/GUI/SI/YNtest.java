@@ -20,7 +20,7 @@ public class YNtest extends SimpleInterface {
         Function fYes = new Function() {
             @Override
             public void run(HashMap<String, String> INPUT) {
-            UUID id = UUID.fromString(INPUT.get("Player"));
+                UUID id = UUID.fromString(INPUT.get("Player"));
                 Bukkit.getPlayer(id).sendMessage("Works");
             }
         };
