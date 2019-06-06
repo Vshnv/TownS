@@ -52,7 +52,7 @@ public class ChunkLoadListener implements Listener {
             @Override
             public void run() {
                 if(tSve.peek() == null)return;
-                if(saving)return;
+                //if(saving)return;
                 saving = true;
                 ChunkSnapshot toSave = tSve.poll();
                 Material[][][] MatMaping = new Material[16][256][16];
@@ -71,6 +71,6 @@ public class ChunkLoadListener implements Listener {
                 out.println("Saved a chunk ASYNC");
                 saving = false;
             }
-        }.runTaskTimerAsynchronously(TownS.g(),100,20));
+        }.runTaskTimerAsynchronously(TownS.g(),1,1));
     }
 }
