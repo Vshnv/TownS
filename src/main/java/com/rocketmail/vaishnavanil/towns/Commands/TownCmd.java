@@ -173,8 +173,13 @@ public class TownCmd implements CommandExecutor {
                 break;
             case "warp":
                 if(args.length == 1){
-                    sndr.openInventory(new WarpsGUI("Town Warps", sndr).get());
-                    return true;
+                    if(TownS.g().hasTown(sndr)){
+                        sndr.openInventory(new WarpsGUI("Town Warps", sndr).get());
+                        return true;
+                    }else{
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+                    }
                 }
                 if (args.length == 2) {
                     if (!TownS.g().hasTown(sndr)) {
