@@ -12,35 +12,37 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Collection;
+
 public enum MobClearLoop {
     get;
 
-    public void start(){
-        new BukkitRunnable(){
-
+    public void start() {
+        new BukkitRunnable() {
             @Override
             public void run() {
-                for(World world:Bukkit.getServer().getWorlds()){
-                    for(Entity e:world.getEntities()){
-                        if(!(e instanceof LivingEntity))continue;
-                        if((e instanceof Player))continue;
-                        if(TownS.g().isClaimed(e.getLocation().getChunk())){
-                            Claim c1 = TownS.g().getClaim(e.getLocation().getChunk());
-                            if(c1.hasFlag(Flag.MOBS))continue;
-                            try {
-                                if( (LivingEntity) e instanceof Monster){
-                                    ((LivingEntity) e).remove();
-                                }
-                            }catch (Exception ex){
 
+
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    for (Entity e : player.getNearbyEntities(32, 256, 32)) {
+                        if (e instanceof Monster) {
+                            if (!TownS.g().getClaim(e.getLocation().getChunk()).hasFlag(Flag.MOBS)) {
+                                try {
+                                    new BukkitRunnable(){
+                                        @Override
+                                        public void run(){
+                                            ((LivingEntity) e).remove();
+                                        }
+                                    }.runTask(TownS.g());
+                                } catch (Exception exp) {
+
+                                }
                             }
                         }
                     }
                 }
             }
 
-
-
-        }.runTaskTimer(TownS.g(),100,100);
+        }.runTaskTimerAsynchronously(TownS.g(), 100, 100);
     }
 }
