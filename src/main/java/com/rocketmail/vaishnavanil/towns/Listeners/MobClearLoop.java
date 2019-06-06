@@ -25,6 +25,7 @@ public enum MobClearLoop {
 List<Player> l = (List<Player>) Bukkit.getOnlinePlayers();
     if(l.isEmpty())return;
                 for (Player player : Bukkit.getOnlinePlayers()) {
+                    if(!player.getWorld().getName().equals("world")) return;
                     List<Entity> t =player.getNearbyEntities(32, 256, 32);
                     if(t.isEmpty())continue;
                     for (Entity e : t) {
