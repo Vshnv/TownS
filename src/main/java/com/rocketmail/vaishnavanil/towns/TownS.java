@@ -25,10 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.UUID;
+import java.util.*;
 
 import static java.lang.System.out;
 
@@ -40,17 +37,18 @@ public final class TownS extends JavaPlugin {
     //SINGLETON
     private static TownS instance;
     private static Economy econ = null;
-    public BukkitTask BorderTask;
+    private List<BukkitTask> asyncTasks = new ArrayList<>();
     public HashMap<UUID, Town> quickPlayer = new HashMap<>(); /*P-T Map*/
     public RegenBuilder Cur;
-    private BukkitTask QueueTask;
     //MAPPING
     private HashMap<String, Town> TM = new HashMap<>(); /*TOWN MAP*/
     private HashMap<String, Claim> Map = new HashMap<>();/*CLAIM MAP*/  //FORMAT :: KEY ->  ChunkX::ChunkZ::WORLD
     private HashMap<UUID, TownPlayer> townPlayerMap = new HashMap<>();
     private HashMap<String, Rank> RankList = new HashMap<>();
     private Queue<RegenBuilder> RegenWorkers = new LinkedList<>();
-
+    public void regAsync(BukkitTask tk){
+        if(!asyncTasks.contains(tk))asyncTasks.add(tk);
+    }
     public static TownS g() {
         return instance;
     }
@@ -84,7 +82,7 @@ public final class TownS extends JavaPlugin {
 
     public void alertQueue() {
         out.println("[TownS-Regenerator]Started Regenerator Queue!");
-        QueueTask = new BukkitRunnable() {
+        regAsync(new BukkitRunnable() {
 
             @Override
             public void run() {
@@ -111,7 +109,7 @@ public final class TownS extends JavaPlugin {
                 }
                 return;
             }
-        }.runTaskTimerAsynchronously(TownS.g(), 0, 20);
+        }.runTaskTimerAsynchronously(TownS.g(), 0, 20));
     }
 
     public void finishRegenWork(RegenBuilder builder) {
@@ -291,11 +289,12 @@ public final class TownS extends JavaPlugin {
         regListen(new UtilityUSEEventListener());
         regListen(new TownRestricter());
         regListen(new BlockPhysics());
-        regListen(new ChunkLoadListener());
+        regListen(ChunkLoadListener.get());
         regListen(new RegenChunkInteractEvent());
         regListen(new PlayerJoinQuitListener());
         regListen(new PlayerChatListener());
         regListen(FunctionRunner.get());
+        ChunkLoadListener.get().runSaveQueue();
         PlotBorderShowTimer.INSTANCE.startBorderShow();
         ConfigManager.get.LoadUp();
 
@@ -311,8 +310,11 @@ public final class TownS extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        QueueTask.cancel();
-        BorderTask.cancel();
+        if(!asyncTasks.isEmpty()){
+            for(BukkitTask tk:asyncTasks){
+                tk.cancel();
+            }
+        }
         // Plugin shutdown logic
     }
 

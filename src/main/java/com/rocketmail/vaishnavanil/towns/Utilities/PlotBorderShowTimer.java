@@ -10,7 +10,7 @@ public enum  PlotBorderShowTimer {
     INSTANCE;
 
     public void startBorderShow(){
-        TownS.g().BorderTask = new BukkitRunnable(){
+        TownS.g().regAsync(new BukkitRunnable(){
 
             @Override
             public void run() {
@@ -30,7 +30,7 @@ public enum  PlotBorderShowTimer {
                     }
                 }
             }
-        }.runTaskTimerAsynchronously(TownS.g(), 1, 10);
+        }.runTaskTimerAsynchronously(TownS.g(), 1, 10));
     }
 
 }

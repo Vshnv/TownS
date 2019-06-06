@@ -14,28 +14,47 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.System.out;
 
 public class ChunkLoadListener implements Listener {
+    private Queue<ChunkSnapshot> tSve = new LinkedList<>();
+    static ChunkLoadListener ins;
+    boolean saving = false;
+    public static ChunkLoadListener get(){
+        if(ins == null)ins = new ChunkLoadListener();
+        return ins;
+    }
+    private ChunkLoadListener(){}
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent e){
         if(!ConfigManager.get.isRegenWorld(e.getWorld()))return;
-        Chunk to = e.getChunk();
+       Chunk to = e.getChunk();
+
         File f =new File(TownS.g().getDataFolder().getPath() + "\\ChunkSaves",to.getX()+"TT" + to.getZ() + "TT" + to.getWorld().getName()+".dat");
         if(f.exists()) {
             f = null;
             return;
         }
-
         f = null;
-        ChunkSnapshot toSave = e.getChunk().getChunkSnapshot();
-        new BukkitRunnable(){
+        ChunkSnapshot TSve = e.getChunk().getChunkSnapshot();
+        if(tSve.contains(TSve))return;
+
+
+        tSve.add(TSve);
+
+    }
+
+    public void runSaveQueue(){
+        TownS.g().regAsync(new BukkitRunnable(){
+
             @Override
             public void run() {
-
+                if(tSve.peek() == null)return;
+                if(saving)return;
+                saving = true;
+                ChunkSnapshot toSave = tSve.poll();
                 Material[][][] MatMaping = new Material[16][256][16];
 
                 for(int y = 0;y<=255;y++) {
@@ -49,11 +68,9 @@ public class ChunkLoadListener implements Listener {
 
 
                 SaveManager.use.Save(MatMaping,"ChunkSaves",toSave.getX()+"TT" + toSave.getZ() + "TT" + toSave.getWorldName()+".dat");
-
-                this.cancel();
-
+                out.println("Saved a chunk ASYNC");
+                saving = false;
             }
-        }.runTaskAsynchronously(TownS.g());
-
+        }.runTaskTimerAsynchronously(TownS.g(),100,20));
     }
 }
