@@ -17,6 +17,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -293,6 +294,7 @@ public final class TownS extends JavaPlugin {
         regListen(new RegenChunkInteractEvent());
         regListen(new PlayerJoinQuitListener());
         regListen(new PlayerChatListener());
+        regListen(new InventoryCloseListener());
         regListen(FunctionRunner.get());
         ChunkLoadListener.get().runSaveQueue();
         PlotBorderShowTimer.INSTANCE.startBorderShow();
@@ -302,7 +304,16 @@ public final class TownS extends JavaPlugin {
 
         RegenBuilder.ContinueRegens();
     }
-
+    public static String getChunkID(Chunk c){
+        return c.getX()+"::"+c.getZ()+"::"+c.getWorld();
+    }
+    public static Chunk getChunkFromID(String ID){
+        String[] sep = ID.split("::");
+        int x = Integer.parseInt(sep[0]);
+        int z = Integer.parseInt(sep[1]);
+        World world = Bukkit.getWorld(sep[2]);
+        return world.getChunkAt(x,z);
+    }
 
     public void RegisterRanks(Rank rank) {
         RankList.put(rank.getName(), rank);
