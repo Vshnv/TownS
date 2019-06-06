@@ -40,6 +40,7 @@ public class FunctionRunner implements Listener {
             Function func = registered.get(inv_name).get(e.getCurrentItem());
             HashMap<String,String> inp = new HashMap<>();
             inp.put("Player",e.getWhoClicked().getUniqueId().toString());
+            inp.put("Slot", Integer.valueOf(e.getSlot()).toString() );
             func.run(inp);
         }
     }

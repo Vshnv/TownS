@@ -2,6 +2,7 @@ package com.rocketmail.vaishnavanil.towns.Commands;
 
 import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
 import com.rocketmail.vaishnavanil.towns.GUI.GUI;
+import com.rocketmail.vaishnavanil.towns.GUI.SI.WarpsGUI;
 import com.rocketmail.vaishnavanil.towns.MapGUI.Map;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
@@ -171,6 +172,10 @@ public class TownCmd implements CommandExecutor {
                 }
                 break;
             case "warp":
+                if(args.length == 1){
+                    sndr.openInventory(new WarpsGUI("Town Warps", sndr).get());
+                    return true;
+                }
                 if (args.length == 2) {
                     if (!TownS.g().hasTown(sndr)) {
                         Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
