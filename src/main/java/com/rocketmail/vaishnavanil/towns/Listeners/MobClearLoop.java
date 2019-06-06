@@ -29,7 +29,7 @@ List<Player> l = (List<Player>) Bukkit.getOnlinePlayers();
                     if(t.isEmpty())continue;
                     for (Entity e : t) {
                         if (e instanceof Monster) {
-                            if (!TownS.g().getClaim(e.getLocation().getChunk()).hasFlag(Flag.MOBS)) {
+                            if (TownS.g().isClaimed(e.getLocation().getChunk()) &&  !TownS.g().getClaim(e.getLocation().getChunk()).hasFlag(Flag.MOBS)) {
                                 try {
                                     new BukkitRunnable(){
                                         @Override
