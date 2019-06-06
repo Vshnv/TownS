@@ -22,7 +22,36 @@ public class Town {
     private List<Town> Allies = new ArrayList<>();
     private List<Town> Enemies = new ArrayList<>();
     private String spawnChunkID;
+    private List<Claim> townClaims = new ArrayList<>();
 
+    public void regClaim(Claim c){
+        if(townClaims.contains(c))return;
+        if(c.getTown() != this){
+            townClaims.remove(c);
+            return;
+        }
+
+        townClaims.add(c);
+    }
+    public List<Claim> getClaims(){
+        return townClaims;
+    }
+    public boolean isTownClaim(Claim c){
+        if (townClaims.contains(c))return true;
+        return false;
+    }
+    public void regClaim(Chunk c){
+        if(!TownS.g().isClaimed(c))return;
+        if(TownS.g().getClaim(c).getTown() != this)return;
+        townClaims.add(TownS.g().getClaim(c));
+    }
+    public void unregClaim(Claim c){
+        townClaims.remove(c);
+    }
+    public void unregClaim(Chunk c){
+        if(!TownS.g().isClaimed(c))return;
+        townClaims.remove(TownS.g().getClaim(c));
+    }
     public String getName() {
         return town_name;
     }
@@ -69,8 +98,9 @@ public class Town {
         return getRank(player).hasPermission(perm);
     }
 
-    public void claim(Chunk chunk, Player owner) {
-        new Claim(chunk, this, owner.getUniqueId());
+    public void claim(Chunk chunk, Player owner)
+    {
+       regClaim(new Claim(chunk, this, owner.getUniqueId()));
     }
 
     public boolean setSpawnChunk(Town town, Chunk chunk){
@@ -92,6 +122,7 @@ public class Town {
     public void unclaim(Chunk chunk) {
 
         TownS.g().rCfT(TownS.g().getClaim(chunk));
+        unregClaim(chunk);
         new BukkitRunnable(){
             @Override
             public void run() {
@@ -166,6 +197,7 @@ public class Town {
             TownS.g().rPfT(m);
         }
         TownS.g().rTfM(this);
+        townClaims.clear();
     }
     public boolean addMember(Player p){
         if(TownS.g().getTown(p) != null)return false;
