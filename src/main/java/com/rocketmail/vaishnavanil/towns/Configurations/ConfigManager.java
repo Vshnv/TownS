@@ -25,8 +25,8 @@ private void setUP(){
         TownS.g().getConfig().addDefault("Constraints.NoAllow",Arrays.asList("Obsidian","Bedrock"));
 
         TownS.g().getConfig().addDefault("FlagConfig.Mob.Disallow",Arrays.asList(EntityType.SKELETON.name(),EntityType.ZOMBIE.name()));
-        TownS.g().getConfig().addDefault("Ranks.Assistant.order",1);
-        TownS.g().getConfig().addDefault("Ranks.MVP.order",1);
+        TownS.g().getConfig().addDefault("Ranks.order.Assistant",1);
+        TownS.g().getConfig().addDefault("Ranks.order.MVP",1);
         TownS.g().getConfig().addDefault("Ranks.Assistant",Arrays.asList("Claim","Unclaim","BuildALL","FS","NFS","ContainerALL","FlagSetALL"));
         TownS.g().getConfig().addDefault("Ranks.MVP",Arrays.asList("Change","This","Later","lel"));
 
@@ -80,7 +80,7 @@ private void setUP(){
         Set<String> RanksListed = TownS.g().getConfig().getConfigurationSection("Ranks").getKeys(true);
        for(String sRank:RanksListed){
            List<String> perms = TownS.g().getConfig().getStringList("Ranks."+sRank);
-           int lvl = TownS.g().getConfig().getInt("Ranks."+sRank+".order");
+           int lvl = TownS.g().getConfig().getInt("Ranks.order."+sRank);
            new Rank(sRank,lvl,perms);
        }
     }
