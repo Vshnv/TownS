@@ -21,12 +21,15 @@ public class PlotCmdCompleter implements TabCompleter {
                 suggestions.add("border");
                 suggestions.add("setname");
                 suggestions.add("flag");
+                suggestions.add("allow");
+                suggestions.add("disallow");
+                suggestions.add("access");
                 return suggestions;
             case 2:
                 switch (args[0]){
                     case "claim":
-                        return getEmpty();
                     case "border":
+                    case "flag":
                         return getEmpty();
                     case "setname":
                         suggestions.add("NewName");
@@ -34,13 +37,43 @@ public class PlotCmdCompleter implements TabCompleter {
                         suggestions.add("Market");
                         suggestions.add("Farm");
                         return suggestions;
-                    case "flag":
-                        return getEmpty();
+                    case "allow":
+                    case "disallow":
+                        suggestions.add("Build");
+                        suggestions.add("Container");
+                        return suggestions;
                     default:
                         return getEmpty();
                 }
+            case 3:
+                switch (args[0]){
+                    case "allow":
+                    case "disallow":
+                        suggestions.add("Player");
+                        suggestions.add("Rank");
+                        return suggestions;
+                    default:
+                        return getEmpty();
+                }
+            case 4:
+                if( args[2].equalsIgnoreCase("player")){
+                        return null;
+                }
+                if( args[2].equalsIgnoreCase("rank") ){
+                    if(TownS.g().getRanks().isEmpty()){
+                        return getEmpty();
+                    }else{
+                        suggestions.addAll(TownS.g().getRanks());
+                        return suggestions;
+                    }
+                }
+                return getEmpty();
+
+            case 5:
+
             default:
                 return getEmpty();
+
         }
     }
 

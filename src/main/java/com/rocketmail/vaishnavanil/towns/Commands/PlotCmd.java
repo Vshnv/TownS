@@ -15,6 +15,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class PlotCmd implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -110,7 +114,44 @@ public class PlotCmd implements CommandExecutor {
                 sndr.openInventory(FlagShow.get.create(sndr,TownS.g().getClaim(sndr.getLocation().getChunk())));
                 Format.CmdInfoFrmt.use().a(sndr,"Opening Flag List for this claim!");
                 break;
-            case "trust":
+            case "access":
+                if(TownS.g().hasTown(sndr)){
+                    if(TownS.g().isClaimed(sndr_chunk)){
+                        if(TownS.g().getTown(sndr).equals(TownS.g().getTown(sndr_chunk))){
+                            List<String> PBuildTrusted = new ArrayList<>();
+                            List<String> PContainerTrusted = new ArrayList<>();
+                            Town sndr_town = TownS.g().getTown(sndr);
+                            Claim c_claim = TownS.g().getClaim(sndr_chunk);
+                            /* Get Build Trusted Player Names */
+                            for(UUID p_uuid: c_claim.getBuildTrusted()){
+                                if(Bukkit.getOfflinePlayer(p_uuid).hasPlayedBefore()){
+                                    PBuildTrusted.add(Bukkit.getOfflinePlayer(p_uuid).getName());
+                                }
+                            }
+                            /* Get Container Trusted Player Names */
+                            for(UUID p_uuid: c_claim.getContainerTrusted()){
+                                if(Bukkit.getOfflinePlayer(p_uuid).hasPlayedBefore()){
+                                    PContainerTrusted.add(Bukkit.getOfflinePlayer(p_uuid).getName());
+                                }
+                            }
+                            sndr.sendMessage("Build Trusted: "+PBuildTrusted.toString());
+                            sndr.sendMessage("Container Trusted: "+PContainerTrusted.toString());
+
+                            /*  */
+
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr, "You do not belong to this town!");
+                        }
+                    }else{
+                        Format.CmdErrFrmt.use().a(sndr, "Your mayor must first claim this chunk for your town!");
+                        return true;
+                    }
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                    return true;
+                }
+                break;
+            case "allow":
                 //TODO:: CLEAR UNNECCESSARY CLAIM TRUSTS ON ENABLE LATER ON ----> VAISHNAV
                 if(args.length == 4){
                     if (!TownS.g().hasTown(sndr)) {
@@ -143,7 +184,7 @@ public class PlotCmd implements CommandExecutor {
 
                             }
                             Rank r = TownS.g().getRank(args[3]);
-                            r.addPerm("Allow.Build."+TownS.g().getClaim(sndr.getLocation().getChunk()).getOwnerID()+"."+TownS.getChunkID(sndr.getLocation().getChunk()));
+                            r.addPerm("Allow.Build:"+TownS.g().getClaim(sndr.getLocation().getChunk()).getOwnerID()+":"+TownS.getChunkID(sndr.getLocation().getChunk()));
                             Format.CmdInfoFrmt.use().a(sndr,"Now allowing rank " + rnk_name + " to build here!");
                             return true;
                         }else if (args[2].equalsIgnoreCase("player")){
@@ -195,7 +236,7 @@ public class PlotCmd implements CommandExecutor {
                     return true;
                 }
                 break;
-            case "untrust":
+            case "disallow":
                 //TODO:: CLEAR UNNECCESSARY CLAIM TRUSTS ON ENABLE LATER ON ----> VAISHNAV
                 if(args.length == 4){
                     if (!TownS.g().hasTown(sndr)) {
@@ -225,7 +266,6 @@ public class PlotCmd implements CommandExecutor {
                             if(TownS.g().getRank(rnk_name) == null){
                                 Format.CmdErrFrmt.use().a(sndr,"Could not find rank with name " + rnk_name);
                                 return true;
-
                             }
                             Rank r = TownS.g().getRank(args[3]);
                             r.removePerm("Allow.Build."+TownS.g().getClaim(sndr.getLocation().getChunk()).getOwnerID()+"."+TownS.getChunkID(sndr.getLocation().getChunk()));
