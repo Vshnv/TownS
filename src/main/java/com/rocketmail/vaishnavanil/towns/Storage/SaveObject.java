@@ -11,7 +11,7 @@ import java.io.IOException;
 import static java.lang.System.out;
 
 public class SaveObject {
-    public static boolean SaveObject(Object o,String path,String filename,Class c){
+    public static boolean SaveObject(Object o,String path,String filename){
         File f = new File(path,filename);
         if(!f.getParentFile().exists()){
             f.getParentFile().mkdirs();
@@ -29,7 +29,7 @@ public class SaveObject {
         try {
             FileOutputStream out = new FileOutputStream(f);
             FSTObjectOutput FSTo = new FSTObjectOutput(out);
-            FSTo.writeObject(o,c);
+            FSTo.writeObject(o);
             FSTo.flush();
             FSTo.close();
         } catch (FileNotFoundException e) {

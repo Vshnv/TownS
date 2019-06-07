@@ -330,10 +330,10 @@ public final class TownS extends JavaPlugin {
 
         RegenBuilder.ContinueRegens();
         if(new File(getDataFolder().getPath()+"\\Data","town.dat").exists()) {
-            TM = (HashMap<String, Town>) LoadObject.LoadObject(getDataFolder().getPath() + "\\Data", "towns.dat", HashMap.class);
+            TM = (HashMap<String, Town>) LoadObject.LoadObject(getDataFolder().getPath() + "\\Data", "towns.dat");
         }
         if(new File(getDataFolder().getPath()+"\\Data","claims.dat").exists()) {
-            Map = (HashMap<String, Claim>) LoadObject.LoadObject(getDataFolder().getPath() + "\\Data", "claims.dat", HashMap.class);
+            Map = (HashMap<String, Claim>) LoadObject.LoadObject(getDataFolder().getPath() + "\\Data", "claims.dat");
         }
     }
     public static String getChunkID(Chunk c){
@@ -363,20 +363,20 @@ public final class TownS extends JavaPlugin {
         }
         //DATA SAVE
         if(!TM.keySet().isEmpty()){
-            SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "towns.dat",HashMap.class);
+            SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "towns.dat");
         }else{
             File f = new File(getDataFolder().getPath() + "\\Data", "towns.dat");
             if(f.exists()){
-                SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "towns.dat",HashMap.class);
+                SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "towns.dat");
             }
         }
         if(!Map.keySet().isEmpty()){
-            SaveObject.SaveObject(Map,getDataFolder().getPath() + "\\Data", "claims.dat",HashMap.class);
+            SaveObject.SaveObject(Map,getDataFolder().getPath() + "\\Data", "claims.dat");
 
         }else{
             File f = new File(getDataFolder().getPath() + "\\Data", "claims.dat");
             if(f.exists()){
-                SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "claims.dat",HashMap.class);
+                SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "claims.dat");
             }
         }
 
