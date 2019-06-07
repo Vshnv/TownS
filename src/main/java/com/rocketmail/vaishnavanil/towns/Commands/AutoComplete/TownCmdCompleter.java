@@ -96,12 +96,14 @@ public class TownCmdCompleter implements TabCompleter {
                         return getEmpty();
                 }
             case 3:
-                switch (args[1]){
+                switch (args[0]){
                     case "setrank":
                         if(TownS.g().getRanks().isEmpty()){
+                            System.out.println("ranks empty");
                             return getEmpty();
                         }else{
                             suggestions.addAll(TownS.g().getRanks());
+                            System.out.println(suggestions.toString());
                             return suggestions;
                         }
                     default:
