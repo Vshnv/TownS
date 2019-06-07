@@ -7,11 +7,14 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Claim {
+public class Claim implements Serializable {
+    public static final long serialVerisionUID = 71413L;
+
     //DATA
     private int CX;
     private int CZ;
@@ -23,8 +26,8 @@ public class Claim {
     private double cost = 0;
     private List<UUID> ContainerTrust = new ArrayList<>();
     private List<UUID> BuildTrust = new ArrayList<>();
-
-
+    private List<String> RankBuildTrust = new ArrayList<>();
+    private List<String> RankContainerTrust = new ArrayList<>();
     //DATA
 
     private List<Flag> EnabledFlags = new ArrayList<>();
@@ -56,15 +59,36 @@ public class Claim {
     public void unContainerTrust(Player p){ContainerTrust.remove(p.getUniqueId());}
     public void unContainerTrust(UUID id){ContainerTrust.remove(id);}
 
+    public void BuildTrust(Rank k){
+        if(!RankBuildTrust.contains(k.getName()))RankBuildTrust.add(k.getName());
+    }
+    public void unBuildTrust(Rank k){
+        RankBuildTrust.remove(k.getName());
+    }
+    public void ContainerTrust(Rank k){
+        if(!(RankContainerTrust.contains(k.getName())))RankContainerTrust.add(k.getName());
+    }
+    public void unContainerTrust(Rank k){
+        RankContainerTrust.remove(k.getName());
+    }
     public Double getPlotCost(){ return cost; }
 
 
 
     public boolean canBuild(Player p){
-
-        return (BuildTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId()) || (this.hasFlag(Flag.EDIT))||(getTown().hasPermission("Allow.BuildALL",p)) ||(getTown().hasPermission("Allow.Build."+getOwnerID()+"."+TownS.getChunkID(getChunk()),p));
+        if(getTown().hasRank(p)){
+            if(RankBuildTrust.contains(getTown().getRank(p).getName())){
+                return true;
+            }
+        }
+        return (BuildTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId()) || (this.hasFlag(Flag.EDIT));
     }
     public boolean canUseContainer(Player p){
+        if(getTown().hasRank(p)){
+            if(RankContainerTrust.contains(getTown().getRank(p).getName())){
+                return true;
+            }
+        }
         return (ContainerTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId())|| (this.hasFlag(Flag.EDIT))||(getTown().hasPermission("Allow.ContainerALL",p)) ||(getTown().hasPermission("Allow.Container."+getOwnerID()+"."+TownS.getChunkID(getChunk()),p));
     }
     public boolean hasFlag(Flag f){
