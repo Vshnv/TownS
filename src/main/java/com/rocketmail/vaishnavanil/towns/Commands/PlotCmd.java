@@ -120,14 +120,8 @@ public class PlotCmd implements CommandExecutor {
                     if(TownS.g().isClaimed(sndr_chunk)){
                         if(TownS.g().getTown(sndr).equals(TownS.g().getTown(sndr_chunk))){
 
-                            if(TownS.g().getRank("Assistant").hasPermission("BuildALL")){
-                                System.out.println("assisnt has nnobuild perm");
-                            }
-
                             List<String> PBuildTrusted = new ArrayList<>();
                             List<String> PContainerTrusted = new ArrayList<>();
-                            List<String> RBuildTrusted = new ArrayList<>();
-                            List<String> RContainerTrusted = new ArrayList<>();
 
                             Town sndr_town = TownS.g().getTown(sndr);
                             Claim c_claim = TownS.g().getClaim(sndr_chunk);
@@ -143,25 +137,11 @@ public class PlotCmd implements CommandExecutor {
                                     PContainerTrusted.add(Bukkit.getOfflinePlayer(p_uuid).getName());
                                 }
                             }
-                            /* Get Build Trusted Ranks Which Needs Added Perms for Building */
-                            for(String rank: TownS.g().getRanks()){
-                                System.out.println("checking: "+rank);
-                                if(!TownS.g().getRank(rank).hasPermission("BuildALL")){
-                                    System.out.println("DOES NOT HAVE PERM");
-                                    RBuildTrusted.add(rank);
-                                }
-                            }
-                            /* Get Container Trusted Ranks Which Needs Added Perms for Container Access */
-                            for(String rank: TownS.g().getRanks()){
-                                if(!TownS.g().getRank(rank).hasPermission("ContainerALL")){
-                                    RBuildTrusted.add(rank);
-                                }
-                            }
 
                             sndr.sendMessage("Build Trusted: "+PBuildTrusted.toString());
                             sndr.sendMessage("Container Trusted: "+PContainerTrusted.toString());
-                            sndr.sendMessage("Ranks Build Trusted: "+RBuildTrusted.toString());
-                            sndr.sendMessage("Ranks Container Trusted: "+RContainerTrusted.toString());
+                            sndr.sendMessage("Ranks Build Trusted: "+TownS.g().getClaim(sndr_chunk).getRankBuildTrusted().toString());
+                            sndr.sendMessage("Ranks Container Trusted: "+TownS.g().getClaim(sndr_chunk).getRankContainerTrusted().toString());
 
                             /*  */
 
