@@ -1,5 +1,6 @@
 package com.rocketmail.vaishnavanil.towns.Storage;
 
+import org.bukkit.Bukkit;
 import org.nustaq.serialization.FSTObjectOutput;
 import org.nustaq.serialization.util.FSTOutputStream;
 
@@ -11,7 +12,8 @@ import java.io.IOException;
 import static java.lang.System.out;
 
 public class SaveObject {
-    public static boolean SaveObject(Object o,String path,String filename,Class c){
+    public static boolean SaveObject(Object o,String path,String filename){
+        Bukkit.broadcastMessage("Saving Data...");
         File f = new File(path,filename);
         if(!f.getParentFile().exists()){
             f.getParentFile().mkdirs();
@@ -20,8 +22,6 @@ public class SaveObject {
             try {
                 f.createNewFile();
             } catch (IOException e) {
-                out.println("IOExeption#1 in SAVEOBJECT in TownS. Report to ADudeWithNoJob#1829");
-
                 e.printStackTrace();
                 return false;
             }
@@ -29,16 +29,17 @@ public class SaveObject {
         try {
             FileOutputStream out = new FileOutputStream(f);
             FSTObjectOutput FSTo = new FSTObjectOutput(out);
-            FSTo.writeObject(o,c);
+            FSTo.writeObject(o);
             FSTo.flush();
             FSTo.close();
         } catch (FileNotFoundException e) {
-            out.println("FileNotFoundExeception#1 in SAVEOBJECT in TownS. Report to ADudeWithNoJob#1829");
+            e.printStackTrace();
             return false;
         } catch (IOException e) {
-            out.println("IOExeption#2 in SAVEOBJECT in TownS. Report to ADudeWithNoJob#1829");
+            e.printStackTrace();
             return false;
         }
+        Bukkit.broadcastMessage("Successfully Saved Data....");
         return true;
     }
 }

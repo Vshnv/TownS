@@ -16,7 +16,9 @@ public class Rank implements Serializable {
 
     public Rank(String rank,int hierarchiel,Collection<String> perms){
         name = rank;
-        permissions = perms;
+        for(String s:perms){
+            permissions.add(s.toLowerCase());
+        }
         HierLevel = hierarchiel;
         TownS.g().RegisterRanks(this);
     }
@@ -36,7 +38,7 @@ public class Rank implements Serializable {
     }
 
     public void addPerm(String perm){
-
+        if(permissions.contains(perm))return;
         permissions.add(perm.toLowerCase());
         TownS.g().getConfig().set("Ranks."+name,permissions);
         TownS.g().saveConfig();

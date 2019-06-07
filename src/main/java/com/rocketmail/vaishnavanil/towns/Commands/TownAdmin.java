@@ -170,6 +170,14 @@ public class TownAdmin implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
                     }
                     break;
+                case"savetowns":
+                    TownS.g().saveTown();
+                    Format.CmdInfoFrmt.use().a(sndr,"Saved all town Data!");
+                    break;
+                case"saveclaims":
+                    TownS.g().saveClaims();
+                    Format.CmdInfoFrmt.use().a(sndr,"Saved all claim data");
+                    break;
             }
         }
         return true;

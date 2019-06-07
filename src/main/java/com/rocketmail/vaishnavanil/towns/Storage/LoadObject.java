@@ -8,7 +8,7 @@ import java.io.*;
 import static java.lang.System.out;
 
 public class LoadObject {
-    public static Object LoadObject(String path,String filename,Class c){
+    public static Object LoadObject(String path,String filename){
         File f = new File(path,filename);
         if(!f.getParentFile().exists()){
 
@@ -29,7 +29,7 @@ public class LoadObject {
         try {
             FileInputStream in = new FileInputStream(f);
             FSTObjectInput FSTi = new FSTObjectInput(in);
-            Object o = FSTi.readObject(c);
+            Object o = FSTi.readObject();
             FSTi.close();
             return o;
         } catch (FileNotFoundException e) {
