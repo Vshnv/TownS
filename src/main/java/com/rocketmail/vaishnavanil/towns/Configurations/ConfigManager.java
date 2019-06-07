@@ -12,6 +12,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public enum ConfigManager {
     get;
@@ -76,7 +77,7 @@ private void setUP(){
         Constraints.DONT_USE.setRestrictions(Donts);
     }
     private void setupranks(){
-        List<String> RanksListed = TownS.g().getConfig().getStringList("Ranks");
+        Set<String> RanksListed = TownS.g().getConfig().getConfigurationSection("Ranks").getKeys(true);
        for(String sRank:RanksListed){
            List<String> perms = TownS.g().getConfig().getStringList("Ranks."+sRank);
            int lvl = TownS.g().getConfig().getInt("Ranks."+sRank+".order");

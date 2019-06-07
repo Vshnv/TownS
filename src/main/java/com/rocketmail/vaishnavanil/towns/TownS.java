@@ -321,7 +321,6 @@ public final class TownS extends JavaPlugin {
         regListen(FunctionRunner.get());
         ChunkLoadListener.get().runSaveQueue();
         PlotBorderShowTimer.INSTANCE.startBorderShow();
-        ConfigManager.get.LoadUp();
 
         MobClearLoop.get.start();
 
@@ -339,6 +338,8 @@ public final class TownS extends JavaPlugin {
     }
 
     public void RegisterRanks(Rank rank) {
+
+        out.println(rank.getName());
         RankList.put(rank.getName(), rank);
     }
 
