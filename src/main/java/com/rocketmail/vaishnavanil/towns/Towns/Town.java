@@ -2,7 +2,6 @@ package com.rocketmail.vaishnavanil.towns.Towns;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
-import com.sun.istack.internal.NotNull;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -270,7 +269,7 @@ public class Town {
         return true;
     }
 
-    public boolean belongs(Player player) {
+    public boolean belongs(OfflinePlayer player) {
         if (Members.contains(player.getUniqueId()) || rankMap.containsKey(player.getUniqueId()) || Mayor_ID == player.getUniqueId())
             return true;
         return false;

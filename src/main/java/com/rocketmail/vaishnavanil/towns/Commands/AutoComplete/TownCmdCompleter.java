@@ -38,6 +38,7 @@ public class TownCmdCompleter implements TabCompleter {
                 suggestions.add("setname");
                 suggestions.add("setspawn");
                 suggestions.add("setmayor");
+                suggestions.add("setrank");
 
                 suggestions.add("delwarp");
 
@@ -50,9 +51,12 @@ public class TownCmdCompleter implements TabCompleter {
                 suggestions.add("join");
                 suggestions.add("leave");
                 suggestions.add("delete");
+                suggestions.add("kick");
                 return suggestions;
             case 2:
                 switch (args[0]){
+
+
                     case "create":
                         suggestions.add("TownName");
                         return suggestions;
@@ -66,26 +70,40 @@ public class TownCmdCompleter implements TabCompleter {
                             return getEmpty();
                         }
 
-                    case "deposit"  :
-                        return getNumbers();
+                    case "deposit" :
                     case "withdraw":
+                    case "fs":
                         return getNumbers();
+
                     case "invite":
-                        return null;
+                    case "setmayor":
+                    case "setrank":
                     case "uninvite":
+                    case "kick":
                         return null;
+
                     case "setwarp":
                         suggestions.add("NewWarpName");
                         return suggestions;
+
                     case "setname":
                         suggestions.add("NewName");
                         return suggestions;
-                    case "setmayor":
-                        return null;
-                    case "fs":
-                        return getNumbers();
+
                     case "join":
                         return getTowns();
+                    default:
+                        return getEmpty();
+                }
+            case 3:
+                switch (args[1]){
+                    case "setrank":
+                        if(TownS.g().getRanks().isEmpty()){
+                            return getEmpty();
+                        }else{
+                            suggestions.addAll(TownS.g().getRanks());
+                            return suggestions;
+                        }
                     default:
                         return getEmpty();
                 }

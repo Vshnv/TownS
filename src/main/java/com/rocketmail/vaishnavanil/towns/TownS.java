@@ -17,10 +17,7 @@ import com.rocketmail.vaishnavanil.towns.Towns.*;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
 import com.rocketmail.vaishnavanil.towns.Utilities.PlotBorderShowTimer;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
@@ -133,7 +130,7 @@ public final class TownS extends JavaPlugin {
         Map.remove(claim.x() + "::" + claim.z() + "::" + claim.getWorldName());
     }
 
-    public Town getTown(Player p) {
+    public Town getTown(OfflinePlayer p) {
         if (quickPlayer.containsKey(p.getUniqueId())) return quickPlayer.get(p.getUniqueId());
         //ADD TO QUICK LOOKUP
         for (Town m : TM.values()) {
@@ -149,7 +146,7 @@ public final class TownS extends JavaPlugin {
         if(this.getTown(townname) == null)return false;
         return true;
     }
-    public boolean hasTown(Player player) {
+    public boolean hasTown(OfflinePlayer player) {
         try {
             return getTown(player) != null;
         } catch (Exception e) {
@@ -344,6 +341,8 @@ public final class TownS extends JavaPlugin {
     public void RegisterRanks(Rank rank) {
         RankList.put(rank.getName(), rank);
     }
+
+    public Set<String> getRanks(){ return RankList.keySet(); }
 
     @Override
     public void onDisable() {
