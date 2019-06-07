@@ -20,7 +20,7 @@ public class PlotCmdCompleter implements TabCompleter {
                 suggestions.add("claim");
                 suggestions.add("border");
                 suggestions.add("setname");
-                suggestions.add("flag");
+                suggestions.add("flags");
                 suggestions.add("allow");
                 suggestions.add("disallow");
                 suggestions.add("access");
@@ -29,7 +29,7 @@ public class PlotCmdCompleter implements TabCompleter {
                 switch (args[0]){
                     case "claim":
                     case "border":
-                    case "flag":
+                    case "flags":
                         return getEmpty();
                     case "setname":
                         suggestions.add("NewName");
