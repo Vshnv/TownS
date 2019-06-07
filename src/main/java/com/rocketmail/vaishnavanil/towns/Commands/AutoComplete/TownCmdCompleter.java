@@ -21,6 +21,13 @@ public class TownCmdCompleter implements TabCompleter {
 
         switch (args.length) {
             case 1:
+
+                if(!TownS.g().hasTown(player)){
+                    suggestions.add("create");
+                    suggestions.add("join");
+                    return suggestions;
+                }
+
                 suggestions.add("create");
                 suggestions.add("spawn");
                 suggestions.add("map");
@@ -36,11 +43,9 @@ public class TownCmdCompleter implements TabCompleter {
                 suggestions.add("setwarp");
                 suggestions.add("setname");
                 suggestions.add("setspawn");
-                suggestions.add("setmayor");
                 suggestions.add("setrank");
 
                 suggestions.add("delwarp");
-
 
                 suggestions.add("fs");
                 suggestions.add("nfs");
@@ -49,8 +54,14 @@ public class TownCmdCompleter implements TabCompleter {
 
                 suggestions.add("join");
                 suggestions.add("leave");
-                suggestions.add("delete");
                 suggestions.add("kick");
+
+                if(TownS.g().getTown(player).getMayor().getUniqueId().equals(player.getUniqueId())){
+                    suggestions.add("delete");
+                    suggestions.add("setmayor");
+                    suggestions.remove("create");
+                }
+
                 return suggestions;
             case 2:
                 switch (args[0]){
