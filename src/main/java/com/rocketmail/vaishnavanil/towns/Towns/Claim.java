@@ -3,6 +3,7 @@ package com.rocketmail.vaishnavanil.towns.Towns;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -39,26 +40,32 @@ public class Claim {
     }
     //TEST
     public void BuildTrust(Player p){
-        BuildTrust.add(p.getUniqueId());
+        if(!BuildTrust.contains(p.getUniqueId()))BuildTrust.add(p.getUniqueId());
     }
     public void unBuildTrust(Player p){
         BuildTrust.remove(p.getUniqueId());
     }
     public void BuildTrust(UUID id){
-        BuildTrust.add(id);
+        if(!BuildTrust.contains(id))BuildTrust.add(id);
     }
     public void unBuildTrust(UUID id){
         BuildTrust.remove(id);
     }
+    public void ContainerTrust(Player p){if(!ContainerTrust.contains(p.getUniqueId()))ContainerTrust.add(p.getUniqueId());}
+    public void ContainerTrust(UUID id){if(!ContainerTrust.contains(id))ContainerTrust.add(id);}
+    public void unContainerTrust(Player p){ContainerTrust.remove(p.getUniqueId());}
+    public void unContainerTrust(UUID id){ContainerTrust.remove(id);}
+
     public Double getPlotCost(){ return cost; }
 
 
 
     public boolean canBuild(Player p){
-        return (BuildTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId()) || (this.hasFlag(Flag.EDIT));
+
+        return (BuildTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId()) || (this.hasFlag(Flag.EDIT))||(getTown().hasPermission("Allow.BuildALL",p)) ||(getTown().hasPermission("Allow.Build."+getOwnerID()+"."+TownS.getChunkID(getChunk()),p));
     }
     public boolean canUseContainer(Player p){
-        return (ContainerTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId());
+        return (ContainerTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId())|| (this.hasFlag(Flag.EDIT))||(getTown().hasPermission("Allow.ContainerALL",p)) ||(getTown().hasPermission("Allow.Container."+getOwnerID()+"."+TownS.getChunkID(getChunk()),p));
     }
     public boolean hasFlag(Flag f){
         return getFlags().contains(f);
@@ -154,8 +161,8 @@ public class Claim {
         return ownerID;
     }
 
-    public Player getOwner() {
-        return Bukkit.getPlayer(ownerID);
+    public OfflinePlayer getOwner() {
+        return Bukkit.getOfflinePlayer(ownerID);
     }
 
     public boolean isFS() {
