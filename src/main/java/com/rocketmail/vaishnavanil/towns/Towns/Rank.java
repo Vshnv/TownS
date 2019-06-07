@@ -4,6 +4,7 @@ import com.rocketmail.vaishnavanil.towns.TownS;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -13,7 +14,18 @@ public class Rank implements Serializable {
     private String name;
     private int HierLevel;
     private Collection<String> permissions = new HashSet<>();
+    private HashMap<String,Object> Var = new HashMap<>();
 
+    public void setVar(String var,Object value){
+        Var.put(var,value);
+    }
+    public boolean varExists(String var){
+        if(Var.keySet().contains(var))return true;
+        return false;
+    }
+    public Object getVar(String var){
+        return Var.get(var);
+    }
     public Rank(String rank,int hierarchiel,Collection<String> perms){
         name = rank;
         for(String s:perms){

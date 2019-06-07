@@ -2,6 +2,7 @@ package com.rocketmail.vaishnavanil.towns.Towns;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
+import com.rocketmail.vaishnavanil.towns.Utilities.WarpLocation;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -16,13 +17,13 @@ public class Town implements Serializable {
     private UUID Mayor_ID;
     private Double town_balance;
     private HashMap<UUID, Rank> rankMap = new HashMap<>();
-    private HashMap<String, Location> warpPointMap = new HashMap<>();
+    private HashMap<String, WarpLocation> warpPointMap = new HashMap<>();
     private List<UUID> Members = new ArrayList<>();
     private List<Town> Allies = new ArrayList<>();
     private List<Town> Enemies = new ArrayList<>();
     private String spawnChunkID;
     private List<Claim> townClaims = new ArrayList<>();
-
+    private HashMap<String,Object> Var = new HashMap<>();
     public void regClaim(Claim c) {
         if (townClaims.contains(c)) return;
         if (c.getTown() != this) {
@@ -31,6 +32,16 @@ public class Town implements Serializable {
         }
 
         townClaims.add(c);
+    }
+    public void setVar(String var,Object value){
+        Var.put(var,value);
+    }
+    public boolean varExists(String var){
+        if(Var.keySet().contains(var))return true;
+        return false;
+    }
+    public Object getVar(String var){
+        return Var.get(var);
     }
 
     public List<Claim> getClaims() {
@@ -197,7 +208,7 @@ public class Town implements Serializable {
         if (TownS.g().isClaimed(location.getChunk())) {
             Claim claim = TownS.g().getClaim(location.getChunk());
             if (claim != null && claim.getTown().equals(town)) {
-                town.warpPointMap.put(spawn_name, location);
+                town.warpPointMap.put(spawn_name, new WarpLocation(location));
                 return;
             }
         }
@@ -211,11 +222,11 @@ public class Town implements Serializable {
     public Location getWarpPoint(Town town, String spawn_name) {
         spawn_name = spawn_name.toLowerCase();
         if (warpPointMap.get(spawn_name) != null) {
-            Location warp_location = warpPointMap.get(spawn_name);
+            Location warp_location = warpPointMap.get(spawn_name).getLocation();
             if (TownS.g().isClaimed(warp_location.getChunk())) {
                 Town town_at_location = TownS.g().getTown(warp_location.getChunk());
                 if (town_at_location.equals(town)) {
-                    return warpPointMap.get(spawn_name);
+                    return warpPointMap.get(spawn_name).getLocation();
                 } else {
                     warpPointMap.remove(spawn_name);
                     return null;
