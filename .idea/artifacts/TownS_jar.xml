@@ -1,8 +1,12 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="TownS.jar">
+  <artifact type="jar" name="TownS:jar">
     <output-path>$USER_HOME$/Desktop/Games/Spigot/plugins</output-path>
     <root id="archive" name="TownS.jar">
       <element id="module-output" name="TownS" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.8.8/jackson-core-2.8.8.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/objenesis/objenesis/2.5.1/objenesis-2.5.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/javassist/javassist/3.21.0-GA/javassist-3.21.0-GA.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/de/ruedigermoeller/fst/2.56/fst-2.56.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

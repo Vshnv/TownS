@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +32,18 @@ public class Claim implements Serializable {
     //DATA
 
     private List<Flag> EnabledFlags = new ArrayList<>();
+    private HashMap<String,Object> Var = new HashMap<>();
 
+    public void setVar(String var,Object value){
+        Var.put(var,value);
+    }
+    public boolean varExists(String var){
+        if(Var.keySet().contains(var))return true;
+        return false;
+    }
+    public Object getVar(String var){
+        return Var.get(var);
+    }
     //CONSTRUCTORS
     protected Claim(Chunk chunk, Town town) {
         world = chunk.getWorld().getName();

@@ -286,14 +286,20 @@ public final class TownS extends JavaPlugin {
     //ENABLE DISABLE
     @Override
     public void onEnable() {
-
+        instance = this;
         if (!setupEconomy()) {
             Bukkit.getConsoleSender().sendMessage(getDescription().getName() + " - Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
-        instance = this;
+
+        if(new File(getDataFolder().getPath()+"\\Data","towns.dat").exists()) {
+            TM = (HashMap<String, Town>) LoadObject.LoadObject(getDataFolder().getPath() + "\\Data", "towns.dat");
+        }
+        if(new File(getDataFolder().getPath()+"\\Data","claims.dat").exists()) {
+            Map = (HashMap<String, Claim>) LoadObject.LoadObject(getDataFolder().getPath() + "\\Data", "claims.dat");
+        }
         ConfigManager.get.LoadUp();
 
 
@@ -332,12 +338,7 @@ public final class TownS extends JavaPlugin {
         MobClearLoop.get.start();
 
         RegenBuilder.ContinueRegens();
-        if(new File(getDataFolder().getPath()+"\\Data","town.dat").exists()) {
-            TM = (HashMap<String, Town>) LoadObject.LoadObject(getDataFolder().getPath() + "\\Data", "towns.dat");
-        }
-        if(new File(getDataFolder().getPath()+"\\Data","claims.dat").exists()) {
-            Map = (HashMap<String, Claim>) LoadObject.LoadObject(getDataFolder().getPath() + "\\Data", "claims.dat");
-        }
+
     }
 
     private void hookPlaceholderAPI() {

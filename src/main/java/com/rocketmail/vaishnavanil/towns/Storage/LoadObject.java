@@ -1,5 +1,6 @@
 package com.rocketmail.vaishnavanil.towns.Storage;
 
+import org.bukkit.util.io.BukkitObjectInputStream;
 import org.nustaq.serialization.FSTObjectInput;
 import org.nustaq.serialization.FSTObjectOutput;
 
@@ -18,7 +19,7 @@ public class LoadObject {
         if(!f.exists()){
             try {
                 f.createNewFile();
-
+                return null;
             } catch (IOException e) {
                 out.println("IOExeption#1 in LOADOBJECT in TownS. Report to ADudeWithNoJob#1829");
 
