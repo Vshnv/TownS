@@ -570,19 +570,23 @@ public class TownCmd implements CommandExecutor {
                         /*MSG ADDED A.I.T.*/
                         Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                         return true;
-                    }
-                    Player rnk;
+                    } Town twn = TownS.g().getTown(sndr);
+                    OfflinePlayer rnk;
                     try{
-                        rnk = Bukkit.getPlayer(args[1]);
+                        rnk = Bukkit.getOfflinePlayer(args[1]);
                     }catch (Exception e){
                         Format.CmdErrFrmt.use().a(sndr, "Player not found!");
+                        return true;
+                    }
+                    if(rnk.getUniqueId() == twn.getMayor().getUniqueId()){
+                        Format.CmdErrFrmt.use().a(sndr, "Cannot set a rank to the mayor!");
                         return true;
                     }
                     if(TownS.g().getRank(args[2]) == null && !args[2].equalsIgnoreCase("none")){
                         Format.CmdErrFrmt.use().a(sndr, "Rank not found!");
                         return true;
                     }
-                    Town twn = TownS.g().getTown(sndr);
+
                     if((twn.getRank(sndr) == null)){
                         if(!twn.hasPermission("command:setrank",sndr)){
                             Format.CmdErrFrmt.use().a(sndr, "You do not have perm for this command!");
@@ -592,8 +596,8 @@ public class TownCmd implements CommandExecutor {
                         }
                     }else{
                         Rank r = twn.getRank(sndr);
-                        if(twn.hasRank(rnk)){
-                            Rank rnkRank = twn.getRank(rnk);
+                        if(twn.hasRank(rnk.getUniqueId())){
+                            Rank rnkRank = twn.getRank(rnk.getUniqueId());
                             if(rnkRank.isHigherThan(r)){
                                 Format.CmdErrFrmt.use().a(sndr, "You do not have perm for this set rank of that person!");
                                 return true;

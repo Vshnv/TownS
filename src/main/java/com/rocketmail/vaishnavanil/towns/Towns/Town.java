@@ -63,7 +63,7 @@ public class Town {
         return Bukkit.getOfflinePlayer(Mayor_ID);
     }
 
-    public void setRank(Player p, Rank rank) {
+    public void setRank(OfflinePlayer p, Rank rank) {
         if(rank == null){
             rankMap.remove(p.getUniqueId());
             return;
