@@ -3,6 +3,7 @@ package com.rocketmail.vaishnavanil.towns;
 import com.rocketmail.vaishnavanil.towns.Commands.AutoComplete.PlotCmdCompleter;
 import com.rocketmail.vaishnavanil.towns.Commands.AutoComplete.TownAdminCompleter;
 import com.rocketmail.vaishnavanil.towns.Commands.AutoComplete.TownCmdCompleter;
+import com.rocketmail.vaishnavanil.towns.Commands.AutoComplete.WildernessInteractListener;
 import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownAdmin;
 import com.rocketmail.vaishnavanil.towns.Commands.TownChatCmd;
@@ -330,6 +331,8 @@ public final class TownS extends JavaPlugin {
         regListen(new PlayerJoinQuitListener());
         regListen(new PlayerChatListener());
         regListen(new InventoryCloseListener());
+        regListen(new WildernessInteractListener());
+
         regListen(FunctionRunner.get());
         hookPlaceholderAPI();
         ChunkLoadListener.get().runSaveQueue();
