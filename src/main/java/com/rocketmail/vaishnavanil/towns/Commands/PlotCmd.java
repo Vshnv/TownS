@@ -151,7 +151,7 @@ public class PlotCmd implements CommandExecutor {
                     return true;
                 }
                 break;
-            case "allow":
+            case "trust":
                 //TODO:: CLEAR UNNECCESSARY CLAIM TRUSTS ON ENABLE LATER ON ----> VAISHNAV
                 if(args.length == 4){
                     if (!TownS.g().hasTown(sndr)) {
@@ -175,6 +175,8 @@ public class PlotCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "This Plot does not belong to you");
                         return true;
                     }
+                    Claim thisClm = TownS.g().getClaim(sndr.getLocation().getChunk());
+
                     if(args[1].equalsIgnoreCase("Build")){
                         if(args[2].equalsIgnoreCase("rank")){
                             String rnk_name = args[3];
@@ -184,7 +186,7 @@ public class PlotCmd implements CommandExecutor {
 
                             }
                             Rank r = TownS.g().getRank(args[3]);
-                            r.addPerm("Allow.Build:"+TownS.g().getClaim(sndr.getLocation().getChunk()).getOwnerID()+":"+TownS.getChunkID(sndr.getLocation().getChunk()));
+                            thisClm.BuildTrust(r);
                             Format.CmdInfoFrmt.use().a(sndr,"Now allowing rank " + rnk_name + " to build here!");
                             return true;
                         }else if (args[2].equalsIgnoreCase("player")){
@@ -193,7 +195,6 @@ public class PlotCmd implements CommandExecutor {
                                 Format.CmdErrFrmt.use().a(sndr,"Could not find player with name "+ args[3]);
                                 return true;
                             }
-                            Claim thisClm = TownS.g().getClaim(sndr.getLocation().getChunk());
                             thisClm.BuildTrust(TBOplayer.getUniqueId());
                             Format.CmdInfoFrmt.use().a(sndr,"Now allowing player " + args[3] + " to build here!");
 
@@ -210,6 +211,7 @@ public class PlotCmd implements CommandExecutor {
 
                             }
                             Rank r = TownS.g().getRank(args[3]);
+                            thisClm.ContainerTrust(r);
                             r.addPerm("Allow.Container."+TownS.g().getClaim(sndr.getLocation().getChunk()).getOwnerID()+"."+TownS.getChunkID(sndr.getLocation().getChunk()));
                             Format.CmdInfoFrmt.use().a(sndr,"Now allowing rank " + rnk_name + " to use Containers here!");
                             return true;
@@ -219,7 +221,6 @@ public class PlotCmd implements CommandExecutor {
                                 Format.CmdErrFrmt.use().a(sndr,"Could not find player with name "+ args[3]);
                                 return true;
                             }
-                            Claim thisClm = TownS.g().getClaim(sndr.getLocation().getChunk());
                             thisClm.ContainerTrust(TBOplayer.getUniqueId());
                             Format.CmdInfoFrmt.use().a(sndr,"Now allowing player " + args[3] + " to use Containers here!");
 
@@ -236,7 +237,7 @@ public class PlotCmd implements CommandExecutor {
                     return true;
                 }
                 break;
-            case "disallow":
+            case "untrust":
                 //TODO:: CLEAR UNNECCESSARY CLAIM TRUSTS ON ENABLE LATER ON ----> VAISHNAV
                 if(args.length == 4){
                     if (!TownS.g().hasTown(sndr)) {
@@ -260,15 +261,18 @@ public class PlotCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "This Plot does not belong to you");
                         return true;
                     }
+                    Claim thisClm = TownS.g().getClaim(sndr.getLocation().getChunk());
+
                     if(args[1].equalsIgnoreCase("Build")){
                         if(args[2].equalsIgnoreCase("rank")){
                             String rnk_name = args[3];
                             if(TownS.g().getRank(rnk_name) == null){
                                 Format.CmdErrFrmt.use().a(sndr,"Could not find rank with name " + rnk_name);
                                 return true;
+
                             }
                             Rank r = TownS.g().getRank(args[3]);
-                            r.removePerm("Allow.Build."+TownS.g().getClaim(sndr.getLocation().getChunk()).getOwnerID()+"."+TownS.getChunkID(sndr.getLocation().getChunk()));
+                            thisClm.unBuildTrust(r);
                             Format.CmdInfoFrmt.use().a(sndr,"Not allowing rank " + rnk_name + " to build here anymore!");
                             return true;
                         }else if (args[2].equalsIgnoreCase("player")){
@@ -277,7 +281,6 @@ public class PlotCmd implements CommandExecutor {
                                 Format.CmdErrFrmt.use().a(sndr,"Could not find player with name "+ args[3]);
                                 return true;
                             }
-                            Claim thisClm = TownS.g().getClaim(sndr.getLocation().getChunk());
                             thisClm.unBuildTrust(TBOplayer.getUniqueId());
                             Format.CmdInfoFrmt.use().a(sndr,"Not allowing player " + args[3] + " to build here anymore!");
 
@@ -294,7 +297,7 @@ public class PlotCmd implements CommandExecutor {
 
                             }
                             Rank r = TownS.g().getRank(args[3]);
-                            r.removePerm("Allow.Container."+TownS.g().getClaim(sndr.getLocation().getChunk()).getOwnerID()+"."+TownS.getChunkID(sndr.getLocation().getChunk()));
+                            thisClm.unContainerTrust(r);
                             Format.CmdInfoFrmt.use().a(sndr,"Not allowing rank " + rnk_name + " to use Containers here anymore!");
                             return true;
                         }else if (args[2].equalsIgnoreCase("player")){
@@ -303,7 +306,6 @@ public class PlotCmd implements CommandExecutor {
                                 Format.CmdErrFrmt.use().a(sndr,"Could not find player with name "+ args[3]);
                                 return true;
                             }
-                            Claim thisClm = TownS.g().getClaim(sndr.getLocation().getChunk());
                             thisClm.unContainerTrust(TBOplayer.getUniqueId());
                             Format.CmdInfoFrmt.use().a(sndr,"Not allowing player " + args[3] + " to use Containers here anymore!");
 

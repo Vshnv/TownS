@@ -6,9 +6,11 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Town {
+public class Town implements Serializable {
+    public static final long serialVerisionUID = 537141124913L;
     private String town_name;
     private UUID town_uuid;
     private UUID Mayor_ID;

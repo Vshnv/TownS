@@ -2,11 +2,14 @@ package com.rocketmail.vaishnavanil.towns.Towns;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class Rank {
+public class Rank implements Serializable {
+    public static final long serialVerisionUID = 9458L;
+
     private String name;
     private int HierLevel;
     private Collection<String> permissions = new HashSet<>();

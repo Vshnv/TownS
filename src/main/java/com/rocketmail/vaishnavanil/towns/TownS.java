@@ -13,9 +13,12 @@ import com.rocketmail.vaishnavanil.towns.Listeners.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.TitleManager.MoveEventListener;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
+import com.rocketmail.vaishnavanil.towns.Storage.LoadObject;
+import com.rocketmail.vaishnavanil.towns.Storage.SaveObject;
 import com.rocketmail.vaishnavanil.towns.Towns.*;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
 import com.rocketmail.vaishnavanil.towns.Utilities.PlotBorderShowTimer;
+import com.rocketmail.vaishnavanil.towns.Utilities.SaveManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
@@ -27,6 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.io.File;
 import java.util.*;
 
 import static java.lang.System.out;
@@ -325,6 +329,12 @@ public final class TownS extends JavaPlugin {
         MobClearLoop.get.start();
 
         RegenBuilder.ContinueRegens();
+        if(new File(getDataFolder().getPath()+"\\Data","town.dat").exists()) {
+            TM = (HashMap<String, Town>) LoadObject.LoadObject(getDataFolder().getPath() + "\\Data", "towns.dat", HashMap.class);
+        }
+        if(new File(getDataFolder().getPath()+"\\Data","claims.dat").exists()) {
+            Map = (HashMap<String, Claim>) LoadObject.LoadObject(getDataFolder().getPath() + "\\Data", "claims.dat", HashMap.class);
+        }
     }
     public static String getChunkID(Chunk c){
         return c.getX()+"::"+c.getZ()+"::"+c.getWorld();
@@ -351,7 +361,25 @@ public final class TownS extends JavaPlugin {
                 tk.cancel();
             }
         }
-        // Plugin shutdown logic
+        //DATA SAVE
+        if(!TM.keySet().isEmpty()){
+            SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "towns.dat",HashMap.class);
+        }else{
+            File f = new File(getDataFolder().getPath() + "\\Data", "towns.dat");
+            if(f.exists()){
+                SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "towns.dat",HashMap.class);
+            }
+        }
+        if(!Map.keySet().isEmpty()){
+            SaveObject.SaveObject(Map,getDataFolder().getPath() + "\\Data", "claims.dat",HashMap.class);
+
+        }else{
+            File f = new File(getDataFolder().getPath() + "\\Data", "claims.dat");
+            if(f.exists()){
+                SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "claims.dat",HashMap.class);
+            }
+        }
+
     }
 
     //ENABLE DISABLE
