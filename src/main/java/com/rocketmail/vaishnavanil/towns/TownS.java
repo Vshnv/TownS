@@ -1,5 +1,8 @@
 package com.rocketmail.vaishnavanil.towns;
 
+import com.rocketmail.vaishnavanil.towns.Commands.AutoComplete.PlotCmdCompleter;
+import com.rocketmail.vaishnavanil.towns.Commands.AutoComplete.TownAdminCompleter;
+import com.rocketmail.vaishnavanil.towns.Commands.AutoComplete.TownCmdCompleter;
 import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownAdmin;
 import com.rocketmail.vaishnavanil.towns.Commands.TownChatCmd;
@@ -19,6 +22,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -208,6 +212,8 @@ public final class TownS extends JavaPlugin {
         return TM.keySet().contains(town_uuid);
     }
 
+    public Set<String> getAlLTownUUID(){ return TM.keySet(); }
+
     @Deprecated
     public Town getTown(String town_name) {
         for (Town town : TM.values()) {
@@ -229,6 +235,10 @@ public final class TownS extends JavaPlugin {
     //
     public void registerCMD(String cmd, CommandExecutor e) {
         this.getServer().getPluginCommand(cmd).setExecutor(e);
+    }
+
+    public void registerCompleter(String cmd, TabCompleter exec){
+        this.getCommand(cmd).setTabCompleter(exec);
     }
 
     public void regListen(Listener lis) {
@@ -277,9 +287,17 @@ public final class TownS extends JavaPlugin {
 
 
         registerCMD("towns", new TownCmd());
+        registerCompleter("towns", new TownCmdCompleter());
+
+
         registerCMD("plot", new PlotCmd());
+        registerCompleter("plot", new PlotCmdCompleter());
+
         registerCMD("tc", new TownChatCmd());
+
         registerCMD("ta", new TownAdmin());
+        registerCompleter("ta", new TownAdminCompleter());
+
         regListen(new InvClickListen());
         regListen(new MoveEventListener());
         regListen(new ExplodeEventListener());
