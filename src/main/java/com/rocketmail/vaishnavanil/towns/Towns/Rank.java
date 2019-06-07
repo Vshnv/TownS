@@ -40,7 +40,7 @@ public class Rank implements Serializable {
     }
 
     public boolean isHigherThan(Rank rank){
-        return getLevel() > rank.getLevel();
+        return getLevel() < rank.getLevel();
     }
     public String getName(){
         return name;

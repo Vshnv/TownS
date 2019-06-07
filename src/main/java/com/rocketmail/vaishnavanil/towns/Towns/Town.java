@@ -130,14 +130,14 @@ public class Town implements Serializable {
         }
     }
 
-    public boolean hasPermission(String perm, Player player) {
-        if (!hasRank(player)){
+    public boolean hasPermission(String perm, OfflinePlayer player) {
+        if (!hasRank(player.getUniqueId())){
             if(getMayor().getUniqueId() == player.getUniqueId()){
                 return true;
             }
             return false;
         }
-        return getRank(player).hasPermission(perm) || getMayor() == player;
+        return getRank(player.getUniqueId()).hasPermission(perm) || getMayor() == player;
     }
     public boolean hasPermission(String perm,UUID id){
         if(!hasRank(id)){
@@ -261,7 +261,7 @@ public class Town implements Serializable {
         TownS.g().quickPlayer.put(p.getUniqueId(), this);
         TownS.g().getTownPlayer(p).silentUnvite(this);
         if (!Members.contains(p.getUniqueId())) this.Members.add(p.getUniqueId());
-
+        if(!rankMap.keySet().contains(p.getUniqueId()) && getMayor().getUniqueId() != p.getUniqueId())setRank(p,TownS.g().getRank("Default"));
         return true;
     }
     public boolean addMember(UUID id){

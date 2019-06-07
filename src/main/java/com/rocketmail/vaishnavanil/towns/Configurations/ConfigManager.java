@@ -25,11 +25,11 @@ private void setUP(){
         TownS.g().getConfig().addDefault("Constraints.NoAllow",Arrays.asList("Obsidian","Bedrock"));
 
         TownS.g().getConfig().addDefault("FlagConfig.Mob.Disallow",Arrays.asList(EntityType.SKELETON.name(),EntityType.ZOMBIE.name()));
-        TownS.g().getConfig().addDefault("Ranks.order.Assistant",1);
-        TownS.g().getConfig().addDefault("Ranks.order.MVP",1);
+        TownS.g().getConfig().addDefault("RanksOrder.Assistant",1);
+        TownS.g().getConfig().addDefault("RanksOrder.MVP",1);
         TownS.g().getConfig().addDefault("Ranks.Assistant",Arrays.asList("Claim","Unclaim","BuildALL","FS","NFS","ContainerALL","FlagSetALL"));
         TownS.g().getConfig().addDefault("Ranks.MVP",Arrays.asList("Change","This","Later","lel"));
-
+        TownS.g().getConfig().addDefault("Ranks.Default",Arrays.asList("Warp","Deposit","Spawn","PlotClaim","PlotBorder","PlotAllow","PlotDisAllow","PlotAccess","PlotFlags","Plotsetname"));
         TownS.g().getConfig().addDefault("RegenUnclaim.worlds",Arrays.asList("world","world_nether"));
 
 
@@ -80,7 +80,7 @@ private void setUP(){
         Set<String> RanksListed = TownS.g().getConfig().getConfigurationSection("Ranks").getKeys(true);
        for(String sRank:RanksListed){
            List<String> perms = TownS.g().getConfig().getStringList("Ranks."+sRank);
-           int lvl = TownS.g().getConfig().getInt("Ranks.order."+sRank);
+           int lvl = TownS.g().getConfig().getInt("RanksOrder."+sRank);
            new Rank(sRank,lvl,perms);
        }
     }
