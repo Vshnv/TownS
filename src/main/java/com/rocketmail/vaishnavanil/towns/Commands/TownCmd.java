@@ -647,6 +647,7 @@ public class TownCmd implements CommandExecutor {
                 newT.claim(p.getLocation().getChunk(), p);
                 newT.setWarpPoint(newT, "spawn", p.getLocation());
                 newT.setSpawnChunk(newT, p.getLocation().getChunk());
+                TownS.g().getClaim(p.getLocation().getChunk()).setName("Settlement");
                 Format.AlrtFrmt.use().a(p, "Created new town with name -> " + townName);
             } else {
                 Format.CmdErrFrmt.use().a(p, "An Error Occurred while trying to pay for the new Town.");

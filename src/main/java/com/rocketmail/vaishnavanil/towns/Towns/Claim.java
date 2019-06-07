@@ -200,4 +200,10 @@ public class Claim implements Serializable {
     public void removeFlag(Flag flag) {
         EnabledFlags.remove(flag);
     }
+
+    public List<UUID> getBuildTrusted() { return BuildTrust;  }
+    public List<UUID> getContainerTrusted(){ return ContainerTrust; }
+    public List<String> getRankBuildTrusted(){ return RankBuildTrust; }
+    public List<String> getRankContainerTrusted(){ return RankContainerTrust; }
+
 }

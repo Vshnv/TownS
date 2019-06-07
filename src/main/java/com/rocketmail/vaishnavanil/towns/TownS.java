@@ -13,6 +13,7 @@ import com.rocketmail.vaishnavanil.towns.Listeners.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.TitleManager.MoveEventListener;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
+import com.rocketmail.vaishnavanil.towns.Placeholders.PlaceholderProvider;
 import com.rocketmail.vaishnavanil.towns.Storage.LoadObject;
 import com.rocketmail.vaishnavanil.towns.Storage.SaveObject;
 import com.rocketmail.vaishnavanil.towns.Towns.*;
@@ -323,6 +324,7 @@ public final class TownS extends JavaPlugin {
         regListen(new PlayerChatListener());
         regListen(new InventoryCloseListener());
         regListen(FunctionRunner.get());
+        hookPlaceholderAPI();
         ChunkLoadListener.get().runSaveQueue();
         PlotBorderShowTimer.INSTANCE.startBorderShow();
 
@@ -336,6 +338,16 @@ public final class TownS extends JavaPlugin {
             Map = (HashMap<String, Claim>) LoadObject.LoadObject(getDataFolder().getPath() + "\\Data", "claims.dat");
         }
     }
+
+    private void hookPlaceholderAPI() {
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+            new PlaceholderProvider().register();
+            getServer().getConsoleSender().sendMessage("[TOWNS] [✔] Hooked into PlaceholderAPI");
+        } else {
+            getServer().getConsoleSender().sendMessage(ChatColor.RED+"[TOWNS] PlaceholderAPI Hook Failed");
+        }
+    }
+
     public static String getChunkID(Chunk c){
         return c.getX()+"::"+c.getZ()+"::"+c.getWorld();
     }

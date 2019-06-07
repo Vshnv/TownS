@@ -15,6 +15,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class PlotCmd implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -110,7 +114,63 @@ public class PlotCmd implements CommandExecutor {
                 sndr.openInventory(FlagShow.get.create(sndr,TownS.g().getClaim(sndr.getLocation().getChunk())));
                 Format.CmdInfoFrmt.use().a(sndr,"Opening Flag List for this claim!");
                 break;
-            case "trust":
+            case "access":
+                if(TownS.g().hasTown(sndr)){
+                    if(TownS.g().isClaimed(sndr_chunk)){
+                        if(TownS.g().getTown(sndr).equals(TownS.g().getTown(sndr_chunk))){
+
+                            List<String> PBuildTrusted = new ArrayList<>();
+                            List<String> PContainerTrusted = new ArrayList<>();
+                            List<String> RBuildTrusted = new ArrayList<>();
+                            List<String> RContainerTrusted = new ArrayList<>();
+
+                            Town sndr_town = TownS.g().getTown(sndr);
+                            Claim c_claim = TownS.g().getClaim(sndr_chunk);
+                            /* Get Build Trusted Player Names */
+                            for(UUID p_uuid: c_claim.getBuildTrusted()){
+                                if(Bukkit.getOfflinePlayer(p_uuid).hasPlayedBefore()){
+                                    PBuildTrusted.add(Bukkit.getOfflinePlayer(p_uuid).getName());
+                                }
+                            }
+                            /* Get Container Trusted Player Names */
+                            for(UUID p_uuid: c_claim.getContainerTrusted()){
+                                if(Bukkit.getOfflinePlayer(p_uuid).hasPlayedBefore()){
+                                    PContainerTrusted.add(Bukkit.getOfflinePlayer(p_uuid).getName());
+                                }
+                            }
+                            /* Get Build Trusted Ranks Which Needs Added Perms for Building */
+                            for(String rank: TownS.g().getRanks()){
+                                if(!TownS.g().getRank(rank).hasPermission("BuildALL")){
+                                    RBuildTrusted.add(rank);
+                                }
+                            }
+                            /* Get Container Trusted Ranks Which Needs Added Perms for Container Access */
+                            for(String rank: TownS.g().getRanks()){
+                                if(!TownS.g().getRank(rank).hasPermission("ContainerALL")){
+                                    RBuildTrusted.add(rank);
+                                }
+                            }
+
+                            sndr.sendMessage("Build Trusted: "+PBuildTrusted.toString());
+                            sndr.sendMessage("Container Trusted: "+PContainerTrusted.toString());
+                            sndr.sendMessage("Ranks Build Trusted: "+TownS.g().getClaim(sndr_chunk).getRankBuildTrusted().toString());
+                            sndr.sendMessage("Ranks Container Trusted: "+TownS.g().getClaim(sndr_chunk).getContainerTrusted().toString());
+
+                            /*  */
+
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr, "You do not belong to this town!");
+                        }
+                    }else{
+                        Format.CmdErrFrmt.use().a(sndr, "Your mayor must first claim this chunk for your town!");
+                        return true;
+                    }
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                    return true;
+                }
+                break;
+            case "allow":
                 //TODO:: CLEAR UNNECCESSARY CLAIM TRUSTS ON ENABLE LATER ON ----> VAISHNAV
                 if(args.length == 4){
                     if (!TownS.g().hasTown(sndr)) {
@@ -196,7 +256,7 @@ public class PlotCmd implements CommandExecutor {
                     return true;
                 }
                 break;
-            case "untrust":
+            case "disallow":
                 //TODO:: CLEAR UNNECCESSARY CLAIM TRUSTS ON ENABLE LATER ON ----> VAISHNAV
                 if(args.length == 4){
                     if (!TownS.g().hasTown(sndr)) {

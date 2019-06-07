@@ -1,12 +1,14 @@
-name: TownS
+name: Towns
 version: ${project.version}
 main: com.rocketmail.vaishnavanil.towns.TownS
 api-version: 1.13
-prefix: [TownS]
+prefix: Towns
 authors: [Vaishnav, RishabhRaghunath]
 description: A plugin that introduces Town-Based roleplay system into your game.
-website: www.test.com
+website: www.example.com
 depend: [Vault]
+softdepend: [PlaceholderAPI]
+
 commands:
   towns:
     aliases: [t, town, kingdom, group, team]
