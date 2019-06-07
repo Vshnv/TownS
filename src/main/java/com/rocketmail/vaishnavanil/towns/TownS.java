@@ -339,7 +339,6 @@ public final class TownS extends JavaPlugin {
 
     public void RegisterRanks(Rank rank) {
 
-        out.println(rank.getName());
         RankList.put(rank.getName(), rank);
     }
 
