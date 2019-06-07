@@ -19,7 +19,6 @@ public class TownCmdCompleter implements TabCompleter {
         List<String> suggestions = new ArrayList<>();
         Player player = (Player) commandSender;
 
-        System.out.println(args.length);
         switch (args.length) {
             case 1:
                 suggestions.add("create");
