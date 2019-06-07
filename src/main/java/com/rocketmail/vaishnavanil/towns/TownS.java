@@ -32,6 +32,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import static java.lang.System.out;
@@ -363,7 +364,35 @@ public final class TownS extends JavaPlugin {
 
         RankList.put(rank.getName(), rank);
     }
+    public void saveTown(){
+        File f = new File(getDataFolder().getPath() + "\\Data", "towns.dat");
+        if(f.exists()){
+            SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "towns.dat");
+        }else{
+            try {
+                f.createNewFile();
+                SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "towns.dat");
 
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+    public void saveClaims(){
+        File f = new File(getDataFolder().getPath() + "\\Data", "claims.dat");
+        if(f.exists()){
+            SaveObject.SaveObject(Map,getDataFolder().getPath() + "\\Data", "claims.dat");
+        }else{
+            try {
+                f.createNewFile();
+                SaveObject.SaveObject(Map,getDataFolder().getPath() + "\\Data", "claims.dat");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public Set<String> getRanks(){ return RankList.keySet(); }
 
     @Override
@@ -388,7 +417,7 @@ public final class TownS extends JavaPlugin {
         }else{
             File f = new File(getDataFolder().getPath() + "\\Data", "claims.dat");
             if(f.exists()){
-                SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "claims.dat");
+                SaveObject.SaveObject(Map,getDataFolder().getPath() + "\\Data", "claims.dat");
             }
         }
 
