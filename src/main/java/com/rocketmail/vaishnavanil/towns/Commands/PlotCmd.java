@@ -7,6 +7,7 @@ import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import com.rocketmail.vaishnavanil.towns.Towns.TownPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
@@ -119,6 +120,10 @@ public class PlotCmd implements CommandExecutor {
                     if(TownS.g().isClaimed(sndr_chunk)){
                         if(TownS.g().getTown(sndr).equals(TownS.g().getTown(sndr_chunk))){
 
+                            if(TownS.g().getRank("Assistant").hasPermission("BuildALL")){
+                                System.out.println("assisnt has nnobuild perm");
+                            }
+
                             List<String> PBuildTrusted = new ArrayList<>();
                             List<String> PContainerTrusted = new ArrayList<>();
                             List<String> RBuildTrusted = new ArrayList<>();
@@ -140,7 +145,9 @@ public class PlotCmd implements CommandExecutor {
                             }
                             /* Get Build Trusted Ranks Which Needs Added Perms for Building */
                             for(String rank: TownS.g().getRanks()){
+                                System.out.println("checking: "+rank);
                                 if(!TownS.g().getRank(rank).hasPermission("BuildALL")){
+                                    System.out.println("DOES NOT HAVE PERM");
                                     RBuildTrusted.add(rank);
                                 }
                             }
@@ -153,8 +160,8 @@ public class PlotCmd implements CommandExecutor {
 
                             sndr.sendMessage("Build Trusted: "+PBuildTrusted.toString());
                             sndr.sendMessage("Container Trusted: "+PContainerTrusted.toString());
-                            sndr.sendMessage("Ranks Build Trusted: "+TownS.g().getClaim(sndr_chunk).getRankBuildTrusted().toString());
-                            sndr.sendMessage("Ranks Container Trusted: "+TownS.g().getClaim(sndr_chunk).getContainerTrusted().toString());
+                            sndr.sendMessage("Ranks Build Trusted: "+RBuildTrusted.toString());
+                            sndr.sendMessage("Ranks Container Trusted: "+RContainerTrusted.toString());
 
                             /*  */
 
