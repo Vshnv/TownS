@@ -56,14 +56,13 @@ public class FlagGUI extends SimpleInterface {
         int cur_slot =1;
             for(Flag f: Flag.values()){
                 ItemStack flagStack = new ItemBuilder(c.hasFlag(f)).setNameStyle(NameStyle.HIGHLIGHT).setDisplayName(f.getName()).setLoreStyle(LoreStyle.DETECTION).addLoreLine("This flag is currently "+(c.hasFlag(f) ? "Enabled":"Disabled")).pack();
-
                 Function flagFunc = new Function() {
                     Flag thisFlag = f;
                     Claim cl = c;
                     @Override
                     public void run(HashMap<String, String> INPUT) {
                         Player clicker = Bukkit.getPlayer(UUID.fromString(INPUT.get("Player")));
-                        if(clicker.getUniqueId() != c.getOwnerID())return;
+                        if(clicker.getUniqueId() != c.getOwnerID() && clicker.getUniqueId() != c.getTown().getMayor().getUniqueId())return;
                         inv[Integer.valueOf(INPUT.get("Slot"))] = inv[Integer.valueOf(INPUT.get("Slot"))].setStackType(toggleFlag(c,thisFlag));
                         FunctionRunner.get().register(inv[Integer.valueOf(INPUT.get("Slot"))].getStack(),inv[Integer.valueOf(INPUT.get("Slot"))].getFunction(),name,removeESett);
 
