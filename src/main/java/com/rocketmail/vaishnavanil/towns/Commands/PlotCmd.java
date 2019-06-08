@@ -188,19 +188,33 @@ public class PlotCmd implements CommandExecutor {
                 }
                 break;
             case "flags":
+
                 if (!TownS.g().isClaimed(sndr.getLocation().getChunk())) {
                     /*MSG ADDED A.I.T.*/
                     Format.CmdErrFrmt.use().a(sndr, "You must stand in a Claimed Chunk for this command!");
                     return true;
                 }
-                if (!TownS.g().getTown(sndr).hasPermission("plotflags",sndr)) {
+                if (TownS.g().getTown(sndr.getLocation().getChunk()) != TownS.g().getTown(sndr)) {
                     /*MSG ADDED A.I.T.*/
-                    Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
+                    Format.CmdErrFrmt.use().a(sndr, "You do not belong to this town!");
                     return true;
                 }
-                sndr.openInventory(FlagShow.get.create(sndr,TownS.g().getClaim(sndr.getLocation().getChunk())));
-                Format.CmdInfoFrmt.use().a(sndr,"Opening Flag List for this claim!");
-                break;
+                if (!TownS.g().getTown(sndr).hasPermission("plotflags",sndr)) {
+                    /*MSG ADDED A.I.T.*/
+                    if(TownS.g().getClaim(sndr_chunk).getOwner().getUniqueId().equals(sndr.getUniqueId())){
+                        sndr.openInventory(FlagShow.get.create(sndr,TownS.g().getClaim(sndr.getLocation().getChunk())));
+                        Format.CmdInfoFrmt.use().a(sndr,"Opening Flag List for this claim!");
+                        break;
+                    }else{
+                        Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
+                        return true;
+                    }
+                }else{
+                    sndr.openInventory(FlagShow.get.create(sndr,TownS.g().getClaim(sndr.getLocation().getChunk())));
+                    Format.CmdInfoFrmt.use().a(sndr,"Opening Flag List for this claim!");
+                    break;
+                }
+
             case "access":
                 if(TownS.g().hasTown(sndr)){
                     if(TownS.g().isClaimed(sndr_chunk)){
