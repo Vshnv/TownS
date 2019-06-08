@@ -28,7 +28,7 @@ public enum Map {
     public Inventory create(Player player) {
         Inventory Map = Bukkit.createInventory(null, 9 * 5, "Towny Map");
         int center = 22;
-        ItemStack centerItem = new ItemBuilder(Material.YELLOW_STAINED_GLASS_PANE)
+        ItemStack centerItem = new ItemBuilder(Material.BREWING_STAND)
                 .setNameStyle(NameStyle.DESIGNED)
                 .setLoreStyle(LoreStyle.INFO)
                 .setDisplayName("Current Chunk")
@@ -45,7 +45,7 @@ public enum Map {
             }
             if (n == center) continue;
             Chunk cur = getChunkFromSlot(n, player);
-            ItemStack item = new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
+            ItemStack item = new ItemBuilder(getItem(cur))
                     .setNameStyle(NameStyle.HIGHLIGHT)
                     .setLoreStyle(LoreStyle.INFO)
                     .setDisplayName("Chunk")
@@ -114,6 +114,16 @@ public enum Map {
         return Map;
     }
 
+    private Material getItem(Chunk chunk){
+        if(TownS.g().isClaimed(chunk)){
+            if(TownS.g().getClaim(chunk).getName().equals("")){
+                return Material.CAMPFIRE;
+            }
+            return Material.BELL;
+        }else{
+            return Material.BLACK_STAINED_GLASS_PANE;
+        }
+    }
 
     private ItemStack GenerateDetection() {
         ItemStack stack = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
@@ -128,14 +138,21 @@ public enum Map {
     private List<String> getDetails(Chunk chunk) {
         List<String> lore = new ArrayList<>();
         if (!TownS.g().isClaimed(chunk)) {
-            lore.add("Not Claimed!");
+                lore.add("&a&lWilderness");
             return lore;
         }
         Claim claim = TownS.g().getClaim(chunk);
-        lore.add("Claimed!");
-        lore.add("Town         ->> " + claim.getTown().getName());
-        lore.add("Claim Owner ->> " + claim.getOwner().getName());
-        lore.add("&l->>Click To View Flags<<-");
+        lore.add("&f&lPlot Claimed");
+        lore.add(" ");
+        lore.add("Town: &c" + claim.getTown().getName());
+        if(claim.getName().equals("")){
+            lore.add("Area Name: &aUnnamed" );
+        }else{
+            lore.add("Area Name: &a" +claim.getName());
+        }
+        lore.add("Claim Owner: &6" + claim.getOwner().getName()+"  ");
+        lore.add(" ");
+        lore.add("&e&lClick To View Flags");
         return lore;
     }
 
