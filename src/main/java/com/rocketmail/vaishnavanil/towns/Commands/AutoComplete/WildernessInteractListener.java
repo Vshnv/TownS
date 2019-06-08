@@ -19,8 +19,10 @@ public class WildernessInteractListener implements Listener {
         if(block.getType().equals(Material.AIR)) return;
         if(block.getWorld().getName().equals("world")){
             if(!TownS.g().isClaimed(block.getLocation().getChunk())){
-                event.setCancelled(true);
-                Format.CmdErrFrmt.use().a(player, "This Area does not belong to you yet!");
+                if(!player.hasPermission("towns.buildwild")){
+                    event.setCancelled(true);
+                    Format.CmdErrFrmt.use().a(player, "This Area does not belong to you yet!");
+                }
             }
         }
     }
