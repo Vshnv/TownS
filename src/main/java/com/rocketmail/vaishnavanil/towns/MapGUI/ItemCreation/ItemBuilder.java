@@ -2,7 +2,9 @@ package com.rocketmail.vaishnavanil.towns.MapGUI.ItemCreation;
 
 import com.rocketmail.vaishnavanil.towns.MapGUI.ItemLore.LoreStyle;
 import com.rocketmail.vaishnavanil.towns.MapGUI.ItemName.NameStyle;
+import com.rocketmail.vaishnavanil.towns.TownS;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -11,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemBuilder {
-
+    boolean FakeEnchant = false;
     ItemStack stack;
     String display = null;
     NameStyle nStyle = NameStyle.NO_STYLE;
@@ -22,7 +24,10 @@ public class ItemBuilder {
     public ItemBuilder(Material Stack) {
         this.stack = new ItemStack(Stack);
     }
-
+    public ItemBuilder setGlow(boolean b){
+        FakeEnchant = b;
+        return this;
+    }
     public ItemBuilder setDisplayName(String name) {
         display = name;
         return this;
@@ -59,12 +64,32 @@ public class ItemBuilder {
         if (!RAWlore.isEmpty()) {
             meta.setLore(style.use(RAWlore));
         }
-        stack.setItemMeta(meta);
         if (!flags.isEmpty()) for (ItemFlag f : flags) {
-            stack.addItemFlags(f);
+            meta.addItemFlags(f);
         }
+        stack.setItemMeta(meta);
+        if(FakeEnchant)
+            stack = addFakeEnchant(stack);
+
 
         return stack;
+    }
+    private ItemStack addFakeEnchant(ItemStack item){
+       /* net.minecraft.server.v1_14_R1.ItemStack nms = CraftItemStack.asNMSCopy(item);
+        NBTTagCompound tag = null;
+        if (!nms.hasTag()) {
+            tag = new NBTTagCompound();
+            nms.setTag(tag);
+        }
+        if (tag == null) tag = nms.getTag();
+        NBTTagList ench = new NBTTagList();
+        tag.set("ench", ench);
+        nms.setTag(tag);
+        return CraftItemStack.asCraftMirror(nms);*/
+        ItemMeta im = item.getItemMeta();
+        im.addEnchant(new FakeEnchant(new NamespacedKey(TownS.g(),"FakeEnchant")),1,true);
+        item.setItemMeta(im);
+        return item;
     }
 
 }
