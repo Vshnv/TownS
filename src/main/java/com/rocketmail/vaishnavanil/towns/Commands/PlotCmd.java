@@ -59,7 +59,7 @@ public class PlotCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "This claim is currently Not For Sale! Please ask your mayor for help");
                     return true;
                 }
-                if (TownS.g().getTown(sndr).hasPermission("plotclaim",sndr)) {
+                if (!TownS.g().getTown(sndr).hasPermission("plotclaim",sndr)) {
                     /*MSG ADDED A.I.T.*/
                     Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
                     return true;
@@ -109,7 +109,7 @@ public class PlotCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "This Plot does not belong to you");
                         return true;
                     }
-                    if (TownS.g().getTown(sndr).hasPermission("plotsetname",sndr)) {
+                    if (!TownS.g().getTown(sndr).hasPermission("plotsetname",sndr)) {
                         /*MSG ADDED A.I.T.*/
                         Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
                         return true;
@@ -127,7 +127,7 @@ public class PlotCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "You must stand in a Claimed Chunk for this command!");
                     return true;
                 }
-                if (TownS.g().getTown(sndr).hasPermission("plotflags",sndr)) {
+                if (!TownS.g().getTown(sndr).hasPermission("plotflags",sndr)) {
                     /*MSG ADDED A.I.T.*/
                     Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
                     return true;
@@ -139,7 +139,7 @@ public class PlotCmd implements CommandExecutor {
                 if(TownS.g().hasTown(sndr)){
                     if(TownS.g().isClaimed(sndr_chunk)){
                         if(TownS.g().getTown(sndr).equals(TownS.g().getTown(sndr_chunk))){
-                            if (TownS.g().getTown(sndr).hasPermission("plotaccess",sndr)) {
+                            if (!TownS.g().getTown(sndr).hasPermission("plotaccess",sndr)) {
                                 /*MSG ADDED A.I.T.*/
                                 Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
                                 return true;
@@ -205,7 +205,7 @@ public class PlotCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "This Plot does not belong to you");
                         return true;
                     }
-                    if (TownS.g().getTown(sndr).hasPermission("plotallow",sndr)) {
+                    if (!TownS.g().getTown(sndr).hasPermission("plotallow",sndr)) {
                         /*MSG ADDED A.I.T.*/
                         Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
                         return true;
@@ -296,7 +296,7 @@ public class PlotCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "This Plot does not belong to you");
                         return true;
                     }
-                    if (TownS.g().getTown(sndr).hasPermission("plotdisallow",sndr)) {
+                    if (!TownS.g().getTown(sndr).hasPermission("plotdisallow",sndr)) {
                         /*MSG ADDED A.I.T.*/
                         Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
                         return true;

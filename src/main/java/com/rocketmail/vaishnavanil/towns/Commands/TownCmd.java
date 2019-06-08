@@ -196,7 +196,8 @@ public class TownCmd implements CommandExecutor {
                 if(args.length == 1){
 
                     if(TownS.g().hasTown(sndr)){
-                        if(TownS.g().getTown(sndr).hasPermission("warp",sndr)){
+                        if(!TownS.g().getTown(sndr).hasPermission("warp",sndr)){
+
                             Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
                             return true;
                         }
@@ -213,7 +214,7 @@ public class TownCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                         return true;
                     } else {
-                        if(TownS.g().getTown(sndr).hasPermission("warp",sndr)){
+                        if(!TownS.g().getTown(sndr).hasPermission("warp",sndr)){
                             Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
                             return true;
                         }
@@ -329,7 +330,7 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                     return true;
                 }
-                if (TownS.g().getTown(sndr).hasPermission("unclaim",sndr)) {
+                if (!TownS.g().getTown(sndr).hasPermission("unclaim",sndr)) {
                     /*MSG ADDED A.I.T.*/
                     Format.CmdErrFrmt.use().a(sndr, "You do not have permissions use this command!");
                     return true;
