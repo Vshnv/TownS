@@ -68,7 +68,7 @@ public class ChunkLoadListener implements Listener {
 
 
                 SaveManager.use.Save(MatMaping,"ChunkSaves",toSave.getX()+"TT" + toSave.getZ() + "TT" + toSave.getWorldName()+".dat");
-                out.println("Saved a chunk ASYNC");
+                //out.println("Saved a chunk ASYNC");
                 saving = false;
             }
         }.runTaskTimerAsynchronously(TownS.g(),1,1));
