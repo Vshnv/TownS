@@ -62,7 +62,6 @@ public class WarpsGUI extends SimpleInterface {
                 i++;
             }
             /*EMPTY PLACEHOLDER FILL*/
-            System.out.println(farray.length);
             super.inv = farray;
             super.init();
 

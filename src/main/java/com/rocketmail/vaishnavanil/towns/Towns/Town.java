@@ -200,7 +200,6 @@ public class Town implements Serializable {
     }
 
     public void deleteWarpPoint(String spawn_name) {
-        Bukkit.broadcastMessage("Removing warp: delwarp:  "+ spawn_name);
         warpPointMap.remove(spawn_name);
     }
 
@@ -229,12 +228,10 @@ public class Town implements Serializable {
                 if (town_at_location.equals(town)) {
                     return warpPointMap.get(spawn_name).getLocation();
                 } else {
-                    Bukkit.broadcastMessage("Removing warp: not same town:  "+ spawn_name);
                     warpPointMap.remove(spawn_name);
                     return null;
                 }
             } else {
-                Bukkit.broadcastMessage("Removing warp: not claimed : "+ spawn_name);
                 warpPointMap.remove(spawn_name);
                 return null;
             }

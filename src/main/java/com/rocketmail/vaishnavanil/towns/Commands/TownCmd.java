@@ -106,7 +106,7 @@ public class TownCmd implements CommandExecutor {
                             }
                             if (EconomyHandler.INSTANCE.depositIntoTown(sndr, TownS.g().getTown(sndr), amount_num)) {
                                 Format.AlrtFrmt.use().a(sndr, "Successfully deposited " + args[1] + "$ into Town Bank");
-                                System.out.println(TownS.g().getTown(sndr).getTownBalance());
+
                             } else {
                                 Format.CmdErrFrmt.use().a(sndr, "Depositing " + args[1] + "$ to Town failed due to insufficient funds.");
                             }
