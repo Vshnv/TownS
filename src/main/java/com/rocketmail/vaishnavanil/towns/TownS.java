@@ -180,6 +180,10 @@ public final class TownS extends JavaPlugin {
         return isClaimed(chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
     }
 
+    public boolean isClaimedQuick(int CX, int CZ, String wName) {
+        return  (Map.containsKey(CX + "::" + CZ + "::" + wName));
+    }
+
     public boolean isClaimed(int CX, int CZ, String wName) {
         if (Map.containsKey(CX + "::" + CZ + "::" + wName)) {
             Claim claim = Map.get(CX + "::" + CZ + "::" + wName);

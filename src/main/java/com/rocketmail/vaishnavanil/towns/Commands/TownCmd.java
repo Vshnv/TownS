@@ -2,9 +2,8 @@ package com.rocketmail.vaishnavanil.towns.Commands;
 
 import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
 import com.rocketmail.vaishnavanil.towns.GUI.GUI;
-import com.rocketmail.vaishnavanil.towns.GUI.SI.DeleteTownConfirm;
 import com.rocketmail.vaishnavanil.towns.GUI.SI.WarpsGUI;
-import com.rocketmail.vaishnavanil.towns.MapGUI.Map;
+import com.rocketmail.vaishnavanil.towns.MapGUI.MapFullScreen;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
@@ -175,7 +174,7 @@ public class TownCmd implements CommandExecutor {
 
             case "map":
                 //TODO::MAP GUI
-                sndr.openInventory(Map.get.create(sndr));
+                sndr.openInventory(MapFullScreen.get.create(sndr));
                 Format.CmdInfoFrmt.use().a(sndr, "You have opened the Town Map!");
                 break;
             case "spawn":
