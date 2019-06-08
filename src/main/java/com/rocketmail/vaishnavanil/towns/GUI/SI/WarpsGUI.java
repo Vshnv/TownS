@@ -23,8 +23,8 @@ public class WarpsGUI extends SimpleInterface {
             List<ItemStack> warpListItem = new ArrayList<>();
             Town town = TownS.g().getTown(player);
             Set<String> warpnames = town.getTownWarpKeys();
-            warpnames.remove("spawn");
-            warpList.addAll(warpnames);
+            if(!town.getTownWarpKeys().isEmpty()){ warpList.addAll(warpnames); }
+            warpList.remove("spawn");
 
             Function teleportToWarp = new Function() {
                 @Override
@@ -39,11 +39,13 @@ public class WarpsGUI extends SimpleInterface {
             StackFunc[] farray = new StackFunc[warpList.size() + (9 - warpList.size() % 9)];
             int i = 0;
             for (String warpname : warpList) {
-                ItemStack is = new ItemBuilder(Material.BELL).setDisplayName("Warp: " + warpname).setLoreStyle(LoreStyle.INFO).addLoreLine("Click to Warp").pack();
-                warpListItem.add(is);
-                StackFunc fY = new StackFunc(is, teleportToWarp);
-                farray[i] = fY;
-                i++;
+                if(!warpname.equalsIgnoreCase("spawn")){
+                    ItemStack is = new ItemBuilder(Material.BELL).setDisplayName("Warp: " + warpname).setLoreStyle(LoreStyle.INFO).addLoreLine("Click to Warp").pack();
+                    warpListItem.add(is);
+                    StackFunc fY = new StackFunc(is, teleportToWarp);
+                    farray[i] = fY;
+                    i++;
+                }
             }
 
             Function fNo = new Function() {

@@ -207,7 +207,6 @@ public class TownCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                         return true;
                     }
-
                 }
                 if (args.length == 2) {
                     if (!TownS.g().hasTown(sndr)) {
