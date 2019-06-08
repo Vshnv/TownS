@@ -186,7 +186,7 @@ public class TownCmd implements CommandExecutor {
                     Town sender_town = TownS.g().getTown(sndr);
                     if (sender_town.getWarpPoint(sender_town, "spawn") != null) {
                         sndr.teleport(sender_town.getWarpPoint(sender_town, "spawn"));
-                        Format.AlrtFrmt.use().a(sndr, "Teleported to town spawn");
+                        Format.AlrtFrmt.use().a(sndr, "Teleported to Town Spawn");
                     } else {
                         Format.CmdErrFrmt.use().a(sndr, "Warp Point: SPAWN not found.");
                     }
