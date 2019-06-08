@@ -1,6 +1,7 @@
 package com.rocketmail.vaishnavanil.towns.Commands;
 
 import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
+import com.rocketmail.vaishnavanil.towns.GUI.SI.FlagGUI;
 import com.rocketmail.vaishnavanil.towns.MapGUI.FlagShow;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
@@ -19,6 +20,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PlotCmd implements CommandExecutor {
     @Override
@@ -210,7 +212,9 @@ public class PlotCmd implements CommandExecutor {
                         return true;
                     }
                 }else{
-                    sndr.openInventory(FlagShow.get.create(sndr,TownS.g().getClaim(sndr.getLocation().getChunk())));
+                    Claim c = TownS.g().getClaim(sndr.getLocation().getChunk());
+                    //sndr.openInventory(FlagShow.get.create(sndr,TownS.g().getClaim(sndr.getLocation().getChunk())));
+                    sndr.openInventory(new FlagGUI("FlagGUI ID:" + ThreadLocalRandom.current().nextLong(1000,999999),c).get());
                     Format.CmdInfoFrmt.use().a(sndr,"Opening Flag List for this claim!");
                     break;
                 }

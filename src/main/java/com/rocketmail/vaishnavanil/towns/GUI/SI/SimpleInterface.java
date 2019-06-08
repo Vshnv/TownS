@@ -3,6 +3,8 @@ package com.rocketmail.vaishnavanil.towns.GUI.SI;
 
 import com.rocketmail.vaishnavanil.towns.GUI.FunctionRunner;
 import com.rocketmail.vaishnavanil.towns.GUI.StackFunc;
+import com.rocketmail.vaishnavanil.towns.MapGUI.ItemName.NameStyle;
+import com.sun.org.apache.xerces.internal.impl.XMLScanner;
 import org.bukkit.Bukkit;
 
 import org.bukkit.entity.Player;
@@ -13,10 +15,11 @@ public abstract class SimpleInterface {
     StackFunc[] inv;
     int size;
     String name;
+    Inventory gui;
+    boolean removeESett = false;
     public  SimpleInterface(String n){
-        name = n;
+        name = NameStyle.DESIGNED.use(n);
     }
-
     public void init(){
 
         if(inv.length>9){
@@ -30,16 +33,23 @@ public abstract class SimpleInterface {
         }
         FunctionRunner runner = FunctionRunner.get();
         for(StackFunc func:inv){
-            runner.register(func.getStack(),func.getFunction(),name);
+            runner.register(func.getStack(),func.getFunction(),name,removeESett);
         }
     }
 
     public Inventory get(){
-        Inventory gui = Bukkit.createInventory(null,size,name);
+        gui = Bukkit.createInventory(null,size,name);
         for(int i = 0;i<=inv.length-1;i++){
             gui.setItem(i,inv[i].getStack());
         }
         return gui;
+    }
+
+    public void update(Player player){
+        for(int i = 0;i<=inv.length-1;i++){
+            gui.setItem(i,inv[i].getStack());
+        }
+        player.updateInventory();
     }
 
 }

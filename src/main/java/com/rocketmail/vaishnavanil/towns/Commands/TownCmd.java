@@ -162,13 +162,14 @@ public class TownCmd implements CommandExecutor {
                 }
                 if(args.length == 2){
                     if(args[1].equalsIgnoreCase("ConfirmFromGUI")){
-                        deleteTown(sndr);
                         Format.AlrtFrmt.use().a(sndr, "Successfully deleted your town!");
+                        deleteTown(sndr);
+                        return true;
                     }
                 }
-                sndr.openInventory(GUI.DELETETown.get());
-                Format.CmdInfoFrmt.use().a(sndr,"Are you sure you want to delete your town? [Answer in GUI]");
 
+                Format.CmdInfoFrmt.use().a(sndr,"Are you sure you want to delete your town? [Answer in GUI]");
+                sndr.openInventory(GUI.DELETETown.get());
                 break;
             //TOWN DELETE
 

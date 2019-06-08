@@ -97,6 +97,9 @@ public class RegenBuilder {
     public  Set<Integer[]> loadUnfinData(){
         File ef = new File(TownS.g().getDataFolder().getPath()+"\\" + "PendingRegens\\"+world,"Regens.dat");
         if(!ef.exists()){
+            if(!ef.getParentFile().exists()){
+                ef.getParentFile().mkdirs();
+            }
             try {
                 ef.createNewFile();
             } catch (IOException e) {

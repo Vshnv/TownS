@@ -1,5 +1,6 @@
 package com.rocketmail.vaishnavanil.towns.GUI;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class StackFunc {
@@ -12,7 +13,10 @@ public class StackFunc {
     public ItemStack getStack(){
         return stack;
     }
-
+    public StackFunc setStackType(Material m){
+        stack.setType(m);
+        return this;
+    }
     public Function getFunction() {
         return function;
     }

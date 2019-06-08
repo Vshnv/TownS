@@ -4,10 +4,12 @@ import org.bukkit.block.Container;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,13 +21,15 @@ public class FunctionRunner implements Listener {
     }
     private FunctionRunner(){}
     HashMap<String,HashMap<ItemStack,Function>> registered = new HashMap<>();
-    public void register(ItemStack i,Function f,String name){
+    List<String> keys = new ArrayList<>();
+    public void register(ItemStack i,Function f,String name,Boolean ResetUse){
         HashMap<ItemStack,Function> t = new HashMap<>();
         if(registered.containsKey(name)){
             t = registered.get(name);
         }
          t.put(i,f);
         registered.put(name,t);
+        if(ResetUse)if(!keys.contains(name))keys.add(name);
     }
 
     @EventHandler
@@ -42,6 +46,14 @@ public class FunctionRunner implements Listener {
             inp.put("Player",e.getWhoClicked().getUniqueId().toString());
             inp.put("Slot", Integer.valueOf(e.getSlot()).toString() );
             func.run(inp);
+        }
+    }
+    @EventHandler
+    public void ICE(InventoryCloseEvent e){
+        if(registered.keySet().contains(e.getView().getTitle())){
+            if(keys.contains(e.getView().getTitle())){
+                registered.remove(e.getView().getTitle());
+            }
         }
     }
 }
