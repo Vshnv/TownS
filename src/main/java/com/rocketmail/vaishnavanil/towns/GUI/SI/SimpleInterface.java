@@ -13,7 +13,7 @@ public abstract class SimpleInterface {
     StackFunc[] inv;
     int size;
     String name;
-    public SimpleInterface(String n){
+    public  SimpleInterface(String n){
         name = n;
     }
 
