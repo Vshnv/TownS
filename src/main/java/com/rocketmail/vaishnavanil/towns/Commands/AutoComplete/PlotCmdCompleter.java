@@ -26,6 +26,10 @@ public class PlotCmdCompleter implements TabCompleter {
                 suggestions.add("setname");
                 suggestions.add("flags");
                 suggestions.add("allow");
+
+                suggestions.add("fs");
+                suggestions.add("nfs");
+
                 suggestions.add("disallow");
                 suggestions.add("access");
                 return suggestions;
@@ -46,6 +50,8 @@ public class PlotCmdCompleter implements TabCompleter {
                         suggestions.add("Build");
                         suggestions.add("Container");
                         return suggestions;
+                    case "fs":
+                        return getNumbers();
                     default:
                         return getEmpty();
                 }

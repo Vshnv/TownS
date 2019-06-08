@@ -47,9 +47,6 @@ public class TownCmdCompleter implements TabCompleter {
 
                 suggestions.add("delwarp");
 
-                suggestions.add("fs");
-                suggestions.add("nfs");
-
                 suggestions.add("test");
 
                 suggestions.add("join");
@@ -82,7 +79,6 @@ public class TownCmdCompleter implements TabCompleter {
 
                     case "deposit" :
                     case "withdraw":
-                    case "fs":
                         return getNumbers();
 
                     case "invite":

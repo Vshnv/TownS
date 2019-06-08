@@ -166,7 +166,7 @@ public class Town implements Serializable {
     public boolean isSpawnChunk(Chunk chunk) {
         if (spawnChunkID == null || chunk == null)
             return false;
-        return TownS.getChunkID(chunk) == spawnChunkID;
+        return TownS.getChunkID(chunk).equals(spawnChunkID);
     }
 
     public void unclaim(Chunk chunk) {
