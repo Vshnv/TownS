@@ -45,9 +45,9 @@ public class TownAdmin implements CommandExecutor {
                         }.runTask(TownS.g());
                         Format.AlrtFrmt.use().a(sndr, "Performing Regen on Chunk at location.");
                     } else {
+                        Format.CmdErrFrmt.use().a(sndr, "Regen Disabled in this world");
 
                     }
-                    Format.CmdErrFrmt.use().a(sndr, "Regen Disabled in this world");
 
                     break;
                 /*REGEN*/

@@ -14,6 +14,7 @@ import com.rocketmail.vaishnavanil.towns.Listeners.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.TitleManager.MoveEventListener;
 import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
+import com.rocketmail.vaishnavanil.towns.MapGUI.ItemCreation.FakeEnchant;
 import com.rocketmail.vaishnavanil.towns.Placeholders.PlaceholderProvider;
 import com.rocketmail.vaishnavanil.towns.Storage.LoadObject;
 import com.rocketmail.vaishnavanil.towns.Storage.SaveObject;
@@ -25,6 +26,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -34,6 +36,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 
 import static java.lang.System.out;
@@ -292,6 +295,7 @@ public final class TownS extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        registerFE();
         if (!setupEconomy()) {
             Bukkit.getConsoleSender().sendMessage(getDescription().getName() + " - Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
@@ -356,7 +360,25 @@ public final class TownS extends JavaPlugin {
             getServer().getConsoleSender().sendMessage(ChatColor.RED+"[TOWNS] PlaceholderAPI Hook Failed");
         }
     }
-
+    public void registerFE() {
+        try {
+            Field f = Enchantment.class.getDeclaredField("acceptingNew");
+            f.setAccessible(true);
+            f.set(null, true);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            FakeEnchant FE = new FakeEnchant(new NamespacedKey(this,"TownSFakeEnchant"));
+            Enchantment.registerEnchantment(FE);
+        }
+        catch (IllegalArgumentException e){
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     public static String getChunkID(Chunk c){
         return c.getX()+"::"+c.getZ()+"::"+c.getWorld();
     }

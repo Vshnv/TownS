@@ -24,6 +24,10 @@ public class ItemBuilder {
     public ItemBuilder(Material Stack) {
         this.stack = new ItemStack(Stack);
     }
+    public ItemBuilder(boolean Enabled){
+        if(Enabled)this.stack = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
+        else this.stack = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+    }
     public ItemBuilder setGlow(boolean b){
         FakeEnchant = b;
         return this;
@@ -60,6 +64,8 @@ public class ItemBuilder {
 
     public ItemStack pack() {
         ItemMeta meta = stack.getItemMeta();
+        if(FakeEnchant)
+            stack = addFakeEnchant(stack);
         if (display != null) meta.setDisplayName(nStyle.use(display));
         if (!RAWlore.isEmpty()) {
             meta.setLore(style.use(RAWlore));
@@ -67,11 +73,10 @@ public class ItemBuilder {
         if (!flags.isEmpty()) for (ItemFlag f : flags) {
             meta.addItemFlags(f);
         }
+
+
+
         stack.setItemMeta(meta);
-        if(FakeEnchant)
-            stack = addFakeEnchant(stack);
-
-
         return stack;
     }
     private ItemStack addFakeEnchant(ItemStack item){
@@ -87,7 +92,7 @@ public class ItemBuilder {
         nms.setTag(tag);
         return CraftItemStack.asCraftMirror(nms);*/
         ItemMeta im = item.getItemMeta();
-        im.addEnchant(new FakeEnchant(new NamespacedKey(TownS.g(),"FakeEnchant")),1,true);
+        im.addEnchant(new FakeEnchant(new NamespacedKey(TownS.g(),"TownSFakeEnchant")),1,true);
         item.setItemMeta(im);
         return item;
     }
