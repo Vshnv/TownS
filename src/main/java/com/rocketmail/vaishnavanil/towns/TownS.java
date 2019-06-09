@@ -186,7 +186,13 @@ public final class TownS extends JavaPlugin {
     public boolean isClaimedQuick(int CX, int CZ, String wName) {
         return  (Map.containsKey(CX + "::" + CZ + "::" + wName));
     }
-
+    public boolean isClaimed(String ClaimID){
+        String[] split = ClaimID.split("::");
+        int CX = Integer.parseInt(split[0]);
+        int CZ = Integer.parseInt(split[1]);
+        String w = split[2];
+        return isClaimed(CX,CZ,w);
+    }
     public boolean isClaimed(int CX, int CZ, String wName) {
         if (Map.containsKey(CX + "::" + CZ + "::" + wName)) {
             Claim claim = Map.get(CX + "::" + CZ + "::" + wName);

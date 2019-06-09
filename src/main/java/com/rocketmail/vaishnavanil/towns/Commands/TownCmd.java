@@ -10,6 +10,7 @@ import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
 import com.rocketmail.vaishnavanil.towns.Towns.TownPlayer;
+import com.rocketmail.vaishnavanil.towns.Utilities.AntiClaimBreak;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
@@ -350,10 +351,16 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "You cannot unclaim the town's spawn chunk");
                     return true;
                 } else {
-                    unclaim(sndr);
-                    Format.CmdInfoFrmt.use().a(sndr, "You have unclaimed the current chunk!");
-                    return true;
+                    if(AntiClaimBreak.use.willClaimBreak(TownS.g().getClaim(sndr.getLocation().getChunk()))){
+                        Format.CmdErrFrmt.use().a(sndr, "Cannot unclaim this! Adjacent claims could get disconnected!");
+
+                    }else {
+                        unclaim(sndr);
+                        Format.CmdInfoFrmt.use().a(sndr, "You have unclaimed the current chunk!");
+                        return true;
+                    }
                 }
+                break;
                 //UNCLAIM
             case "test":
                 sndr.openInventory(GUI.YN.get());

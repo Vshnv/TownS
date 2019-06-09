@@ -139,6 +139,13 @@ public class Town implements Serializable {
         }
         return getRank(player.getUniqueId()).hasPermission(perm) || getMayor() == player;
     }
+    public boolean hasPermissionStrict(String perm, OfflinePlayer player) {
+        if (!hasRank(player.getUniqueId())){
+
+            return false;
+        }
+        return getRank(player.getUniqueId()).hasPermission(perm);
+    }
     public boolean hasPermission(String perm,UUID id){
         if(!hasRank(id)){
             if(getMayor().getUniqueId() == id){

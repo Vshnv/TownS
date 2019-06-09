@@ -26,8 +26,9 @@ public class DeleteTownConfirm extends SimpleInterface {
             public void run(HashMap<String, String> INPUT) {
                 UUID id = UUID.fromString(INPUT.get("Player"));
                 Player p = Bukkit.getPlayer(id);
-                p.performCommand("t delete ConfirmFromGUI");
+
                 p.closeInventory();
+                p.performCommand("t delete ConfirmFromGUI");
             }
         };
         Function fNo = new Function() {
@@ -35,6 +36,7 @@ public class DeleteTownConfirm extends SimpleInterface {
             public void run(HashMap<String, String> INPUT) {
                 UUID id = UUID.fromString(INPUT.get("Player"));
                 Player p = Bukkit.getPlayer(id);
+                p.closeInventory();
                 Format.AlrtFrmt.use().a(p,"Cancelled Town Delete!");
             }
 

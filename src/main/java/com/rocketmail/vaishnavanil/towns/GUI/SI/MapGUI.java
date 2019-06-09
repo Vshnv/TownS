@@ -35,7 +35,7 @@ public class MapGUI extends SimpleInterface {
             int chunky = currChunk[1]+changingy;
             Chunk curr = world.getChunkAt(chunkx, chunky);
 
-            ItemStack Item = new ItemBuilder(getItem(curr))
+            ItemStack Item = new ItemBuilder(getItem(curr,User))
                     .setNameStyle(NameStyle.HIGHLIGHT)
                     .setLoreStyle(LoreStyle.INFO)
                     .setDisplayName("Chunk")
@@ -65,7 +65,8 @@ public class MapGUI extends SimpleInterface {
     }
 
 
-    private Material getItem(Chunk chunk){
+    private Material getItem(Chunk chunk,Player p){
+        if(chunk == p.getLocation().getChunk())return Material.BREWING_STAND;
         if(TownS.g().isClaimed(chunk)){
             if(TownS.g().getClaim(chunk).getName().equals("")){
                 return Material.CAMPFIRE;
