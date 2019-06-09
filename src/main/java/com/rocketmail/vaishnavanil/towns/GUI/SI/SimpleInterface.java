@@ -1,6 +1,7 @@
 package com.rocketmail.vaishnavanil.towns.GUI.SI;
 
 
+import com.rocketmail.vaishnavanil.towns.GUI.Function;
 import com.rocketmail.vaishnavanil.towns.GUI.FunctionRunner;
 import com.rocketmail.vaishnavanil.towns.GUI.StackFunc;
 import com.rocketmail.vaishnavanil.towns.MapGUI.ItemName.NameStyle;
@@ -10,6 +11,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import java.util.HashMap;
+
 
 public abstract class SimpleInterface {
     StackFunc[] inv;
@@ -17,6 +20,13 @@ public abstract class SimpleInterface {
     String name;
     Inventory gui;
     boolean removeESett = false;
+    Function NoFunction = new Function() {
+
+        @Override
+        public void run(HashMap<String, String> INPUT) {
+            //DO NOTHING
+        }
+    };
     public  SimpleInterface(String n){
         name = NameStyle.DESIGNED.use(n);
     }

@@ -214,7 +214,7 @@ public class PlotCmd implements CommandExecutor {
                 }else{
                     Claim c = TownS.g().getClaim(sndr.getLocation().getChunk());
                     //sndr.openInventory(FlagShow.get.create(sndr,TownS.g().getClaim(sndr.getLocation().getChunk())));
-                    sndr.openInventory(new FlagGUI("FlagGUI ID:" + ThreadLocalRandom.current().nextLong(1000,999999),c).get());
+                    sndr.openInventory(new FlagGUI("FlagGUI",c).get());
                     Format.CmdInfoFrmt.use().a(sndr,"Opening Flag List for this claim!");
                     break;
                 }
