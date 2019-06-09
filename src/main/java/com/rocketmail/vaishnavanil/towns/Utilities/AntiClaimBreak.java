@@ -20,10 +20,12 @@ use;
         public boolean willClaimBreak(Claim c){
             Town town = c.getTown();
             int adj = countAdjacentClaims(c);
-            if(adj == 0)return true;
-            switch(adj){
+            if(adj == 0)return false;
+            return !isConnected(c);
+
+           /* switch(adj){
                 case 1:
-                    return true;
+                    return false;
                 case 2:
                     if(checkParallel(getAdjClaims(c))){
                         return true;
@@ -39,7 +41,7 @@ use;
                     if(isConnected(c))return false;
                     return true;
                     default: return false;
-            }
+            }*/
 
         }
         private String getCombDir(Claim c){
