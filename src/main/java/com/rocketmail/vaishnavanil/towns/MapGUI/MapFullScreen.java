@@ -37,10 +37,6 @@ public enum MapFullScreen {
             int chunkx = currChunk[0]+changingx;
             int chunky = currChunk[1]+changingy;
             Chunk curr = world.getChunkAt(chunkx, chunky);
-            System.out.println("CHunk: "+chunkx+ " | " + chunky);
-            if(i==22){ System.out.println("spawn chunk ^"); }
-            System.out.println(TownS.g().isClaimed(curr));
-
             ItemStack item = new ItemBuilder(getItem(curr))
                     .setNameStyle(NameStyle.HIGHLIGHT)
                     .setLoreStyle(LoreStyle.INFO)

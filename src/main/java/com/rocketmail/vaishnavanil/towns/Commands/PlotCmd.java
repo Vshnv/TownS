@@ -313,6 +313,11 @@ public class PlotCmd implements CommandExecutor {
                             if(!TBOplayer.hasPlayedBefore()){
                                 Format.CmdErrFrmt.use().a(sndr,"Could not find player with name "+ args[3]);
                                 return true;
+                            }else{
+                                if(TBOplayer.getUniqueId().equals(sndr.getUniqueId())){
+                                    Format.CmdErrFrmt.use().a(sndr,"You cannot set access to yourself in the plot"+ args[3]);
+                                    return true;
+                                }
                             }
                             thisClm.BuildTrust(TBOplayer.getUniqueId());
                             Format.CmdInfoFrmt.use().a(sndr,"Now allowing player " + args[3] + " to build here!");
@@ -339,6 +344,11 @@ public class PlotCmd implements CommandExecutor {
                             if(!TBOplayer.hasPlayedBefore()){
                                 Format.CmdErrFrmt.use().a(sndr,"Could not find player with name "+ args[3]);
                                 return true;
+                            }else{
+                                if(TBOplayer.getUniqueId().equals(sndr.getUniqueId())){
+                                    Format.CmdErrFrmt.use().a(sndr,"You cannot set access to yourself in the plot"+ args[3]);
+                                    return true;
+                                }
                             }
                             thisClm.ContainerTrust(TBOplayer.getUniqueId());
                             Format.CmdInfoFrmt.use().a(sndr,"Now allowing player " + args[3] + " to use Containers here!");
