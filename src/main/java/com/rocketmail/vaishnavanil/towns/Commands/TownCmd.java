@@ -39,6 +39,10 @@ public class TownCmd implements CommandExecutor {
         switch (sub_cmd) {
             /*CREATE*/
             case "create":
+                if(!sndr.getWorld().getName().equals("world")){
+                    Format.CmdErrFrmt.use().a(sndr, "You can only create Towns in the Towns World");
+                    return true;
+                }
                 if (!(args.length > 1)) {
                     /*MSG ADDED N.E.A.*/
                     Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
@@ -330,6 +334,10 @@ public class TownCmd implements CommandExecutor {
                 break;
             //UNCLAIM
             case "unclaim":
+                if(!sndr.getWorld().getName().equals("world")){
+                    Format.CmdErrFrmt.use().a(sndr, "You can only unclaim in the Towns World");
+                    return true;
+                }
                 if (!TownS.g().hasTown(sndr)) {
                     /*MSG ADDED A.I.T.*/
                     Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
