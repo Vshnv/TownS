@@ -32,4 +32,9 @@ public class CmdError implements Message {
     public void b(Town town, String s) {
 
     }
+
+    @Override
+    public void b(Town town, String s, Boolean DsM) {
+
+    }
 }
