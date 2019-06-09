@@ -1,5 +1,7 @@
-package com.rocketmail.vaishnavanil.towns.MapGUI;
+package com.rocketmail.vaishnavanil.towns.GUI.SI;
 
+import com.rocketmail.vaishnavanil.towns.GUI.Function;
+import com.rocketmail.vaishnavanil.towns.GUI.StackFunc;
 import com.rocketmail.vaishnavanil.towns.MapGUI.ItemCreation.ItemBuilder;
 import com.rocketmail.vaishnavanil.towns.MapGUI.ItemLore.LoreStyle;
 import com.rocketmail.vaishnavanil.towns.MapGUI.ItemName.NameStyle;
@@ -10,24 +12,19 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
-public enum MapFullScreen {
-    get;
-
-    public Inventory create(Player player) {
-        Inventory Map = Bukkit.createInventory(null, 9 * 5, "Towny Map");
-        Integer playerx = (int) player.getLocation().getChunk().getX();
-        Integer playery =  (int) player.getLocation().getChunk().getZ();
-        World world = player.getLocation().getWorld();
+public class MapGUI extends SimpleInterface {
+    public MapGUI(String n, Player User) {
+        super(n+ " ID:" + ThreadLocalRandom.current().nextLong(1000,999999));
+        Integer playerx =  User.getLocation().getChunk().getX();
+        Integer playery =   User.getLocation().getChunk().getZ();
+        World world = User.getLocation().getWorld();
         Integer[] currChunk = {playerx-4, playery-2};
-        System.out.println("spawn: "+playerx +"   "+playery);
-        System.out.println(TownS.g().isClaimed(player.getLocation().getChunk()));
+        super.inv = new StackFunc[45];
 
         int changingy = -1;
 
@@ -37,21 +34,36 @@ public enum MapFullScreen {
             int chunkx = currChunk[0]+changingx;
             int chunky = currChunk[1]+changingy;
             Chunk curr = world.getChunkAt(chunkx, chunky);
-            ItemStack item = new ItemBuilder(getItem(curr))
+
+            ItemStack Item = new ItemBuilder(getItem(curr))
                     .setNameStyle(NameStyle.HIGHLIGHT)
                     .setLoreStyle(LoreStyle.INFO)
                     .setDisplayName("Chunk")
                     .setLore(getDetails(curr))
                     .pack();
-            Map.setItem(i, item);
+            StackFunc SF;
+            if(TownS.g().isClaimed(curr)) {
+                Function ClaimFunc = new Function() {
+                    Claim c = TownS.g().getClaim(curr);
+                    @Override
+                    public void run(HashMap<String, String> INPUT) {
+                        Player clicker = Bukkit.getPlayer(UUID.fromString(INPUT.get("Player")));
+                        clicker.closeInventory();
+                        clicker.openInventory(new FlagGUI("FlagList",c).get());
+                    }
+                };
+                SF = new StackFunc(Item,ClaimFunc);
+            }else{
+                SF = new StackFunc(Item,NoFunction);
+            }
+
+
+            super.inv[i] = SF;
         }
 
-        return Map;
+        super.init();
     }
 
-    public Chunk getChunk(int x, int y, World world){
-        return world.getChunkAt(x, y);
-    }
 
     private Material getItem(Chunk chunk){
         if(TownS.g().isClaimed(chunk)){
@@ -60,7 +72,7 @@ public enum MapFullScreen {
             }
             return Material.BELL;
         }else{
-            return Material.BLACK_STAINED_GLASS_PANE;
+            return Material.LIGHT_GRAY_STAINED_GLASS_PANE;
         }
     }
 
@@ -73,16 +85,18 @@ public enum MapFullScreen {
         Claim claim = TownS.g().getClaim(chunk);
         lore.add("&f&lPlot Claimed");
         lore.add(" ");
-        lore.add("Town: &c" + claim.getTown().getName());
+        lore.add("Town: &a" + claim.getTown().getName());
         if(claim.getName().equals("")){
             lore.add("Area Name: &aUnnamed" );
         }else{
             lore.add("Area Name: &a" +claim.getName());
         }
-        lore.add("Claim Owner: &6" + claim.getOwner().getName()+"  ");
+        lore.add("Claim Owner: &6" + claim.getOwner().getName());
+        lore.add(" ");
+        lore.add("Chunk X: &c" + claim.getChunk().getX() + "&f Chunk Z: &c"+ claim.getChunk().getZ());
+        lore.add("World: &c" + claim.getChunk().getWorld().getName());
         lore.add(" ");
         lore.add("&e&lClick To View Flags");
         return lore;
     }
-
 }

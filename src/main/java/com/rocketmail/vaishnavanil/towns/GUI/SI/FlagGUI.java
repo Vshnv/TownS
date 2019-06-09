@@ -20,11 +20,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class FlagGUI extends SimpleInterface {
     public FlagGUI(String n,Claim c) {
 
-        super(n);
+        super(n + " ID:" + ThreadLocalRandom.current().nextLong(1000,999999));
         removeESett = true;
         int Pre_Needed_slot_count = Flag.values().length+2;
         int finalSlotCount = 0;
@@ -40,13 +41,9 @@ public class FlagGUI extends SimpleInterface {
 
         inv = new StackFunc[Pre_Needed_slot_count];
         ItemStack DetailsItem = new ItemBuilder(Material.LIGHT_GRAY_STAINED_GLASS_PANE).setGlow(true).setNameStyle(NameStyle.DESIGNED).setLoreStyle(LoreStyle.INFO).setDisplayName("Showing Flags").setLore(getDetails(c.getChunk())).pack();
-        super.inv[0] = new StackFunc(DetailsItem, INPUT -> {
-            //DO NOTHING
-        });
+        super.inv[0] = new StackFunc(DetailsItem, NoFunction);
         ItemStack Blank = new ItemBuilder(Material.LIGHT_GRAY_STAINED_GLASS_PANE).setNameStyle(NameStyle.NO_STYLE).setDisplayName("").pack();
-        StackFunc NullFunc = new StackFunc(Blank, INPUT -> {
-            //DO NOTHING
-        });
+        StackFunc NullFunc = new StackFunc(Blank, NoFunction);
         ItemStack BackItem = new ItemBuilder(Material.LIGHT_GRAY_STAINED_GLASS_PANE).setNameStyle(NameStyle.DESIGNED).setLoreStyle(LoreStyle.INFO).setDisplayName("Open Map").addLoreLine("Takes you to the Town Map").pack();
         StackFunc BackFunc = new StackFunc(BackItem, INPUT -> {
             Player p = Bukkit.getPlayer(UUID.fromString(INPUT.get("Player")));

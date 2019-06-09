@@ -20,10 +20,10 @@ public class FunctionRunner implements Listener {
         return runner;
     }
     private FunctionRunner(){}
-    HashMap<String,HashMap<ItemStack,Function>> registered = new HashMap<>();
+    HashMap<String,HashMap<Object,Function>> registered = new HashMap<>();
     List<String> keys = new ArrayList<>();
     public void register(ItemStack i,Function f,String name,Boolean ResetUse){
-        HashMap<ItemStack,Function> t = new HashMap<>();
+        HashMap<Object,Function> t = new HashMap<>();
         if(registered.containsKey(name)){
             t = registered.get(name);
         }
