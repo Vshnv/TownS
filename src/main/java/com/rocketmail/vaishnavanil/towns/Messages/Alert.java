@@ -2,6 +2,7 @@ package com.rocketmail.vaishnavanil.towns.Messages;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -29,6 +30,23 @@ public class Alert implements Message {
 
     @Override
     public void b(Town town, String s) {
+        for(Player OP: Bukkit.getOnlinePlayers()){
+            if(town.belongs(OP)){
+                a(OP,s);
+            }
+        }
+    }
 
+    @Override
+    public void b(Town town, String s, Boolean DsM) {
+        if(DsM){
+            for(Player OP: Bukkit.getOnlinePlayers()){
+                if(town.belongs(OP)){
+                    if(town.getMayor().getUniqueId() != OP.getUniqueId())a(OP,s);
+                }
+            }
+        }else{
+            b(town,s);
+        }
     }
 }

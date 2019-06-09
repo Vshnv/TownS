@@ -12,12 +12,15 @@ import com.rocketmail.vaishnavanil.towns.Towns.Town;
 import com.rocketmail.vaishnavanil.towns.Towns.TownPlayer;
 import com.rocketmail.vaishnavanil.towns.Utilities.AntiClaimBreak;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.text.Normalizer;
 
 public class TownCmd implements CommandExecutor {
     @Override
@@ -68,6 +71,7 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "Town Name cannot be that long!");
                     return true;
                 }
+                Format.AlrtFrmt.use().broadcast(sndr.getName() + " has created a new Town! &c" + args[1]);
                 create(sndr, args[1]);
                 break;
             /*END CREATION*/
@@ -93,7 +97,7 @@ public class TownCmd implements CommandExecutor {
                         return true;
                     }
                     TownS.g().getTown(sndr).setName(town_name);
-                    Format.AlrtFrmt.use().a(sndr, "Successfully Set Town Name: " + town_name);
+                    Format.AlrtFrmt.use().b(TownS.g().getTown(sndr),"Your town name was changed to : &c" + town_name);
                 } else {
                     Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setname <name>");
                 }
@@ -110,7 +114,8 @@ public class TownCmd implements CommandExecutor {
                                 return true;
                             }
                             if (EconomyHandler.INSTANCE.depositIntoTown(sndr, TownS.g().getTown(sndr), amount_num)) {
-                                Format.AlrtFrmt.use().a(sndr, "Successfully deposited " + args[1] + "$ into Town Bank");
+
+                                Format.AlrtFrmt.use().b(TownS.g().getTown(sndr), sndr.getName() + "has successfully deposited " + args[1] + "$ into Town Bank");
 
                             } else {
                                 Format.CmdErrFrmt.use().a(sndr, "Depositing " + args[1] + "$ to Town failed due to insufficient funds.");
@@ -169,6 +174,8 @@ public class TownCmd implements CommandExecutor {
                 if(args.length == 2){
                     if(args[1].equalsIgnoreCase("ConfirmFromGUI")){
                         Format.AlrtFrmt.use().a(sndr, "Successfully deleted your town!");
+                        Format.AlrtFrmt.use().b(TownS.g().getTown(sndr), "Your Town was deleted by your Mayor!",true);
+
                         deleteTown(sndr);
                         return true;
                     }
@@ -307,6 +314,7 @@ public class TownCmd implements CommandExecutor {
                 senders_town.setWarpPoint(senders_town, "spawn", sndr.getLocation());
                 senders_town.setSpawnChunk(senders_town, sndr.getLocation().getChunk());
                 Format.AlrtFrmt.use().a(sndr, "Successfully set Spawn Point.");
+                Format.AlrtFrmt.use().b(TownS.g().getTown(sndr),"Your towns name was changed to a new location");
                 break;
             //TOWN SETWARP SPAWN
 
@@ -336,6 +344,7 @@ public class TownCmd implements CommandExecutor {
                     return true;
                 }
                 claim(sndr);
+
                 break;
             //UNCLAIM
             case "unclaim":
@@ -411,7 +420,7 @@ public class TownCmd implements CommandExecutor {
                     return true;
                 }
                 tp.invite(t);
-                Format.CmdInfoFrmt.use().a(sndr, "Player " + args[1] + " was invited to your town!");
+                Format.CmdInfoFrmt.use().b(TownS.g().getTown(sndr), "Player " + args[1] + " was invited to your town!");
                 break;
             case "uninvite":
                 if (!TownS.g().hasTown(sndr)) {
@@ -443,7 +452,7 @@ public class TownCmd implements CommandExecutor {
                     return true;
                 }
                 tpl.uninvite(to);
-                Format.CmdInfoFrmt.use().a(sndr, "Player " + args[1] + " was unInvited from you town!");
+                Format.CmdInfoFrmt.use().b(TownS.g().getTown(sndr), "Player " + args[1] + " was unInvited from you town!");
                 break;
             case "join":
                 if (TownS.g().hasTown(sndr)) {
@@ -466,9 +475,10 @@ public class TownCmd implements CommandExecutor {
                 if (plT.isInvited(tWn)) {
                     tWn.addMember(sndr);
                     Format.CmdInfoFrmt.use().a(sndr, "You join the Town " + tWn.getName());
+                    Format.CmdInfoFrmt.use().b(TownS.g().getTown(sndr),sndr.getName() + " has joined your town!");
                 } else {
                     Format.CmdErrFrmt.use().a(sndr, "You are not invited to this town!");
-
+                    if(tWn.getMayor().isOnline())tWn.getMayor().getPlayer().sendMessage(sndr.getName() + " tried to join your town!");
                 }
                 break;
 
@@ -485,6 +495,8 @@ public class TownCmd implements CommandExecutor {
                 }
                 tLve.removePlayer(sndr);
                 Format.CmdInfoFrmt.use().a(sndr, "You left the town " + tLve.getName());
+                Format.CmdErrFrmt.use().b(TownS.g().getTown(sndr), sndr.getName()+" has left your town!");
+
                 break;
             case "kick":
                 if(args.length == 2){
@@ -509,6 +521,7 @@ public class TownCmd implements CommandExecutor {
                                 return true;
                             }
                             kt.removePlayer(opl);
+                            Format.CmdErrFrmt.use().b(TownS.g().getTown(sndr), sndr.getName()+" was kicked from your town!");
                             Format.CmdErrFrmt.use().a(sndr, "Successfully kicked player with name " + args[1]);
 
                         }
@@ -538,6 +551,7 @@ public class TownCmd implements CommandExecutor {
                     }
                     if (Bukkit.getOfflinePlayer(player_name).hasPlayedBefore()) {
                         if (TownS.g().getTown(sndr).setOwner(Bukkit.getOfflinePlayer(player_name).getUniqueId())) {
+                            Format.AlrtFrmt.use().broadcast(TownS.g().getTown(sndr).getName() + " has a new Mayor -> &c" + player_name);
                             Format.AlrtFrmt.use().a(sndr, "Successfully made " + player_name + " the new mayor");
                         } else {
                             Format.CmdErrFrmt.use().a(sndr, "That player does not belong to your Town.");
@@ -588,7 +602,7 @@ public class TownCmd implements CommandExecutor {
                                 return true;
                             }
                         }
-                        if (!r.hasPermission("csetrank")) {
+                        if (!r.hasPermission("setrank")) {
                             if (twn.getMayor().getUniqueId() != sndr.getUniqueId()) {
                                 Format.CmdErrFrmt.use().a(sndr, "You do not have perm for this command!");
 
@@ -603,6 +617,7 @@ public class TownCmd implements CommandExecutor {
                         return true;
                     }
                     twn.setRank(rnk, TownS.g().getRank(args[2]));
+                    Format.AlrtFrmt.use().a(rnk.getPlayer(),"Your town rank was set to &c" + TownS.g().getRank(args[2]).getName());
                     Format.CmdInfoFrmt.use().a(sndr,"Successfully set rank of " +args[1]+" to "+args[2]);
 
 

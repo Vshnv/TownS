@@ -19,8 +19,13 @@ public interface Message {
     }
 
     void b(Town town, String s);
-
+    void b(Town town,String s,Boolean DsM);
     default String c(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
+    }
+    default void broadcast(String msg){
+        for(Player OP:Bukkit.getOnlinePlayers()){
+            a(OP,msg);
+        }
     }
 }
