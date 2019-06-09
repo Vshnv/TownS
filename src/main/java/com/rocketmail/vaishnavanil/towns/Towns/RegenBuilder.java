@@ -4,6 +4,7 @@ import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
 import com.rocketmail.vaishnavanil.towns.Utilities.SaveManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -159,12 +160,15 @@ public class RegenBuilder {
         }
 
         Chunk toRegen = TownS.g().getServer().getWorld(world).getChunkAt(X,Z);
+        toRegen.setForceLoaded(true);
         if(toRegen == null){
             this.RegenComplete();
             return;
         }
         if(!toRegen.isLoaded()){
-            toRegen.load();
+            Bukkit.getServer().getConsoleSender().sendMessage("[TownS-Regenerator] Regen Job on unloaded chunk! Force Loading safely");
+            toRegen.load(false);
+
         }
 
         if(toRegen == null){
@@ -192,6 +196,7 @@ public class RegenBuilder {
                 }
             }
             RegenComplete();
+            toRegen.setForceLoaded(false);
             Collection<Entity> eList = toRegen.getWorld().getNearbyEntities(toRegen.getBlock(7,60,7).getLocation(),100,100,100);
             boolean s = false;
 
@@ -202,7 +207,8 @@ public class RegenBuilder {
                     break outerloop;
                 }
             }
-            if(!s)toRegen.unload();
+
+            if(toRegen.isLoaded() && !s)toRegen.unload(true);//SAFE SAVED CHUNK UNLOAD
             this.cancel();
             //END BUILD
         }
