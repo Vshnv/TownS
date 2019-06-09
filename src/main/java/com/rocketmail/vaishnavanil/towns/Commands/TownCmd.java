@@ -302,6 +302,10 @@ public class TownCmd implements CommandExecutor {
             //TOWN SETWARP SPAWN
 
             case "claim":
+                if(!sndr.getWorld().getName().equals("world")){
+                    Format.CmdErrFrmt.use().a(sndr, "You can only claim in the Towns World");
+                    return true;
+                }
                 if (!TownS.g().hasTown(sndr)) {
                     /*MSG ADDED A.I.T.*/
                     Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
