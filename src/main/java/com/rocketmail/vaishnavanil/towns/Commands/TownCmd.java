@@ -237,6 +237,10 @@ public class TownCmd implements CommandExecutor {
                 }
                 break;
             case "setwarp":
+                if(!sndr.getWorld().getName().equals("world")){
+                    Format.CmdErrFrmt.use().a(sndr, "You can only set Warps in the Towns World");
+                    return true;
+                }
                 if (args.length == 2) {
                     String warp_name = args[1];
                     if(warp_name.toCharArray().length >10){
