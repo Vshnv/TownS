@@ -1,12 +1,9 @@
 package com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers;
 
-import com.rocketmail.vaishnavanil.towns.Listeners.Constraints;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Flag;
-import com.rocketmail.vaishnavanil.towns.Towns.Town;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,25 +17,25 @@ public class PlayerBuildEventListener implements Listener {
     public void onBuild(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         Location blockloc = event.getBlock().getLocation();
-        if(TownS.g().isClaimed(blockloc.getChunk())){
+        if (TownS.g().isClaimed(blockloc.getChunk())) {
             Claim claim = TownS.g().getClaim(blockloc.getChunk());
 
 
-            if(claim.canBuild(player)) return;
+            if (claim.canBuild(player)) return;
 
-            if(claim.getTown().belongs(player)){
+            if (claim.getTown().belongs(player)) {
 
-                if(claim.hasFlag(Flag.EDIT)){
+                if (claim.hasFlag(Flag.EDIT)) {
                     return;
-                }else{
+                } else {
 
-                    if(claim.getOwner().getUniqueId().equals(player.getUniqueId())){
+                    if (claim.getOwner().getUniqueId().equals(player.getUniqueId())) {
                         return;
-                    }else{
-                        if(claim.getTown().hasPermission("Allow.BuildALL",event.getPlayer())){
+                    } else {
+                        if (claim.getTown().hasPermission("Allow.BuildALL", event.getPlayer())) {
                             return;
-                        }else{
-                            if(claim.getTown().hasPermission("BuildALL", player.getUniqueId())){
+                        } else {
+                            if (claim.getTown().hasPermission("BuildALL", player.getUniqueId())) {
                                 return;
                             }
                             event.setCancelled(true);
@@ -48,12 +45,12 @@ public class PlayerBuildEventListener implements Listener {
 
                 }
 
-            }else{
+            } else {
                 event.setCancelled(true);
                 Format.CmdErrFrmt.use().a(player, "You do not belong to this town!");
             }
-        }else{
-            if(!player.hasPermission("towns.buildwild")){
+        } else {
+            if (!player.hasPermission("towns.buildwild")) {
                 event.setCancelled(true);
                 Format.CmdErrFrmt.use().a(player, "This Area does not belong to you yet!");
             }
@@ -66,25 +63,25 @@ public class PlayerBuildEventListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Location blockloc = event.getBlock().getLocation();
-        if(TownS.g().isClaimed(blockloc.getChunk())){
+        if (TownS.g().isClaimed(blockloc.getChunk())) {
             Claim claim = TownS.g().getClaim(blockloc.getChunk());
 
 
-            if(claim.canBuild(player)) return;
+            if (claim.canBuild(player)) return;
 
-            if(claim.getTown().belongs(player)){
+            if (claim.getTown().belongs(player)) {
 
-                if(claim.hasFlag(Flag.EDIT)){
+                if (claim.hasFlag(Flag.EDIT)) {
                     return;
-                }else{
+                } else {
 
-                    if(claim.getOwner().getUniqueId().equals(player.getUniqueId())){
+                    if (claim.getOwner().getUniqueId().equals(player.getUniqueId())) {
                         return;
-                    }else{
-                        if(claim.getTown().hasPermission("Allow.BuildALL",event.getPlayer())){
+                    } else {
+                        if (claim.getTown().hasPermission("Allow.BuildALL", event.getPlayer())) {
                             return;
-                        }else{
-                            if(claim.getTown().hasPermission("BuildALL", player.getUniqueId())){
+                        } else {
+                            if (claim.getTown().hasPermission("BuildALL", player.getUniqueId())) {
                                 return;
                             }
                             event.setCancelled(true);
@@ -94,20 +91,18 @@ public class PlayerBuildEventListener implements Listener {
 
                 }
 
-            }else{
+            } else {
                 event.setCancelled(true);
                 Format.CmdErrFrmt.use().a(player, "You do not belong to this town!");
             }
-        }else{
-            if(!player.hasPermission("towns.buildwild")){
+        } else {
+            if (!player.hasPermission("towns.buildwild")) {
                 event.setCancelled(true);
                 Format.CmdErrFrmt.use().a(player, "This Area does not belong to you yet!");
             }
         }
 
     }
-
-
 
 
 }
