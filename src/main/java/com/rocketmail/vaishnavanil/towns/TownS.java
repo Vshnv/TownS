@@ -338,7 +338,7 @@ public final class TownS extends JavaPlugin {
         regListen(new MobManagingEventListener());
         regListen(new PVPEventListener());
         regListen(new UtilityUSEEventListener());
-        regListen(new TownRestricter());
+        regListen(new PlayerBuildEventListener());
         regListen(new BlockPhysics());
         regListen(ChunkLoadListener.get());
         regListen(new RegenChunkInteractEvent());

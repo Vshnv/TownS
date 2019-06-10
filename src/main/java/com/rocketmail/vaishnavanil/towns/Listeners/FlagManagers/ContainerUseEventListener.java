@@ -48,8 +48,6 @@ public class ContainerUseEventListener implements Listener {
                             Format.CmdErrFrmt.use().a(player, "You lack permission to open containers here!");
                         }
                     }
-
-
                 }
 
             }else{
@@ -59,30 +57,5 @@ public class ContainerUseEventListener implements Listener {
 
         }
 
-//            Claim claim = TownS.g().getClaim(e.getClickedBlock().getLocation().getChunk());
-//                if(claim.hasFlag(Flag.CONTAINER)){
-//                    if(!claim.getTown().belongs(e.getPlayer())){
-//                       e.setCancelled(true);
-//                       return;
-//                    }
-//                }else{
-//
-//                    if(claim.getTown().hasPermission("Allow.ContainerALL",e.getPlayer())){
-//                        return;
-//                    }
-//
-//                    if(!claim.getTown().belongs(e.getPlayer())){
-//                        Bukkit.broadcastMessage("else trigged evennt");
-//
-//
-//                        if(claim.canUseContainer(e.getPlayer()))return;
-//                        e.setCancelled(true);
-//                        return;
-//                    }
-//
-//
-//                }
-//
-//        }
     }
 }
