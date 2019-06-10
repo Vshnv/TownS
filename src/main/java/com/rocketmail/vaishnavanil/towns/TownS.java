@@ -339,7 +339,7 @@ public final class TownS extends JavaPlugin {
         regListen(new MobManagingEventListener());
         regListen(new PVPEventListener());
         regListen(new UtilityUSEEventListener());
-        regListen(new TownRestricter());
+        regListen(new PlayerBuildEventListener());
         regListen(new BlockPhysics());
         regListen(RegenChunkSaveListener.get());
         regListen(new RegenChunkInteractEvent());
@@ -347,6 +347,7 @@ public final class TownS extends JavaPlugin {
         regListen(new PlayerChatListener());
         regListen(new InventoryCloseListener());
         regListen(new WildernessInteractListener());
+        regListen(new PlayerRespawnListener());
 
         regListen(FunctionRunner.get());
         hookPlaceholderAPI();
