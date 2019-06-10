@@ -26,6 +26,7 @@ public class RegenChunkSaveListener implements Listener {
             e.setCancelled(true);
             Format.AlrtFrmt.use().a(e.getPlayer(),"Please Wait... Preparing chunk for your use!"
             );
+            return;
         }
         if(!Queue.addToQueue(e.getBlock().getLocation().getChunk())){
             e.setCancelled(true);
@@ -41,6 +42,7 @@ public class RegenChunkSaveListener implements Listener {
             e.setCancelled(true);
             Format.AlrtFrmt.use().a(e.getPlayer(),"Please Wait... Preparing chunk for your use!"
             );
+            return;
         }
         if(!Queue.addToQueue(e.getBlock().getLocation().getChunk())){
             e.setCancelled(true);

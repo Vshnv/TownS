@@ -388,7 +388,7 @@ public final class TownS extends JavaPlugin {
         }
     }
     public static String getChunkID(Chunk c){
-        return c.getX()+"::"+c.getZ()+"::"+c.getWorld();
+        return c.getX()+"::"+c.getZ()+"::"+c.getWorld().getName();
     }
     public static String getChunkID(ChunkSnapshot c){
         return c.getX()+"::"+c.getZ()+"::"+c.getWorldName();
