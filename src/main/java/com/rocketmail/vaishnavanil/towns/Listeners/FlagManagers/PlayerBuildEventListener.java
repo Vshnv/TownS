@@ -50,7 +50,7 @@ public class PlayerBuildEventListener implements Listener {
                 Format.CmdErrFrmt.use().a(player, "You do not belong to this town!");
             }
         } else {
-            if (!player.hasPermission("towns.buildwild")) {
+            if (player.getWorld().getName().equalsIgnoreCase("world") && !player.hasPermission("towns.buildwild")) {
                 event.setCancelled(true);
                 Format.CmdErrFrmt.use().a(player, "This Area does not belong to you yet!");
             }
@@ -96,7 +96,7 @@ public class PlayerBuildEventListener implements Listener {
                 Format.CmdErrFrmt.use().a(player, "You do not belong to this town!");
             }
         } else {
-            if (!player.hasPermission("towns.buildwild")) {
+            if (player.getWorld().getName().equalsIgnoreCase("world") && !player.hasPermission("towns.buildwild")) {
                 event.setCancelled(true);
                 Format.CmdErrFrmt.use().a(player, "This Area does not belong to you yet!");
             }
