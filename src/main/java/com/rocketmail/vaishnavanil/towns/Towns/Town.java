@@ -2,6 +2,7 @@ package com.rocketmail.vaishnavanil.towns.Towns;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
+import com.rocketmail.vaishnavanil.towns.Utilities.RegenSaveQueueManager;
 import com.rocketmail.vaishnavanil.towns.Utilities.WarpLocation;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -157,7 +158,12 @@ public class Town implements Serializable {
     }
 
     public void claim(Chunk chunk, Player owner) {
+
         regClaim(new Claim(chunk, this, owner.getUniqueId()));
+        if(RegenSaveQueueManager.get.isCached(chunk))return;
+        if(RegenSaveQueueManager.get.isQueued(chunk))return;
+
+        RegenSaveQueueManager.get.addToQueue(chunk);
     }
 
     public boolean setSpawnChunk(Town town, Chunk chunk) {

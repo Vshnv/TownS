@@ -21,6 +21,7 @@ import com.rocketmail.vaishnavanil.towns.Storage.SaveObject;
 import com.rocketmail.vaishnavanil.towns.Towns.*;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
 import com.rocketmail.vaishnavanil.towns.Utilities.PlotBorderShowTimer;
+import com.rocketmail.vaishnavanil.towns.Utilities.RegenSaveQueueManager;
 import com.rocketmail.vaishnavanil.towns.Utilities.SaveManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
@@ -340,7 +341,7 @@ public final class TownS extends JavaPlugin {
         regListen(new UtilityUSEEventListener());
         regListen(new TownRestricter());
         regListen(new BlockPhysics());
-        regListen(ChunkLoadListener.get());
+        regListen(RegenChunkSaveListener.get());
         regListen(new RegenChunkInteractEvent());
         regListen(new PlayerJoinQuitListener());
         regListen(new PlayerChatListener());
@@ -349,7 +350,7 @@ public final class TownS extends JavaPlugin {
 
         regListen(FunctionRunner.get());
         hookPlaceholderAPI();
-        ChunkLoadListener.get().runSaveQueue();
+        RegenSaveQueueManager.get.runSaveQueue();
         PlotBorderShowTimer.INSTANCE.startBorderShow();
 
         MobClearLoop.get.start();
@@ -388,6 +389,10 @@ public final class TownS extends JavaPlugin {
     public static String getChunkID(Chunk c){
         return c.getX()+"::"+c.getZ()+"::"+c.getWorld();
     }
+    public static String getChunkID(ChunkSnapshot c){
+        return c.getX()+"::"+c.getZ()+"::"+c.getWorldName();
+    }
+
     public static Chunk getChunkFromID(String ID){
         String[] sep = ID.split("::");
         int x = Integer.parseInt(sep[0]);
