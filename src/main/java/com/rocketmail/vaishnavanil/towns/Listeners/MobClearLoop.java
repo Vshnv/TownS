@@ -47,6 +47,6 @@ List<Player> l = (List<Player>) Bukkit.getOnlinePlayers();
                 }
             }
 
-        }.runTaskTimerAsynchronously(TownS.g(), 100, 100);
+        }.runTaskTimerAsynchronously(TownS.g(), 100, 50);
     }
 }
