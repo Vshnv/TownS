@@ -4,6 +4,7 @@ import com.rocketmail.vaishnavanil.towns.Listeners.Constraints;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Flag;
+import com.rocketmail.vaishnavanil.towns.Utilities.ActionBar;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -12,6 +13,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class UtilityUSEEventListener implements Listener {
     @EventHandler
     public void onButtonHit(PlayerInteractEvent e){
+
+        if(e.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(e.getPlayer(), "&cUsing Admin Override"); return;}
+
         try {
             if (e.getClickedBlock() == null) return;
         }catch (Exception exceptIONlol){

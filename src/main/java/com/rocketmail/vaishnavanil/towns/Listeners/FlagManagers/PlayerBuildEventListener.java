@@ -4,6 +4,7 @@ import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Flag;
+import com.rocketmail.vaishnavanil.towns.Utilities.ActionBar;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,10 @@ public class PlayerBuildEventListener implements Listener {
 
     @EventHandler
     public void onBuild(BlockPlaceEvent event) {
+
+        if(event.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override"); return;}
+
+
         Player player = event.getPlayer();
         Location blockloc = event.getBlock().getLocation();
         if (TownS.g().isClaimed(blockloc.getChunk())) {
@@ -61,14 +66,26 @@ public class PlayerBuildEventListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+
+        if(event.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override"); return;}
+
         Player player = event.getPlayer();
         Location blockloc = event.getBlock().getLocation();
         if (TownS.g().isClaimed(blockloc.getChunk())) {
             Claim claim = TownS.g().getClaim(blockloc.getChunk());
 
+            /*Cross Town Container Trust Handler*/
+            if(TownS.g().hasTown(player)){
+                if(claim.canBuild(event.getPlayer())){
+                    return;
+                }
+            }else{
+                event.setCancelled(true);
+                Format.CmdErrFrmt.use().a(player, "You do not belong to a town and lack permission to build here.");
+                return;
+            }
 
-            if (claim.canBuild(player)) return;
-
+            /*Access Controls for Members within Town.*/
             if (claim.getTown().belongs(player)) {
 
                 if (claim.hasFlag(Flag.EDIT)) {

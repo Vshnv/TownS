@@ -6,6 +6,7 @@ import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Flag;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import com.rocketmail.vaishnavanil.towns.Utilities.ActionBar;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,6 +18,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class ContainerUseEventListener implements Listener {
     @EventHandler
     public void onContainerUse(PlayerInteractEvent e){
+
+        if(e.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(e.getPlayer(), "&cUsing Admin Override"); return;}
+
         if(!(e.getAction() == Action.PHYSICAL || e.getAction() == Action.RIGHT_CLICK_BLOCK))return;
 
         if(!TownS.g().isClaimed(e.getClickedBlock().getLocation().getChunk()))return;
@@ -26,9 +30,19 @@ public class ContainerUseEventListener implements Listener {
             Player player = e.getPlayer();
             Claim claim = TownS.g().getClaim(e.getClickedBlock().getLocation().getChunk());
 
-            if(claim.getTown().belongs(player)){
+            /*Cross Town Container Trust Handler*/
+            if(TownS.g().hasTown(player)){
+                if(claim.canUseContainer(e.getPlayer())){
+                    return;
+                }
+            }else{
+                e.setCancelled(true);
+                Format.CmdErrFrmt.use().a(player, "You do not belong to a town and lack permission to open containers here.");
+                return;
+            }
 
-                if(claim.canUseContainer(e.getPlayer()))return;
+            /*Access Controls for Members within Town*/
+            if(claim.getTown().belongs(player)){
 
                 if(claim.hasFlag(Flag.CONTAINER)){
                     return;
