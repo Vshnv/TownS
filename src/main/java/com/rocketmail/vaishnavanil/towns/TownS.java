@@ -348,7 +348,7 @@ public final class TownS extends JavaPlugin {
         regListen(new InventoryCloseListener());
         regListen(new WildernessInteractListener());
         regListen(new PlayerRespawnListener());
-
+        regListen(new ClaimPistonRestrict());
         regListen(FunctionRunner.get());
         hookPlaceholderAPI();
         RegenSaveQueueManager.get.runSaveQueue();
