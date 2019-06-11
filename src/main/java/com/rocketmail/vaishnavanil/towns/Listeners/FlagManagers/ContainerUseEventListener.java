@@ -19,7 +19,7 @@ public class ContainerUseEventListener implements Listener {
     @EventHandler
     public void onContainerUse(PlayerInteractEvent e){
 
-        if(e.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(e.getPlayer(), "&cUsing Admin Override"); }
+        if(e.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(e.getPlayer(), "&cUsing Admin Override"); return;}
 
         if(!(e.getAction() == Action.PHYSICAL || e.getAction() == Action.RIGHT_CLICK_BLOCK))return;
 

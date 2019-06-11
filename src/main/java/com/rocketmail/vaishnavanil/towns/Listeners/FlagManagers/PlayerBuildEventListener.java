@@ -17,7 +17,7 @@ public class PlayerBuildEventListener implements Listener {
     @EventHandler
     public void onBuild(BlockPlaceEvent event) {
 
-        if(event.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override"); }
+        if(event.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override"); return;}
 
 
         Player player = event.getPlayer();
@@ -67,7 +67,7 @@ public class PlayerBuildEventListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
 
-        if(event.getPlayer().hasPermission("towns.override")) return;
+        if(event.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override"); return;}
 
         Player player = event.getPlayer();
         Location blockloc = event.getBlock().getLocation();

@@ -14,7 +14,7 @@ public class UtilityUSEEventListener implements Listener {
     @EventHandler
     public void onButtonHit(PlayerInteractEvent e){
 
-        if(e.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(e.getPlayer(), "&cUsing Admin Override"); }
+        if(e.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(e.getPlayer(), "&cUsing Admin Override"); return;}
 
         try {
             if (e.getClickedBlock() == null) return;
