@@ -511,7 +511,12 @@ public class TownCmd implements CommandExecutor {
                     }
 
                     Town kt = TownS.g().getTown(sndr);
+
                     if(kt.hasPermission("kick",sndr)){
+                        if(TownS.g().getTown(opl).getTownUUID() != kt.getTownUUID()){
+                            Format.CmdErrFrmt.use().a(sndr, opl.getName() + " does not belong to your Town!");
+                            return true;
+                        }
                         if(kt.hasRank(opl.getUniqueId()) && kt.hasRank(sndr) && sndr.getUniqueId() != kt.getMayor().getUniqueId()){
                             Rank cpr = kt.getRank(opl.getUniqueId());
                             if(cpr.isHigherThan(kt.getRank(sndr))){
@@ -522,6 +527,17 @@ public class TownCmd implements CommandExecutor {
                             kt.removePlayer(opl);
                             Format.CmdErrFrmt.use().b(TownS.g().getTown(sndr), sndr.getName()+" was kicked from your town!");
                             Format.CmdErrFrmt.use().a(sndr, "Successfully kicked player with name " + args[1]);
+
+                        }else if(sndr.getUniqueId() == kt.getMayor().getUniqueId()){
+                            if(TownS.g().getTown(opl).getTownUUID() != kt.getTownUUID()){
+                                Format.CmdErrFrmt.use().a(sndr, opl.getName() + " does not belong to your Town!");
+                                return true;
+                            }
+                            kt.removePlayer(opl);
+                            Format.CmdErrFrmt.use().b(TownS.g().getTown(sndr), sndr.getName()+" was kicked from your town!");
+                            Format.CmdErrFrmt.use().a(sndr, "Successfully kicked player with name " + args[1]);
+
+
 
                         }
 
