@@ -345,7 +345,6 @@ public final class TownS extends JavaPlugin {
         regListen(new RegenChunkInteractEvent());
         regListen(new PlayerJoinQuitListener());
         regListen(new PlayerChatListener());
-        regListen(new InventoryCloseListener());
         regListen(new WildernessInteractListener());
         regListen(new PlayerRespawnListener());
         regListen(new ClaimPistonRestrict());
