@@ -26,9 +26,19 @@ public class ContainerUseEventListener implements Listener {
             Player player = e.getPlayer();
             Claim claim = TownS.g().getClaim(e.getClickedBlock().getLocation().getChunk());
 
-            if(claim.getTown().belongs(player)){
+            /*Cross Town Container Trust Handler*/
+            if(TownS.g().hasTown(player)){
+                if(claim.canUseContainer(e.getPlayer())){
+                    return;
+                }
+            }else{
+                e.setCancelled(true);
+                Format.CmdErrFrmt.use().a(player, "You do not belong to a town and lack permission to open containers here.");
+                return;
+            }
 
-                if(claim.canUseContainer(e.getPlayer()))return;
+            /*Access Controls for Members within Town*/
+            if(claim.getTown().belongs(player)){
 
                 if(claim.hasFlag(Flag.CONTAINER)){
                     return;

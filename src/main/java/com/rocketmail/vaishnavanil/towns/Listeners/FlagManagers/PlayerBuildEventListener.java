@@ -66,9 +66,18 @@ public class PlayerBuildEventListener implements Listener {
         if (TownS.g().isClaimed(blockloc.getChunk())) {
             Claim claim = TownS.g().getClaim(blockloc.getChunk());
 
+            /*Cross Town Container Trust Handler*/
+            if(TownS.g().hasTown(player)){
+                if(claim.canBuild(event.getPlayer())){
+                    return;
+                }
+            }else{
+                event.setCancelled(true);
+                Format.CmdErrFrmt.use().a(player, "You do not belong to a town and lack permission to build here.");
+                return;
+            }
 
-            if (claim.canBuild(player)) return;
-
+            /*Access Controls for Members within Town.*/
             if (claim.getTown().belongs(player)) {
 
                 if (claim.hasFlag(Flag.EDIT)) {
