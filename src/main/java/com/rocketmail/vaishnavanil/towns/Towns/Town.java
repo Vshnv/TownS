@@ -53,7 +53,6 @@ public class Town implements Serializable {
         if (townClaims.contains(c)) return true;
         return false;
     }
-
     public void regClaim(Chunk c) {
         if (!TownS.g().isClaimed(c)) return;
         if (TownS.g().getClaim(c).getTown() != this) return;

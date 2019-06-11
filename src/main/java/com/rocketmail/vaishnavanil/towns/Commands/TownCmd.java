@@ -551,6 +551,62 @@ public class TownCmd implements CommandExecutor {
 
                 }
                 break;
+            case "setopen":
+                if(args.length == 2){
+                    boolean open;
+                    try{
+                        open = Boolean.valueOf(args[1]);
+                    }catch(Exception e){
+                        Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setOpen <true/false>");
+                        return true;
+                    }
+                    if (!TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+                    }
+                    if (TownS.g().getTown(sndr).hasPermission("setopen",sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
+                        return true;
+                    }
+                    TownS.g().getTown(sndr).setVar("Open",open);
+                    if(open)Format.AlrtFrmt.use().b(TownS.g().getTown(sndr),"Your town is now &cOPEN &r&bfor all visitors");
+                    else Format.AlrtFrmt.use().b(TownS.g().getTown(sndr),"Your town is now &cCLOSED &r&bfor all visitors");
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setOpen <true/false>");
+
+                }
+                break;
+            case "visit":
+                if(args.length == 2){
+                    String t_n = args[1];
+
+                    if(TownS.g().getTown(args[1]) == null){
+                        Format.CmdErrFrmt.use().a(sndr, "Could not find Town with name: &c" + args[1]);
+                        return true;
+                    }
+
+                    Town S = TownS.g().getTown(args[1]);
+                    if(S.varExists("Open")){
+                        if(S.getVar("Open").equals(true)){
+                            sndr.teleport(S.getWarpPoint(S, "spawn"));
+                            Format.CmdInfoFrmt.use().a(sndr,"You are not visiting the town &c"+ t_n);
+                            Format.AlrtFrmt.use().b(S,"Your town has a visitor! Say hello to &c" + sndr.getName());
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr, "That town is not open to visitors!");
+                            return true;
+                        }
+                    }else{
+                        Format.CmdErrFrmt.use().a(sndr, "That town is not open to visitors!");
+                        return true;
+                    }
+
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town visit <TownName>");
+
+                }
+                break;
             case "setmayor":
                 if (args.length == 2) {
                     String player_name = args[1];

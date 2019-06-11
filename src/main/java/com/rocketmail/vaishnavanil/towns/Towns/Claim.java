@@ -89,19 +89,37 @@ public class Claim implements Serializable {
 
     public boolean canBuild(Player p){
         if(getTown().hasRank(p)){
-            if(RankBuildTrust.contains(getTown().getRank(p).getName())){
-                return true;
+            if(TownS.g().getTown(p).equals(getTown())) {
+                if (RankBuildTrust.contains(getTown().getRank(p).getName())) {
+                    return true;
+                }
             }
         }
-        return (BuildTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId()) || (this.hasFlag(Flag.EDIT));
+        if(TownS.g().hasTown(p)){
+           if(TownS.g().getTown(p) == this.getTown()){
+               if(this.hasFlag(Flag.EDIT)){
+                   return true;
+               }
+           }
+        }
+        return (BuildTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId());
     }
     public boolean canUseContainer(Player p){
         if(getTown().hasRank(p)){
-            if(RankContainerTrust.contains(getTown().getRank(p).getName())){
-                return true;
+            if(TownS.g().getTown(p).equals(getTown())) {
+                if (RankContainerTrust.contains(getTown().getRank(p).getName())) {
+                    return true;
+                }
             }
         }
-        return (ContainerTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId())|| (this.hasFlag(Flag.EDIT))||(getTown().hasPermission("Allow.ContainerALL",p)) ||(getTown().hasPermission("Allow.Container."+getOwnerID()+"."+TownS.getChunkID(getChunk()),p));
+        if(TownS.g().hasTown(p)){
+            if(TownS.g().getTown(p) == this.getTown()){
+                if(this.hasFlag(Flag.EDIT)){
+                    return true;
+                }
+            }
+        }
+        return (ContainerTrust.contains(p.getUniqueId()))||(getTown().getMayor().getUniqueId() == p.getUniqueId()) || (ownerID == p.getUniqueId())||(getTown().hasPermission("Allow.ContainerALL",p));
     }
     public boolean hasFlag(Flag f){
         return getFlags().contains(f);
