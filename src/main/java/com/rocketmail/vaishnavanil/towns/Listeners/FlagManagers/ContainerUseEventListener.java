@@ -17,6 +17,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class ContainerUseEventListener implements Listener {
     @EventHandler
     public void onContainerUse(PlayerInteractEvent e){
+
+        if(e.getPlayer().hasPermission("towns.override")) return;
+
         if(!(e.getAction() == Action.PHYSICAL || e.getAction() == Action.RIGHT_CLICK_BLOCK))return;
 
         if(!TownS.g().isClaimed(e.getClickedBlock().getLocation().getChunk()))return;

@@ -12,6 +12,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class UtilityUSEEventListener implements Listener {
     @EventHandler
     public void onButtonHit(PlayerInteractEvent e){
+
+        if(e.getPlayer().hasPermission("towns.override")) return;
+
         try {
             if (e.getClickedBlock() == null) return;
         }catch (Exception exceptIONlol){

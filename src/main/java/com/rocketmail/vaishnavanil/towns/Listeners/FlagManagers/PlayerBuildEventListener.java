@@ -15,6 +15,9 @@ public class PlayerBuildEventListener implements Listener {
 
     @EventHandler
     public void onBuild(BlockPlaceEvent event) {
+
+        if(event.getPlayer().hasPermission("towns.override")) return;
+
         Player player = event.getPlayer();
         Location blockloc = event.getBlock().getLocation();
         if (TownS.g().isClaimed(blockloc.getChunk())) {
@@ -61,6 +64,9 @@ public class PlayerBuildEventListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+
+        if(event.getPlayer().hasPermission("towns.override")) return;
+
         Player player = event.getPlayer();
         Location blockloc = event.getBlock().getLocation();
         if (TownS.g().isClaimed(blockloc.getChunk())) {
