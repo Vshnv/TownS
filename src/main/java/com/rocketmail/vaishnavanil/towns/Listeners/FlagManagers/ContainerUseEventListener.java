@@ -6,6 +6,7 @@ import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Flag;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import com.rocketmail.vaishnavanil.towns.Utilities.ActionBar;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class ContainerUseEventListener implements Listener {
     @EventHandler
     public void onContainerUse(PlayerInteractEvent e){
 
-        if(e.getPlayer().hasPermission("towns.override")) return;
+        if(e.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(e.getPlayer(), "&cUsing Admin Override"); }
 
         if(!(e.getAction() == Action.PHYSICAL || e.getAction() == Action.RIGHT_CLICK_BLOCK))return;
 

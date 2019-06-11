@@ -4,6 +4,7 @@ import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Flag;
+import com.rocketmail.vaishnavanil.towns.Utilities.ActionBar;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,7 +17,8 @@ public class PlayerBuildEventListener implements Listener {
     @EventHandler
     public void onBuild(BlockPlaceEvent event) {
 
-        if(event.getPlayer().hasPermission("towns.override")) return;
+        if(event.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override"); }
+
 
         Player player = event.getPlayer();
         Location blockloc = event.getBlock().getLocation();
