@@ -3,7 +3,7 @@ package com.rocketmail.vaishnavanil.towns;
 import com.rocketmail.vaishnavanil.towns.Commands.AutoComplete.PlotCmdCompleter;
 import com.rocketmail.vaishnavanil.towns.Commands.AutoComplete.TownAdminCompleter;
 import com.rocketmail.vaishnavanil.towns.Commands.AutoComplete.TownCmdCompleter;
-import com.rocketmail.vaishnavanil.towns.Commands.AutoComplete.WildernessInteractListener;
+import com.rocketmail.vaishnavanil.towns.Listeners.WildernessInteractListener;
 import com.rocketmail.vaishnavanil.towns.Commands.PlotCmd;
 import com.rocketmail.vaishnavanil.towns.Commands.TownAdmin;
 import com.rocketmail.vaishnavanil.towns.Commands.TownChatCmd;
@@ -19,10 +19,10 @@ import com.rocketmail.vaishnavanil.towns.Placeholders.PlaceholderProvider;
 import com.rocketmail.vaishnavanil.towns.Storage.LoadObject;
 import com.rocketmail.vaishnavanil.towns.Storage.SaveObject;
 import com.rocketmail.vaishnavanil.towns.Towns.*;
+import com.rocketmail.vaishnavanil.towns.Utilities.DailyBackupHandler;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
 import com.rocketmail.vaishnavanil.towns.Utilities.PlotBorderShowTimer;
 import com.rocketmail.vaishnavanil.towns.Utilities.RegenSaveQueueManager;
-import com.rocketmail.vaishnavanil.towns.Utilities.SaveManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
@@ -38,6 +38,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.System.out;
@@ -59,7 +60,7 @@ public final class TownS extends JavaPlugin {
     private HashMap<UUID, TownPlayer> townPlayerMap = new HashMap<>();
     private HashMap<String, Rank> RankList = new HashMap<>();
     private Queue<RegenBuilder> RegenWorkers = new LinkedList<>();
-    public void regAsync(BukkitTask tk){
+    public void regTask(BukkitTask tk){
         if(!asyncTasks.contains(tk))asyncTasks.add(tk);
     }
     public static TownS g() {
@@ -95,7 +96,7 @@ public final class TownS extends JavaPlugin {
 
     public void alertQueue() {
         out.println("[TownS-Regenerator]Started Regenerator Queue!");
-        regAsync(new BukkitRunnable() {
+        regTask(new BukkitRunnable() {
 
             @Override
             public void run() {
@@ -352,6 +353,7 @@ public final class TownS extends JavaPlugin {
         hookPlaceholderAPI();
         RegenSaveQueueManager.get.runSaveQueue();
         PlotBorderShowTimer.INSTANCE.startBorderShow();
+        DailyBackupHandler.get.runTimer();
 
         MobClearLoop.get.start();
 
@@ -404,6 +406,44 @@ public final class TownS extends JavaPlugin {
     public void RegisterRanks(Rank rank) {
 
         RankList.put(rank.getName(), rank);
+    }
+    public void BackupData(){
+        String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+       TownBackup(date);
+       ClaimsBackup(date);
+        this.getServer().getConsoleSender().sendMessage("[TownS-Backup]Backed up data for " + date);
+    }
+    public void TownBackup(String dateFormat){
+        File f = new File(getDataFolder().getPath() + "\\Backup\\"+dateFormat, "towns.dat");
+        if(!f.getParentFile().exists()){
+            f.getParentFile().mkdirs();
+        }
+        if(f.exists()){
+            SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Backup\\"+dateFormat, "towns.dat");
+        }else{
+            try {
+                f.createNewFile();
+                SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Backup\\"+dateFormat, "towns.dat");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+    public void ClaimsBackup(String dateFormat){
+        File f = new File(getDataFolder().getPath() + "\\Data\\"+dateFormat, "claims.dat");
+        if(f.exists()){
+            SaveObject.SaveObject(Map,getDataFolder().getPath() + "\\Data\\"+dateFormat, "claims.dat");
+        }else{
+            try {
+                f.createNewFile();
+                SaveObject.SaveObject(Map,getDataFolder().getPath() + "\\Data\\"+dateFormat, "claims.dat");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
     public void saveTown(){
         File f = new File(getDataFolder().getPath() + "\\Data", "towns.dat");

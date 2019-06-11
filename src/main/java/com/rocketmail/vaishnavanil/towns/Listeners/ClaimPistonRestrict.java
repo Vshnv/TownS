@@ -31,7 +31,7 @@ public class ClaimPistonRestrict implements Listener {
                     e.setCancelled(true);
                 }
             }else{
-                if(TownS.g().isClaimed(b.getLocation().getChunk()))e.setCancelled(true);
+                if(TownS.g().isClaimed(b.getLocation().getChunk())){e.setCancelled(true);}
             }
         }
 

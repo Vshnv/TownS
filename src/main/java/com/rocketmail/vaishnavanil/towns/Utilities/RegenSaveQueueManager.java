@@ -2,7 +2,6 @@ package com.rocketmail.vaishnavanil.towns.Utilities;
 
 import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
 import com.rocketmail.vaishnavanil.towns.TownS;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Material;
@@ -54,7 +53,7 @@ public enum RegenSaveQueueManager {
         if(!SavedChunkIDcache.contains(ChunkID))SavedChunkIDcache.add(ChunkID);
     }
     public void runSaveQueue(){
-        TownS.g().regAsync(new BukkitRunnable(){
+        TownS.g().regTask(new BukkitRunnable(){
 
             @Override
             public void run() {

@@ -31,7 +31,7 @@ private void setUP(){
         TownS.g().getConfig().addDefault("Ranks.MVP",Arrays.asList("Change","This","Later","lel"));
         TownS.g().getConfig().addDefault("Ranks.Default",Arrays.asList("Warp","Deposit","Spawn","PlotClaim","PlotBorder","PlotAllow","PlotDisAllow","PlotAccess","PlotFlags","Plotsetname"));
         TownS.g().getConfig().addDefault("RegenUnclaim.worlds",Arrays.asList("world"));
-
+        TownS.g().getConfig().addDefault("LastBackupTimeMS",0L);
 
     saveConfig();
     }
@@ -44,6 +44,16 @@ private void setUP(){
     for(String s:sLiT){
         DAimFlag.add(EntityType.fromName(s));
     }
+    }
+
+    public boolean shouldBackUP(){
+        long lastBackup = TownS.g().getConfig().getLong("LastBackupTimeMS");
+        if(System.currentTimeMillis()-lastBackup > 86400000L){
+            TownS.g().getConfig().set("LastBackupTimeMS",System.currentTimeMillis());
+            return true;
+        }else{
+            return false;
+        }
     }
     public boolean isAllowed(EntityType type){
        return !DAimFlag.contains(type);
