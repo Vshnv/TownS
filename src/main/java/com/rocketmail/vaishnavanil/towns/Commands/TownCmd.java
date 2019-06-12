@@ -4,15 +4,14 @@ import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
 import com.rocketmail.vaishnavanil.towns.GUI.GUI;
 import com.rocketmail.vaishnavanil.towns.GUI.SI.MapGUI;
 import com.rocketmail.vaishnavanil.towns.GUI.SI.WarpsGUI;
-import com.rocketmail.vaishnavanil.towns.MapGUI.MapFullScreen;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
+import com.rocketmail.vaishnavanil.towns.Towns.RegenBuilder;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
 import com.rocketmail.vaishnavanil.towns.Towns.TownPlayer;
 import com.rocketmail.vaishnavanil.towns.Utilities.AntiClaimBreak;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -20,7 +19,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class TownCmd implements CommandExecutor {
     @Override
@@ -41,6 +42,50 @@ public class TownCmd implements CommandExecutor {
         String sub_cmd = args[0].toLowerCase();
 
         switch (sub_cmd) {
+            case "info":
+                if(args.length == 1) {
+                    if (TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a Town!");
+                        return true;
+                    }
+                    Town PlrTwn = TownS.g().getTown(sndr);
+                    String TN = PlrTwn.getName();
+                    int claimCont = PlrTwn.getClaims().size();
+                    boolean isOpen;
+                    if(PlrTwn.varExists("Open")) isOpen = (boolean) PlrTwn.getVar("Open");
+                    else isOpen = false;
+
+                    Double balance = PlrTwn.getTownBalance();
+                    List<String> l = new ArrayList<>();
+                    l.add(TN);
+                    l.add("Claim Count: " + claimCont);
+                    l.add("Open: " + (isOpen ? "Yes":"No"));
+                    l.add("Town Balance: " + balance);
+                    Format.AlrtFrmt.use().a(sndr,l);
+                }else if(args.length == 2){
+                    Town PlrTwn = TownS.g().getTown(args[1]);
+                    if(PlrTwn == null){
+                        Format.CmdErrFrmt.use().a(sndr, "Couldnt find to with name: " + args[1]);
+                        return true;
+                    }
+                    int claimCont = PlrTwn.getClaims().size();
+                    boolean isOpen;
+                    if(PlrTwn.varExists("Open")) isOpen = (boolean) PlrTwn.getVar("Open");
+                    else isOpen = false;
+
+                    Double balance = PlrTwn.getTownBalance();
+                    List<String> l = new ArrayList<>();
+                    l.add(args[1]);
+                    l.add("Claim Count: " + claimCont);
+                    l.add("Open: " + (isOpen ? "Yes":"No"));
+                    l.add("Town Balance: " + balance);
+                    Format.AlrtFrmt.use().a(sndr,l);
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setname <name>");
+                }
+
+                break;
             /*CREATE*/
             case "create":
                 if(!sndr.getWorld().getName().equals("world")){
@@ -71,6 +116,13 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "Town Name cannot be that long!");
                     return true;
                 }
+                Chunk cnk = sndr.getLocation().getChunk();
+
+                    if (TownS.g().isRegening(cnk)) {
+                        Format.AlrtFrmt.use().a(sndr,"This chunk is undergoing restoration! Please wait till it finishes!");
+                        return true;
+                    }
+
                 Format.AlrtFrmt.use().broadcast(sndr.getName() + " has created a new Town! &c" + args[1]);
                 create(sndr, args[1]);
                 break;
@@ -188,7 +240,7 @@ public class TownCmd implements CommandExecutor {
 
             case "map":
                 //TODO::MAP GUI
-                //sndr.openInventory(MapFullScreen.get.create(sndr));
+
                 sndr.openInventory(new MapGUI("TownMap",sndr).get());
                 Format.CmdInfoFrmt.use().a(sndr, "You have opened the Town Map!");
                 break;
@@ -332,6 +384,7 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "You do not have permission to use this command!");
                     return true;
                 }
+
                 if (TownS.g().isClaimed(sndr.getLocation().getChunk())) {
                     /*MSG ADDED A.I.T.*/
                     Format.CmdErrFrmt.use().a(sndr, "Please stand in unclaimed land to use this command! /towns map for map view");
@@ -342,6 +395,13 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "You may only claim chunks adjacent to your claims!");
                     return true;
                 }
+                Chunk cnk2 = sndr.getLocation().getChunk();
+
+                    if (TownS.g().isRegening(cnk2)) {
+                        Format.AlrtFrmt.use().a(sndr,"This chunk is undergoing restoration! Please wait till it finishes!");
+                        return true;
+                    }
+
                 claim(sndr);
 
                 break;

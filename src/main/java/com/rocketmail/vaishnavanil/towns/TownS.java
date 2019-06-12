@@ -13,7 +13,6 @@ import com.rocketmail.vaishnavanil.towns.GUI.FunctionRunner;
 import com.rocketmail.vaishnavanil.towns.Listeners.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.FlagManagers.*;
 import com.rocketmail.vaishnavanil.towns.Listeners.TitleManager.MoveEventListener;
-import com.rocketmail.vaishnavanil.towns.MapGUI.InvClickListen;
 import com.rocketmail.vaishnavanil.towns.MapGUI.ItemCreation.FakeEnchant;
 import com.rocketmail.vaishnavanil.towns.Placeholders.PlaceholderProvider;
 import com.rocketmail.vaishnavanil.towns.Storage.LoadObject;
@@ -60,6 +59,7 @@ public final class TownS extends JavaPlugin {
     private HashMap<UUID, TownPlayer> townPlayerMap = new HashMap<>();
     private HashMap<String, Rank> RankList = new HashMap<>();
     private Queue<RegenBuilder> RegenWorkers = new LinkedList<>();
+    private List<String> RegeningingChunks = new ArrayList<>();
     public void regTask(BukkitTask tk){
         if(!asyncTasks.contains(tk))asyncTasks.add(tk);
     }
@@ -70,7 +70,9 @@ public final class TownS extends JavaPlugin {
     public static Economy getEconomy() {
         return econ;
     }
-
+    public boolean isRegening(Chunk c){
+        return RegeningingChunks.contains(TownS.getChunkID(c));
+    }
     public void addTownPlayer(Player player) {
         townPlayerMap.put(player.getUniqueId(), new TownPlayer(player));
     }
@@ -86,12 +88,13 @@ public final class TownS extends JavaPlugin {
     }
 
     public void registerRegenBuilder(RegenBuilder builder) {
-        for (RegenBuilder b : RegenWorkers) {
+       /* for (RegenBuilder b : RegenWorkers) {
             if (b.getChunk() == builder.getChunk()) {
                 return;
             }
-        }
-        RegenWorkers.add(builder);
+        }*/
+        if(!isRegening(builder.getChunk()))RegenWorkers.add(builder);
+        if(!RegeningingChunks.contains(TownS.getChunkID(builder.getChunk())))RegeningingChunks.add(TownS.getChunkID(builder.getChunk()));
     }
 
     public void alertQueue() {
@@ -108,6 +111,7 @@ public final class TownS extends JavaPlugin {
                     out.println("[TownS-Regenerator]Queue moved to next Region!");
 
                     Cur = RegenWorkers.poll();
+                    RegeningingChunks.remove(TownS.getChunkID(Cur.getChunk()));
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -332,7 +336,7 @@ public final class TownS extends JavaPlugin {
         registerCMD("ta", new TownAdmin());
         registerCompleter("ta", new TownAdminCompleter());
 
-        regListen(new InvClickListen());
+
         regListen(new MoveEventListener());
         regListen(new ExplodeEventListener());
         regListen(new FireProtectionListener());
@@ -350,6 +354,7 @@ public final class TownS extends JavaPlugin {
         regListen(new PlayerRespawnListener());
         regListen(new ClaimPistonRestrict());
         regListen(FunctionRunner.get());
+        regListen(new RegenAntiExplode());
         hookPlaceholderAPI();
         RegenSaveQueueManager.get.runSaveQueue();
         PlotBorderShowTimer.INSTANCE.startBorderShow();

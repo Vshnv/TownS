@@ -17,13 +17,13 @@ public class RegenChunkInteractEvent implements Listener {
                 Format.AlrtFrmt.use().a(e.getPlayer(),"That chunk is undergoing restoration! Please wait till it finishes!");
                 return;
             }
-            for (RegenBuilder b : TownS.g().getActiveRegenerators()) {
-                if (b.getChunk().equals(e.getClickedBlock().getLocation().getChunk())) {
+
+                if (TownS.g().isRegening(e.getClickedBlock().getLocation().getChunk())) {
                     e.setCancelled(true);
                     Format.AlrtFrmt.use().a(e.getPlayer(),"That chunk is undergoing restoration! Please wait till it finishes!");
                     return;
                 }
-            }
+
         }catch (Exception ex){
             //Do nothing
         }

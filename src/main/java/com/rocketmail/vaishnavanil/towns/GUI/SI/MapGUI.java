@@ -20,6 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MapGUI extends SimpleInterface {
     public MapGUI(String n, Player User) {
         super(n+ " ID:" + ThreadLocalRandom.current().nextLong(1000,999999));
+        removeESett = true;//IMPORTANT
         Integer playerx =  User.getLocation().getChunk().getX();
         Integer playery =   User.getLocation().getChunk().getZ();
         World world = User.getLocation().getWorld();

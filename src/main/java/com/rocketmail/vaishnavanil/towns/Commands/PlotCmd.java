@@ -2,13 +2,11 @@ package com.rocketmail.vaishnavanil.towns.Commands;
 
 import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
 import com.rocketmail.vaishnavanil.towns.GUI.SI.FlagGUI;
-import com.rocketmail.vaishnavanil.towns.MapGUI.FlagShow;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
-import com.rocketmail.vaishnavanil.towns.Towns.TownPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
@@ -204,7 +202,7 @@ public class PlotCmd implements CommandExecutor {
                 if (!TownS.g().getTown(sndr).hasPermission("plotflags",sndr)) {
                     /*MSG ADDED A.I.T.*/
                     if(TownS.g().getClaim(sndr_chunk).getOwner().getUniqueId().equals(sndr.getUniqueId())){
-                        sndr.openInventory(FlagShow.get.create(sndr,TownS.g().getClaim(sndr.getLocation().getChunk())));
+                        sndr.openInventory(new FlagGUI("FlagList",TownS.g().getClaim(sndr_chunk)).get());
                         Format.CmdInfoFrmt.use().a(sndr,"Opening Flag List for this claim!");
                         break;
                     }else{
@@ -213,7 +211,6 @@ public class PlotCmd implements CommandExecutor {
                     }
                 }else{
                     Claim c = TownS.g().getClaim(sndr.getLocation().getChunk());
-                    //sndr.openInventory(FlagShow.get.create(sndr,TownS.g().getClaim(sndr.getLocation().getChunk())));
                     sndr.openInventory(new FlagGUI("FlagGUI",c).get());
                     Format.CmdInfoFrmt.use().a(sndr,"Opening Flag List for this claim!");
                     break;
