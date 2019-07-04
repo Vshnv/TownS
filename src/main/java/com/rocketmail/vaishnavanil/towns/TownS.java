@@ -24,6 +24,7 @@ import com.rocketmail.vaishnavanil.towns.Utilities.PlotBorderShowTimer;
 import com.rocketmail.vaishnavanil.towns.Utilities.RegenSaveQueueManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
@@ -139,11 +140,14 @@ public final class TownS extends JavaPlugin {
     }
 
     public void aCtT(Claim claim) { /*ADD CLAIM TO CLAIM MAP*/
+
         Map.put(claim.x() + "::" + claim.z() + "::" + claim.getWorldName(), claim);
+        claim.getTown().regClaim(claim);
     }
 
     public void rCfT(Claim claim) { /*REMOVE CLAIM FROM CLAIM MAP*/
         Map.remove(claim.x() + "::" + claim.z() + "::" + claim.getWorldName());
+        claim.getTown().unregClaim(claim);
     }
 
     public Town getTown(OfflinePlayer p) {
@@ -199,6 +203,10 @@ public final class TownS extends JavaPlugin {
         String w = split[2];
         return isClaimed(CX,CZ,w);
     }
+    public void removeFromClaimMap(int CX,int CZ,String world){
+        Map.remove(CX + "::" + CZ + "::" + world);
+
+    }
     public boolean isClaimed(int CX, int CZ, String wName) {
         if (Map.containsKey(CX + "::" + CZ + "::" + wName)) {
             Claim claim = Map.get(CX + "::" + CZ + "::" + wName);
@@ -242,9 +250,9 @@ public final class TownS extends JavaPlugin {
     public boolean townExists(String town_uuid) {
         return TM.keySet().contains(town_uuid);
     }
-
+    public Collection<Claim> getAllClaims(){return Map.values();};
     public Set<String> getAlLTownUUID(){ return TM.keySet(); }
-
+    public Collection<Town> getAllTowns(){return TM.values();}
     @Deprecated
     public Town getTown(String town_name) {
         for (Town town : TM.values()) {
@@ -374,6 +382,17 @@ public final class TownS extends JavaPlugin {
             getServer().getConsoleSender().sendMessage(ChatColor.RED+"[TOWNS] PlaceholderAPI Hook Failed");
         }
     }
+
+    public boolean isPVPaffected(Player player){
+        if(!isClaimed(player.getLocation().getChunk())){
+            return true;
+        }
+        if(getClaim(player.getLocation().getChunk()).hasFlag(Flag.PVP)){
+            return true;
+        }
+        return false;
+    }
+
     public void registerFE() {
         try {
             Field f = Enchantment.class.getDeclaredField("acceptingNew");
@@ -384,8 +403,9 @@ public final class TownS extends JavaPlugin {
             e.printStackTrace();
         }
         try {
-            FakeEnchant FE = new FakeEnchant(new NamespacedKey(this,"TownSFakeEnchant"));
+            FakeEnchant FE = new FakeEnchant(new NamespacedKey(this,"townsfakeenchant"));
             Enchantment.registerEnchantment(FE);
+            FakeEnchant.FE = FE;
         }
         catch (IllegalArgumentException e){
         }
@@ -399,7 +419,9 @@ public final class TownS extends JavaPlugin {
     public static String getChunkID(ChunkSnapshot c){
         return c.getX()+"::"+c.getZ()+"::"+c.getWorldName();
     }
-
+    public Enchantment getFakeEnchant(){
+        return FakeEnchant.FE;
+    }
     public static Chunk getChunkFromID(String ID){
         String[] sep = ID.split("::");
         int x = Integer.parseInt(sep[0]);
@@ -413,7 +435,7 @@ public final class TownS extends JavaPlugin {
         RankList.put(rank.getName(), rank);
     }
     public void BackupData(){
-        String date = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+        String date = new SimpleDateFormat("dd:MM:yyyy").format(new Date());
        TownBackup(date);
        ClaimsBackup(date);
         this.getServer().getConsoleSender().sendMessage("[TownS-Backup]Backed up data for " + date);

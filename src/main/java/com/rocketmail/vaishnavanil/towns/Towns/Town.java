@@ -34,6 +34,13 @@ public class Town implements Serializable {
 
         townClaims.add(c);
     }
+    public Set<OfflinePlayer> getMembers(){
+        Set<OfflinePlayer> op = new HashSet<>();
+        for(UUID id:Members){
+            op.add(Bukkit.getOfflinePlayer(id));
+        }
+        return op;
+    }
     public void setVar(String var,Object value){
         Var.put(var,value);
     }
@@ -48,7 +55,23 @@ public class Town implements Serializable {
     public List<Claim> getClaims() {
         return townClaims;
     }
-
+    public List<Claim> getPayingClaims() {
+        List<Claim> cll = new ArrayList<>();
+        for(Claim c:townClaims){
+            if(c.getOwnerID() == c.getTown().getMayor().getUniqueId())continue;
+            cll.add(c);
+        }
+        return cll;
+    }
+    public void setRent(double rent){
+        setVar("rent",rent);
+    }
+    public double getRent(){
+        if(!varExists("rent")){
+            setVar("rent",0);
+        }
+        return (double) getVar("rent");
+    }
     public boolean isTownClaim(Claim c) {
         if (townClaims.contains(c)) return true;
         return false;
@@ -56,7 +79,7 @@ public class Town implements Serializable {
     public void regClaim(Chunk c) {
         if (!TownS.g().isClaimed(c)) return;
         if (TownS.g().getClaim(c).getTown() != this) return;
-        townClaims.add(TownS.g().getClaim(c));
+        if(!townClaims.contains(TownS.g().getClaim(c)))townClaims.add(TownS.g().getClaim(c));
     }
 
     public void unregClaim(Claim c) {
@@ -184,7 +207,7 @@ public class Town implements Serializable {
     public void unclaim(Chunk chunk) {
 
         TownS.g().rCfT(TownS.g().getClaim(chunk));
-        unregClaim(chunk);
+        //unregClaim(chunk);
         new BukkitRunnable() {
             @Override
             public void run() {

@@ -186,7 +186,7 @@ public class RegenBuilder {
                             return;
                         }
                         if (toRegen.getBlock(x, y, z).getType() != loaded_data[x][y][z]) {
-                           if(loaded_data[x][y][z] == Material.TALL_GRASS || loaded_data[x][y][z] == Material.TALL_SEAGRASS){
+                           if(loaded_data[x][y][z] == Material.TALL_GRASS || loaded_data[x][y][z] == Material.TALL_SEAGRASS || loaded_data[x][y][z].toString().endsWith("ORE")){
                                 continue;
                             }
                             toRegen.getBlock(x, y, z).setType(loaded_data[x][y][z], false);

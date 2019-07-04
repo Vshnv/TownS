@@ -816,6 +816,7 @@ public class TownCmd implements CommandExecutor {
 
     public void unclaim(Player sndr) {
         TownS.g().getTown(sndr).unclaim(sndr.getLocation().getChunk());
+        TownS.g().isClaimed(sndr.getLocation().getChunk());
     }
 
 

@@ -48,13 +48,24 @@ private void setUP(){
 
     public boolean shouldBackUP(){
         long lastBackup = TownS.g().getConfig().getLong("LastBackupTimeMS");
-        if(System.currentTimeMillis()-lastBackup > 86400000L){
+        if(lastBackup == 0)        {
+            TownS.g().getConfig().set("LastBackupTimeMS",System.currentTimeMillis());
+            return false;
+        }
+
+        if(System.currentTimeMillis()-lastBackup >= 86400000L){
             TownS.g().getConfig().set("LastBackupTimeMS",System.currentTimeMillis());
             return true;
         }else{
             return false;
         }
     }
+    public boolean nearBackUP() {
+        long lastBackup = TownS.g().getConfig().getLong("LastBackupTimeMS");
+        if (lastBackup == 0) return false;
+        return System.currentTimeMillis()-lastBackup+3600000 >= 86400000L;
+    }
+
     public boolean isAllowed(EntityType type){
        return !DAimFlag.contains(type);
 

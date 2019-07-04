@@ -1,4 +1,4 @@
-name: Towns
+name: TownS
 version: ${project.version}
 main: com.rocketmail.vaishnavanil.towns.TownS
 api-version: 1.13

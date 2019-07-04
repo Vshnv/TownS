@@ -6,28 +6,29 @@ import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
 
 public class FakeEnchant extends Enchantment {
+    public static Enchantment FE;
     public FakeEnchant(NamespacedKey key) {
         super(key);
     }
 
     @Override
     public String getName() {
-        return null;
+        return "TheWild";
     }
 
     @Override
     public int getMaxLevel() {
-        return 0;
+        return 1;
     }
 
     @Override
     public int getStartLevel() {
-        return 0;
+        return 1;
     }
 
     @Override
     public EnchantmentTarget getItemTarget() {
-        return null;
+        return EnchantmentTarget.ALL;
     }
 
     @Override

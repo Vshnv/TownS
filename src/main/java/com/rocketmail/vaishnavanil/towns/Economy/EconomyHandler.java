@@ -2,6 +2,7 @@ package com.rocketmail.vaishnavanil.towns.Economy;
 
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 
@@ -9,7 +10,7 @@ public enum EconomyHandler {
     INSTANCE;
 
     /* Method to add and remove player balances */
-    public Boolean changePlayerBalance(Player player, Double amount) {
+    public Boolean changePlayerBalance(OfflinePlayer player, Double amount) {
         if (amount >= 0) {
             return TownS.getEconomy().depositPlayer(player, amount).transactionSuccess();
         } else {
@@ -18,7 +19,7 @@ public enum EconomyHandler {
     }
 
     /* Method to get player's bank balance */
-    public Double getPlayerBalance(Player player) {
+    public Double getPlayerBalance(OfflinePlayer player) {
         if (player.hasPlayedBefore()) {
             return TownS.getEconomy().getBalance(player);
         } else {
@@ -27,7 +28,7 @@ public enum EconomyHandler {
     }
 
     /* Method to let player deposit money into town bank */
-    public Boolean depositIntoTown(Player player, Town  town, Double amount){
+    public Boolean depositIntoTown(OfflinePlayer player, Town  town, Double amount){
         if( EconomyHandler.INSTANCE.getPlayerBalance(player) >= amount ){
             if(EconomyHandler.INSTANCE.changePlayerBalance(player, -amount)){
                 town.changeTownBalanceBy(amount);
