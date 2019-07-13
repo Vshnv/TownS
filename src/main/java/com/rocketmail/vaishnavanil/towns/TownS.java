@@ -460,6 +460,9 @@ public final class TownS extends JavaPlugin {
     }
     public void ClaimsBackup(String dateFormat){
         File f = new File(getDataFolder().getPath() + "\\Data\\"+dateFormat, "claims.dat");
+        if (!f.getParentFile().exists()) {
+            f.getParentFile().mkdirs();
+        }
         if(f.exists()){
             SaveObject.SaveObject(Map,getDataFolder().getPath() + "\\Data\\"+dateFormat, "claims.dat");
         }else{
@@ -474,6 +477,9 @@ public final class TownS extends JavaPlugin {
     }
     public void saveTown(){
         File f = new File(getDataFolder().getPath() + "\\Data", "towns.dat");
+        if (!f.getParentFile().exists()) {
+            f.getParentFile().mkdirs();
+        }
         if(f.exists()){
             SaveObject.SaveObject(TM,getDataFolder().getPath() + "\\Data", "towns.dat");
         }else{
@@ -489,6 +495,9 @@ public final class TownS extends JavaPlugin {
     }
     public void saveClaims(){
         File f = new File(getDataFolder().getPath() + "\\Data", "claims.dat");
+        if (!f.getParentFile().exists()) {
+            f.getParentFile().mkdirs();
+        }
         if(f.exists()){
             SaveObject.SaveObject(Map,getDataFolder().getPath() + "\\Data", "claims.dat");
         }else{

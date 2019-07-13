@@ -27,7 +27,7 @@ public class TownCmdCompleter implements TabCompleter {
                     suggestions.add("join");
                     return suggestions;
                 }
-
+                suggestions.add("info");
                 suggestions.add("create");
                 suggestions.add("spawn");
                 suggestions.add("map");
@@ -44,10 +44,11 @@ public class TownCmdCompleter implements TabCompleter {
                 suggestions.add("setname");
                 suggestions.add("setspawn");
                 suggestions.add("setrank");
+                suggestions.add("setopen");
+                suggestions.add("visit");
+
 
                 suggestions.add("delwarp");
-
-                suggestions.add("test");
 
                 suggestions.add("join");
                 suggestions.add("leave");

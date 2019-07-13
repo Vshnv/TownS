@@ -445,10 +445,7 @@ public class TownCmd implements CommandExecutor {
                     }
                 }
                 break;
-                //UNCLAIM
-            case "test":
-                sndr.openInventory(GUI.YN.get());
-                break;
+
             case "invite":
                 if (!TownS.g().hasTown(sndr)) {
                     /*MSG ADDED A.I.T.*/
@@ -651,7 +648,7 @@ public class TownCmd implements CommandExecutor {
                     if(S.varExists("Open")){
                         if(S.getVar("Open").equals(true)){
                             sndr.teleport(S.getWarpPoint(S, "spawn"));
-                            Format.CmdInfoFrmt.use().a(sndr,"You are not visiting the town &c"+ t_n);
+                            Format.CmdInfoFrmt.use().a(sndr, "You are now visiting the town &c" + t_n);
                             Format.AlrtFrmt.use().b(S,"Your town has a visitor! Say hello to &c" + sndr.getName());
                         }else{
                             Format.CmdErrFrmt.use().a(sndr, "That town is not open to visitors!");

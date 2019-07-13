@@ -50,11 +50,14 @@ private void setUP(){
         long lastBackup = TownS.g().getConfig().getLong("LastBackupTimeMS");
         if(lastBackup == 0)        {
             TownS.g().getConfig().set("LastBackupTimeMS",System.currentTimeMillis());
+            TownS.g().saveConfig();
             return false;
         }
 
         if(System.currentTimeMillis()-lastBackup >= 86400000L){
             TownS.g().getConfig().set("LastBackupTimeMS",System.currentTimeMillis());
+            TownS.g().saveConfig();
+
             return true;
         }else{
             return false;

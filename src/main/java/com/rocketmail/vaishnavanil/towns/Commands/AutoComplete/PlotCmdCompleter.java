@@ -50,6 +50,7 @@ public class PlotCmdCompleter implements TabCompleter {
                         suggestions.add("Build");
                         suggestions.add("Container");
                         return suggestions;
+                    case "forsale":
                     case "fs":
                         return getNumbers();
                     default:

@@ -4,6 +4,7 @@ import com.rocketmail.vaishnavanil.towns.Configurations.ConfigManager;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Flag;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,12 +31,20 @@ public class MobManagingEventListener implements Listener {
 
     @EventHandler
     public void onEDE(EntityDamageByEntityEvent e){
-        if(!(e.getDamager() instanceof Monster && e.getEntity() instanceof Player))return;
-
-        Player nga = (Player) e.getEntity();
-        if(TownS.g().isClaimed(nga.getLocation().getChunk())){
-            if(!TownS.g().getClaim(nga.getLocation().getChunk()).hasFlag(Flag.MOBS)){
-                e.setCancelled(true);
+        if (e.getEntity() instanceof Player && !(e.getDamager() instanceof Player)) {
+            Player nga = (Player) e.getEntity();
+            if (TownS.g().isClaimed(nga.getLocation().getChunk())) {
+                if (!TownS.g().getClaim(nga.getLocation().getChunk()).hasFlag(Flag.MOBS)) {
+                    e.setCancelled(true);
+                }
+            }
+        } else if (e.getDamager() instanceof Player && !(e.getEntity() instanceof Player)) {
+            Player nga = (Player) e.getDamager();
+            if (TownS.g().isClaimed(nga.getLocation().getChunk())) {
+                if (!TownS.g().getClaim(nga.getLocation().getChunk()).hasFlag(Flag.MOBS)) {
+                    e.setCancelled(true);
+                    nga.sendActionBar('&', "&cCannot attack mob while in Mob protected claim");
+                }
             }
         }
 

@@ -116,9 +116,72 @@ public class PlotCmd implements CommandExecutor {
                     return true;
                 }
                 break;
+            case "forsale":
+                if (!(args.length > 1)) {
+                    /*MSG ADDED N.E.A.*/
+                    Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
+                    return true;
+                }
+                if (isNumber(args[1])) {
+                    if (!TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+                    }
+                    if (!TownS.g().getTown(sndr).hasPermission("fs", sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not have permission to use this command!");
+                        return true;
+                    }
+                    if (!TownS.g().isClaimed(sndr.getLocation().getChunk())) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "Please stand in claimed land to use this command! use /towns map for map view");
+                        return true;
+                    }
+                    if (TownS.g().getTown(sndr.getLocation().getChunk()) != TownS.g().getTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "This claim does not belong to your town!");
+                        return true;
+                    }
+                    fs(sndr, Double.valueOf(args[1]));
+                    Format.CmdInfoFrmt.use().a(sndr, "Current chunk is now for sale for $" + args[1] + "/- !");
+                } else {
+                    Format.CmdErrFrmt.use().a(sndr, "You must specify a cost such as /towns fs 100");
+                    return true;
+                }
+                break;
             //END FS
             //NFS
             case "nfs":
+                if (!TownS.g().hasTown(sndr)) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                    return true;
+                }
+                if (!TownS.g().getTown(sndr).hasPermission("nfs", sndr)) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "You do not have permission to use this command!");
+                    return true;
+                }
+                if (!TownS.g().isClaimed(sndr.getLocation().getChunk())) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "Please stand in claimed land to use this command! use /towns map for map view");
+                    return true;
+                }
+                if (TownS.g().getTown(sndr.getLocation().getChunk()) != TownS.g().getTown(sndr)) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "This claim does not belong to your town!");
+                    return true;
+                }
+                if (!TownS.g().getClaim(sndr.getLocation().getChunk()).isFS()) {
+                    /*MSG ADDED A.I.T.*/
+                    Format.CmdErrFrmt.use().a(sndr, "This claim is not for sale at the moment!");
+                    return true;
+                }
+                nfs(sndr);
+                Format.CmdInfoFrmt.use().a(sndr, "This claim is no longer available for sale!");
+                break;
+            case "notforsale":
                 if (!TownS.g().hasTown(sndr)) {
                     /*MSG ADDED A.I.T.*/
                     Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
