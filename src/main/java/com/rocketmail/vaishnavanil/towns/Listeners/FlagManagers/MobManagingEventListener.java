@@ -43,7 +43,7 @@ public class MobManagingEventListener implements Listener {
             if (TownS.g().isClaimed(nga.getLocation().getChunk())) {
                 if (!TownS.g().getClaim(nga.getLocation().getChunk()).hasFlag(Flag.MOBS)) {
                     e.setCancelled(true);
-                    nga.sendActionBar('&', "&cCannot attack mob while in Mob protected claim");
+                    nga.sendActionBar('&', "&cCannot attack mobs while in Mob protected claim");
                 }
             }
         }

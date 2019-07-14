@@ -11,7 +11,10 @@ import org.bukkit.entity.Player;
 public class TownChatCmd implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
-        if(commandSender instanceof Player){
+        commandSender.sendMessage("This function is currently disabled!");
+        return true;
+
+        /*if(commandSender instanceof Player){
             Player sndr  =  (Player) commandSender;
             if(TownS.g().hasTown(sndr)){
                 TownPlayer townPlayer = TownS.g().getTownPlayer(sndr);
@@ -25,6 +28,6 @@ public class TownChatCmd implements CommandExecutor {
                 Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
             }
         }
-        return true;
+        return true;*/
     }
 }

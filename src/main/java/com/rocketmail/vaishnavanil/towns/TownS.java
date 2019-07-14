@@ -256,7 +256,7 @@ public final class TownS extends JavaPlugin {
     @Deprecated
     public Town getTown(String town_name) {
         for (Town town : TM.values()) {
-            if (town.getName().equals(town_name)) {
+            if (town.getName().equalsIgnoreCase(town_name)) {
                 return town;
             }
         }

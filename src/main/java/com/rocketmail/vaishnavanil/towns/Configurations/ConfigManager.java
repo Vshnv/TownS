@@ -27,7 +27,9 @@ private void setUP(){
         TownS.g().getConfig().addDefault("FlagConfig.Mob.Disallow",Arrays.asList(EntityType.SKELETON.name(),EntityType.ZOMBIE.name(),EntityType.PHANTOM.name(),EntityType.BLAZE.name(),EntityType.CREEPER.name(),EntityType.ENDERMAN.name(),EntityType.ENDERMITE.name()));
         TownS.g().getConfig().addDefault("RanksOrder.Assistant",1);
         TownS.g().getConfig().addDefault("RanksOrder.MVP",1);
-        TownS.g().getConfig().addDefault("Ranks.Assistant",Arrays.asList("Claim","Unclaim","BuildALL","FS","NFS","ContainerALL","FlagSetALL"));
+    TownS.g().getConfig().addDefault("RanksOrder.Default", 2);
+
+    TownS.g().getConfig().addDefault("Ranks.Assistant", Arrays.asList("Claim", "Unclaim", "BuildALL", "FS", "NFS", "ContainerALL", "FlagSetALL"));
         TownS.g().getConfig().addDefault("Ranks.MVP",Arrays.asList("Change","This","Later","lel"));
         TownS.g().getConfig().addDefault("Ranks.Default",Arrays.asList("Warp","Deposit","Spawn","PlotClaim","PlotBorder","PlotAllow","PlotDisAllow","PlotAccess","PlotFlags","Plotsetname"));
         TownS.g().getConfig().addDefault("RegenUnclaim.worlds",Arrays.asList("world"));

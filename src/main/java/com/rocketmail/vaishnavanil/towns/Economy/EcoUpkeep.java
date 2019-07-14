@@ -11,14 +11,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public enum EcoUpkeep {
     EcoUK;
-    private final double UPKEEP_PER_CLAIM = 200D;
+    public static final double UPKEEP_PER_CLAIM = 100D;
     public void doUpkeep(){
         rentClaims();
         upKeepTowns();
     }
     public void warnUpkeep(){
         for(Town t:TownS.g().getAllTowns()){
-            if(t.getTownBalance()+t.getPayingClaims().size()*t.getRent() < UPKEEP_PER_CLAIM){
+            if (t.getTownBalance() + t.getPayingClaims().size() * t.getRent() < UPKEEP_PER_CLAIM * t.getClaims().size()) {
                 if(t.getMayor().isOnline()){
                     t.getMayor().getPlayer().sendActionBar('&',"&cYour town will fall into ruins soon if upkeep is not met");
                 }
@@ -67,7 +67,7 @@ public enum EcoUpkeep {
     private void upKeepTowns(){
         if(TownS.g().getAllTowns().isEmpty())return;
         for(Town t:TownS.g().getAllTowns()){
-            if(t.getTownBalance() < UPKEEP_PER_CLAIM){
+            if (t.getTownBalance() < UPKEEP_PER_CLAIM * t.getClaims().size()) {
                 if(t.getMayor().isOnline()){
                     t.getMayor().getPlayer().sendActionBar('&',"&cYour town fell into ruins");
                 }
@@ -78,6 +78,8 @@ public enum EcoUpkeep {
                 }
                 Bukkit.broadcastMessage(ChatColor.RED+"The town " + t.getName() + " fell into ruins!");
                 t.deleteTown();
+            } else {
+                t.changeTownBalanceBy(-1 * UPKEEP_PER_CLAIM * t.getClaims().size());
             }
         }
     }

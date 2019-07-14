@@ -1,5 +1,6 @@
 package com.rocketmail.vaishnavanil.towns.Towns;
 
+import com.rocketmail.vaishnavanil.towns.Economy.EcoUpkeep;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
 import com.rocketmail.vaishnavanil.towns.Utilities.RegenSaveQueueManager;
@@ -52,6 +53,9 @@ public class Town implements Serializable {
         return Var.get(var);
     }
 
+    public double getCurrentUpkeep() {
+        return EcoUpkeep.UPKEEP_PER_CLAIM * this.getClaims().size();
+    }
     public List<Claim> getClaims() {
         return townClaims;
     }
@@ -71,6 +75,10 @@ public class Town implements Serializable {
             setVar("rent",0);
         }
         return (double) getVar("rent");
+    }
+
+    public double getTotalRentCollected() {
+        return getRent() * getPayingClaims().size();
     }
     public boolean isTownClaim(Claim c) {
         if (townClaims.contains(c)) return true;

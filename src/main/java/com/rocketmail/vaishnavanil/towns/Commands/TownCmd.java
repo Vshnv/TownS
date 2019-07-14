@@ -12,6 +12,7 @@ import com.rocketmail.vaishnavanil.towns.Towns.Town;
 import com.rocketmail.vaishnavanil.towns.Towns.TownPlayer;
 import com.rocketmail.vaishnavanil.towns.Utilities.AntiClaimBreak;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -21,9 +22,23 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class TownCmd implements CommandExecutor {
+    private static final Pattern DOUBLE_PATTERN = Pattern.compile(
+            "[\\x00-\\x20]*[+-]?(NaN|Infinity|((((\\p{Digit}+)(\\.)?((\\p{Digit}+)?)" +
+                    "([eE][+-]?(\\p{Digit}+))?)|(\\.((\\p{Digit}+))([eE][+-]?(\\p{Digit}+))?)|" +
+                    "(((0[xX](\\p{XDigit}+)(\\.)?)|(0[xX](\\p{XDigit}+)?(\\.)(\\p{XDigit}+)))" +
+                    "[pP][+-]?(\\p{Digit}+)))[fFdD]?))[\\x00-\\x20]*");
+
+    public String getAntiPlaceHolderColor(String s) {
+        return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', s));
+    }
+
+    public static boolean isDouble(String s) {
+        return DOUBLE_PATTERN.matcher(s).matches();
+    }
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         //if (!cmd.getName().equalsIgnoreCase("towns")) return true;
@@ -44,13 +59,23 @@ public class TownCmd implements CommandExecutor {
         switch (sub_cmd) {
             case "info":
                 if(args.length == 1) {
-                    if (TownS.g().hasTown(sndr)) {
+                    if (!TownS.g().hasTown(sndr)) {
                         /*MSG ADDED A.I.T.*/
                         Format.CmdErrFrmt.use().a(sndr, "You do not belong to a Town!");
                         return true;
                     }
                     Town PlrTwn = TownS.g().getTown(sndr);
                     String TN = PlrTwn.getName();
+                    StringBuilder memberList = new StringBuilder();
+                    boolean f = true;
+                    for (OfflinePlayer p : PlrTwn.getMembers()) {
+                        if (f) {
+                            f = false;
+                            memberList.append("[" + PlrTwn.getRank(p.getUniqueId()).getName() + "]" + p.getName());
+                            continue;
+                        }
+                        memberList.append(", [" + PlrTwn.getRank(p.getUniqueId()).getName() + "]" + p.getName());
+                    }
                     int claimCont = PlrTwn.getClaims().size();
                     boolean isOpen;
                     if(PlrTwn.varExists("Open")) isOpen = (boolean) PlrTwn.getVar("Open");
@@ -62,12 +87,27 @@ public class TownCmd implements CommandExecutor {
                     l.add("Claim Count: " + claimCont);
                     l.add("Open: " + (isOpen ? "Yes":"No"));
                     l.add("Town Balance: " + balance);
+                    l.add("Members: " + memberList.toString());
+                    l.add("Current total upkeep cost: " + PlrTwn.getCurrentUpkeep());
+                    l.add("Total collected rent: " + PlrTwn.getTotalRentCollected());
+                    l.add("Town economy status: " + (PlrTwn.getTotalRentCollected() > PlrTwn.getCurrentUpkeep() ? "in Profit" : "in Loss"));
+
                     Format.AlrtFrmt.use().a(sndr,l);
                 }else if(args.length == 2){
                     Town PlrTwn = TownS.g().getTown(args[1]);
                     if(PlrTwn == null){
-                        Format.CmdErrFrmt.use().a(sndr, "Couldnt find to with name: " + args[1]);
+                        Format.CmdErrFrmt.use().a(sndr, "Could not find town with name: " + args[1]);
                         return true;
+                    }
+                    StringBuilder memberList = new StringBuilder();
+                    boolean f = true;
+                    for (OfflinePlayer p : PlrTwn.getMembers()) {
+                        if (f) {
+                            f = false;
+                            memberList.append("[" + PlrTwn.getRank(p.getUniqueId()).getName() + "]" + p.getName());
+                            continue;
+                        }
+                        memberList.append(", [" + PlrTwn.getRank(p.getUniqueId()).getName() + "]" + p.getName());
                     }
                     int claimCont = PlrTwn.getClaims().size();
                     boolean isOpen;
@@ -80,6 +120,11 @@ public class TownCmd implements CommandExecutor {
                     l.add("Claim Count: " + claimCont);
                     l.add("Open: " + (isOpen ? "Yes":"No"));
                     l.add("Town Balance: " + balance);
+                    l.add("Members: " + memberList.toString());
+                    l.add("Current total upkeep cost: " + PlrTwn.getCurrentUpkeep());
+                    l.add("Total collected rent: " + PlrTwn.getTotalRentCollected());
+                    l.add("Town economy status: " + (PlrTwn.getTotalRentCollected() > PlrTwn.getCurrentUpkeep() ? "in Profit" : "in Loss"));
+
                     Format.AlrtFrmt.use().a(sndr,l);
                 }else{
                     Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setname <name>");
@@ -107,12 +152,12 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "Please stand in unclaimed land to use this command! use /towns map for map view");
                     return true;
                 }
-                if(TownS.g().isNameUsed(args[1])){
+                if (TownS.g().isNameUsed(getAntiPlaceHolderColor(args[1]))) {
                     Format.CmdErrFrmt.use().a(sndr, "Town Name already taken! Please try another name");
                     return true;
                 }
 
-                if(args[1].toCharArray().length >10){
+                if (args[1].toCharArray().length > 12) {
                     Format.CmdErrFrmt.use().a(sndr, "Town Name cannot be that long!");
                     return true;
                 }
@@ -124,12 +169,12 @@ public class TownCmd implements CommandExecutor {
                     }
 
                 Format.AlrtFrmt.use().broadcast(sndr.getName() + " has created a new Town! &c" + args[1]);
-                create(sndr, args[1]);
+                create(sndr, getAntiPlaceHolderColor(args[1]));
                 break;
             /*END CREATION*/
             case "setname":
                 if (args.length == 2) {
-                    String town_name = args[1];
+                    String town_name = getAntiPlaceHolderColor(args[1]);
                     if (!TownS.g().hasTown(sndr)) {
                         /*MSG ADDED A.I.T.*/
                         Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
@@ -689,6 +734,33 @@ public class TownCmd implements CommandExecutor {
                     }
                 } else {
                     Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setmayor <name>");
+                }
+                break;
+            case "setrent":
+                if (args.length == 2) {
+                    if (!TownS.g().hasTown(sndr)) {
+                        /*MSG ADDED A.I.T.*/
+                        Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
+                        return true;
+                    }
+                    Town twn = TownS.g().getTown(sndr);
+                    if (twn.getMayor().getUniqueId() == sndr.getUniqueId()) {
+                        boolean d = this.isDouble(args[1]);
+                        if (d) {
+                            twn.setRent(Double.parseDouble(args[1]));
+                            Format.CmdInfoFrmt.use().a(sndr, "Successfully set per plot rent to members to " + args[1] + "$");
+                        } else {
+                            Format.CmdErrFrmt.use().a(sndr, "Only the mayor may set the rent!");
+
+                            return true;
+                        }
+                    } else {
+                        Format.CmdErrFrmt.use().a(sndr, "Only the mayor may set the rent!");
+                        return true;
+                    }
+                } else {
+                    Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setrent <amount>");
+
                 }
                 break;
             case "setrank":
