@@ -16,8 +16,9 @@ public class PlayerBuildEventListener implements Listener {
 
     @EventHandler
     public void onBuild(BlockPlaceEvent event) {
+        if (TownS.getWG().isPlotOverride(event.getBlock().getLocation())) return;
 
-        if(event.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override"); return;}
+        // if(event.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override"); return;}
 
 
         Player player = event.getPlayer();
@@ -43,6 +44,11 @@ public class PlayerBuildEventListener implements Listener {
                             if (claim.getTown().hasPermission("BuildALL", player.getUniqueId())) {
                                 return;
                             }
+                            if (event.getPlayer().hasPermission("towns.override")) {
+                                ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override");
+                                return;
+                            }
+
                             event.setCancelled(true);
                             Format.CmdErrFrmt.use().a(player, "You lack permission to build here!");
                         }
@@ -51,11 +57,21 @@ public class PlayerBuildEventListener implements Listener {
                 }
 
             } else {
+                if (event.getPlayer().hasPermission("towns.override")) {
+                    ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override");
+                    return;
+                }
+
                 event.setCancelled(true);
                 Format.CmdErrFrmt.use().a(player, "You do not belong to this town!");
             }
         } else {
             if (player.getWorld().getName().equalsIgnoreCase("world") && !player.hasPermission("towns.buildwild")) {
+                if (event.getPlayer().hasPermission("towns.override")) {
+                    ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override");
+                    return;
+                }
+
                 event.setCancelled(true);
                 Format.CmdErrFrmt.use().a(player, "This Area does not belong to you yet!");
             }
@@ -66,6 +82,7 @@ public class PlayerBuildEventListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+        if (TownS.getWG().isPlotOverride(event.getBlock().getLocation())) return;
 
         if(event.getPlayer().hasPermission("towns.override")){ ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override"); return;}
 
@@ -80,6 +97,11 @@ public class PlayerBuildEventListener implements Listener {
                     return;
                 }
             }else{
+                if (event.getPlayer().hasPermission("towns.override")) {
+                    ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override");
+                    return;
+                }
+
                 event.setCancelled(true);
                 Format.CmdErrFrmt.use().a(player, "You do not belong to a town and lack permission to build here.");
                 return;
@@ -101,6 +123,11 @@ public class PlayerBuildEventListener implements Listener {
                             if (claim.getTown().hasPermission("BuildALL", player.getUniqueId())) {
                                 return;
                             }
+                            if (event.getPlayer().hasPermission("towns.override")) {
+                                ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override");
+                                return;
+                            }
+
                             event.setCancelled(true);
                             Format.CmdErrFrmt.use().a(player, "You lack permission to build here!");
                         }
@@ -109,11 +136,21 @@ public class PlayerBuildEventListener implements Listener {
                 }
 
             } else {
+                if (event.getPlayer().hasPermission("towns.override")) {
+                    ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override");
+                    return;
+                }
+
                 event.setCancelled(true);
                 Format.CmdErrFrmt.use().a(player, "You do not belong to this town!");
             }
         } else {
             if (player.getWorld().getName().equalsIgnoreCase("world") && !player.hasPermission("towns.buildwild")) {
+                if (event.getPlayer().hasPermission("towns.override")) {
+                    ActionBar.use.send(event.getPlayer(), "&cUsing Admin Override");
+                    return;
+                }
+
                 event.setCancelled(true);
                 Format.CmdErrFrmt.use().a(player, "This Area does not belong to you yet!");
             }

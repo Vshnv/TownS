@@ -18,10 +18,7 @@ import com.rocketmail.vaishnavanil.towns.Placeholders.PlaceholderProvider;
 import com.rocketmail.vaishnavanil.towns.Storage.LoadObject;
 import com.rocketmail.vaishnavanil.towns.Storage.SaveObject;
 import com.rocketmail.vaishnavanil.towns.Towns.*;
-import com.rocketmail.vaishnavanil.towns.Utilities.DailyBackupHandler;
-import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
-import com.rocketmail.vaishnavanil.towns.Utilities.PlotBorderShowTimer;
-import com.rocketmail.vaishnavanil.towns.Utilities.RegenSaveQueueManager;
+import com.rocketmail.vaishnavanil.towns.Utilities.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -48,6 +45,7 @@ public final class TownS extends JavaPlugin {
     public static String PREFIX = "[TownS]";
     public static Double TownCost = 200.0;
     public static Double PlotCost = 1000.0;
+    private static WGUtil WG;
     //SINGLETON
     private static TownS instance;
     private static Economy econ = null;
@@ -96,6 +94,10 @@ public final class TownS extends JavaPlugin {
         }*/
         if(!isRegening(builder.getChunk()))RegenWorkers.add(builder);
         if(!RegeningingChunks.contains(TownS.getChunkID(builder.getChunk())))RegeningingChunks.add(TownS.getChunkID(builder.getChunk()));
+    }
+
+    public static WGUtil getWG() {
+        return WG;
     }
 
     public void alertQueue() {
@@ -315,6 +317,14 @@ public final class TownS extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        if (this.getServer().getPluginManager().getPlugin("WorldGuard") == null) {
+            WG = new NoWorldGaurd();
+            this.getServer().getConsoleSender().sendMessage("[TownS] Failed WorldGaurd hook!");
+        } else {
+            WG = new WorldGaurdUtil();
+            this.getServer().getConsoleSender().sendMessage("[TownS] Successfully hooked to WorldGaurd!");
+
+        }
         registerFE();
         if (!setupEconomy()) {
             Bukkit.getConsoleSender().sendMessage(getDescription().getName() + " - Disabled due to no Vault dependency found!");

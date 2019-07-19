@@ -72,13 +72,18 @@ public class Town implements Serializable {
     }
     public double getRent(){
         if(!varExists("rent")){
-            setVar("rent",0);
+            setVar("rent", 0D);
         }
-        return (double) getVar("rent");
+        try {
+            return (double) getVar("rent");
+        } catch (Exception e) {
+            setVar("rent", 0D);
+            return 0D;
+        }
     }
 
     public double getTotalRentCollected() {
-        return getRent() * getPayingClaims().size();
+        return (getRent() * getPayingClaims().size());
     }
     public boolean isTownClaim(Claim c) {
         if (townClaims.contains(c)) return true;

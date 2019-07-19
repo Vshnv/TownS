@@ -69,12 +69,13 @@ public class TownCmd implements CommandExecutor {
                     StringBuilder memberList = new StringBuilder();
                     boolean f = true;
                     for (OfflinePlayer p : PlrTwn.getMembers()) {
+                        Rank k = PlrTwn.getRank(p.getUniqueId());
                         if (f) {
                             f = false;
-                            memberList.append("[" + PlrTwn.getRank(p.getUniqueId()).getName() + "]" + p.getName());
+                            memberList.append("[" + (k == null ? "Member" : k.getName()) + "]" + p.getName());
                             continue;
                         }
-                        memberList.append(", [" + PlrTwn.getRank(p.getUniqueId()).getName() + "]" + p.getName());
+                        memberList.append(", [" + (k == null ? "Member" : k.getName()) + "]" + p.getName());
                     }
                     int claimCont = PlrTwn.getClaims().size();
                     boolean isOpen;
@@ -87,7 +88,7 @@ public class TownCmd implements CommandExecutor {
                     l.add("Claim Count: " + claimCont);
                     l.add("Open: " + (isOpen ? "Yes":"No"));
                     l.add("Town Balance: " + balance);
-                    l.add("Members: " + memberList.toString());
+                    l.add("Members" + "(" + PlrTwn.getMembers().size() + ")" + ": " + memberList.toString());
                     l.add("Current total upkeep cost: " + PlrTwn.getCurrentUpkeep());
                     l.add("Total collected rent: " + PlrTwn.getTotalRentCollected());
                     l.add("Town economy status: " + (PlrTwn.getTotalRentCollected() > PlrTwn.getCurrentUpkeep() ? "in Profit" : "in Loss"));
@@ -102,12 +103,13 @@ public class TownCmd implements CommandExecutor {
                     StringBuilder memberList = new StringBuilder();
                     boolean f = true;
                     for (OfflinePlayer p : PlrTwn.getMembers()) {
+                        Rank k = PlrTwn.getRank(p.getUniqueId());
                         if (f) {
                             f = false;
-                            memberList.append("[" + PlrTwn.getRank(p.getUniqueId()).getName() + "]" + p.getName());
+                            memberList.append("[" + (k == null ? "Member" : k.getName()) + "]" + p.getName());
                             continue;
                         }
-                        memberList.append(", [" + PlrTwn.getRank(p.getUniqueId()).getName() + "]" + p.getName());
+                        memberList.append(", [" + (k == null ? "Member" : k.getName()) + "]" + p.getName());
                     }
                     int claimCont = PlrTwn.getClaims().size();
                     boolean isOpen;
@@ -120,7 +122,7 @@ public class TownCmd implements CommandExecutor {
                     l.add("Claim Count: " + claimCont);
                     l.add("Open: " + (isOpen ? "Yes":"No"));
                     l.add("Town Balance: " + balance);
-                    l.add("Members: " + memberList.toString());
+                    l.add("Members" + "(" + PlrTwn.getMembers().size() + ")" + ": " + memberList.toString());
                     l.add("Current total upkeep cost: " + PlrTwn.getCurrentUpkeep());
                     l.add("Total collected rent: " + PlrTwn.getTotalRentCollected());
                     l.add("Town economy status: " + (PlrTwn.getTotalRentCollected() > PlrTwn.getCurrentUpkeep() ? "in Profit" : "in Loss"));

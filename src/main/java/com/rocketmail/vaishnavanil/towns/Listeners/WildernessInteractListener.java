@@ -31,12 +31,15 @@ public class WildernessInteractListener implements Listener {
 
     @EventHandler
     public void onBlockBreakWild(BlockBreakEvent event){
+        if (TownS.getWG().isPlotOverride(event.getBlock().getLocation())) return;
+
         Player player = event.getPlayer();
         Block block = event.getBlock();
         if(block == null) return;
         if(block.getType().equals(Material.AIR)) return;
         if(block.getWorld().getName().equals("world")){
             if(!TownS.g().isClaimed(block.getLocation().getChunk())){
+
                 if(!player.hasPermission("towns.buildwild")){
                     event.setCancelled(true);
                     Format.CmdErrFrmt.use().a(player, "This Area does not belong to you yet!");
@@ -47,12 +50,15 @@ public class WildernessInteractListener implements Listener {
 
     @EventHandler
     public void onBlockPlaceWild(BlockPlaceEvent event){
+        if (TownS.getWG().isPlotOverride(event.getBlock().getLocation())) return;
+
         Player player = event.getPlayer();
         Block block = event.getBlock();
         if(block == null) return;
         if(block.getType().equals(Material.AIR)) return;
         if(block.getWorld().getName().equals("world")){
             if(!TownS.g().isClaimed(block.getLocation().getChunk())){
+
                 if(!player.hasPermission("towns.buildwild")){
                     event.setCancelled(true);
                     Format.CmdErrFrmt.use().a(player, "This Area does not belong to you yet!");
