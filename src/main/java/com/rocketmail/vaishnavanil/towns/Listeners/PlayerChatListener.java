@@ -50,7 +50,7 @@ public class PlayerChatListener implements Listener {
             }
 
         }catch (Exception e){
-            System.out.println(e.getLocalizedMessage());
+            System.out.println("[TOWNCHAT EXCEPTION] "+e.getLocalizedMessage()+" : "+e.toString());
         }
     }
 
