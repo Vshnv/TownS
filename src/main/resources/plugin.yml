@@ -1,7 +1,7 @@
 name: TownS
 version: ${project.version}
 main: com.rocketmail.vaishnavanil.towns.TownS
-api-version: 1.13
+api-version: 1.14
 prefix: Towns
 authors: [Vaishnav, RishabhRaghunath]
 description: A plugin that introduces Town-Based roleplay system into your game.
