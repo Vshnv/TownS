@@ -3,6 +3,7 @@ package com.rocketmail.vaishnavanil.towns.Commands;
 import com.rocketmail.vaishnavanil.towns.Economy.EconomyHandler;
 import com.rocketmail.vaishnavanil.towns.GUI.SI.FlagGUI;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
+import com.rocketmail.vaishnavanil.towns.Messages.TownsMainMessage;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
@@ -31,7 +32,7 @@ public class PlotCmd implements CommandExecutor {
         Chunk sndr_chunk = sndr.getLocation().getChunk();
         if (!(args.length > 0)) {
             /*MSG ADDED N.E.A.*/
-            Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
+            TownsMainMessage.get.sendSubCommandPLOTS(sndr);
             return true;
         }
 

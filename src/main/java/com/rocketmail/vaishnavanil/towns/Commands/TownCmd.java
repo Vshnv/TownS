@@ -5,6 +5,8 @@ import com.rocketmail.vaishnavanil.towns.GUI.GUI;
 import com.rocketmail.vaishnavanil.towns.GUI.SI.MapGUI;
 import com.rocketmail.vaishnavanil.towns.GUI.SI.WarpsGUI;
 import com.rocketmail.vaishnavanil.towns.Messages.Format;
+import com.rocketmail.vaishnavanil.towns.Messages.Message;
+import com.rocketmail.vaishnavanil.towns.Messages.TownsMainMessage;
 import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Rank;
 import com.rocketmail.vaishnavanil.towns.Towns.RegenBuilder;
@@ -49,7 +51,7 @@ public class TownCmd implements CommandExecutor {
         Player sndr = (Player) sender;
         if (!(args.length > 0)) {
             /*MSG ADDED .E.A.*/
-            Format.CmdErrFrmt.use().a(sndr, "Not enough arguments!");
+            TownsMainMessage.get.sendSubCommandTOWNS(sndr);
             return true;
         }
 
@@ -207,6 +209,10 @@ public class TownCmd implements CommandExecutor {
                     String amount = args[1];
                     try {
                         Double amount_num = Double.parseDouble(amount);
+                        if (amount_num < 1) {
+                            Format.CmdErrFrmt.use().a(sndr, "Your transaction failed!");
+                            return true;
+                        }
                         if (TownS.g().hasTown(sndr)) {
                             if(!TownS.g().getTown(sndr).hasPermission("deposit",sndr)){
                                 Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
@@ -234,6 +240,10 @@ public class TownCmd implements CommandExecutor {
                     String amount = args[1];
                     try {
                         Double amount_num = Double.parseDouble(amount);
+                        if (amount_num < 1) {
+                            Format.CmdErrFrmt.use().a(sndr, "Your transaction failed!");
+                            return true;
+                        }
                         if (TownS.g().hasTown(sndr)) {
 
                             /* Check for withdraw permission here */
@@ -827,6 +837,10 @@ public class TownCmd implements CommandExecutor {
                     Format.CmdErrFrmt.use().a(sndr, "Invalid Format: Use /town setrank <player> <rank>");
 
                 }
+
+                break;
+            case "help":
+                TownsMainMessage.get.sendBaseCommands(sndr);
                 break;
 
         }
@@ -842,7 +856,7 @@ public class TownCmd implements CommandExecutor {
                 newT.setWarpPoint(newT, "spawn", p.getLocation());
                 newT.setSpawnChunk(newT, p.getLocation().getChunk());
                 TownS.g().getClaim(p.getLocation().getChunk()).setName("Settlement");
-                Format.AlrtFrmt.use().a(p, "Created new town with name -> " + townName);
+                TownsMainMessage.get.townCreate(p);
             } else {
                 Format.CmdErrFrmt.use().a(p, "An Error Occurred while trying to pay for the new Town.");
             }
