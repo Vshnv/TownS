@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface Message {
+    static final String HEADER =
+            "=#===================#=%PREFIX%=#===================#=";
+    static final String MESSAGE =
+            "=#";
+
     void a(Player p, List<String> list);
 
     void a(Player p, String s);
