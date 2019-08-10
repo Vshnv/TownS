@@ -21,7 +21,9 @@ import com.rocketmail.vaishnavanil.towns.Towns.*;
 import com.rocketmail.vaishnavanil.towns.Utilities.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
-import org.bukkit.block.Block;
+import org.bukkit.Chunk;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
@@ -372,6 +374,7 @@ public final class TownS extends JavaPlugin {
         regListen(new PlayerRespawnListener());
         regListen(new ClaimPistonRestrict());
         regListen(FunctionRunner.get());
+        regListen(new EntityInteractRestrictor());
         regListen(new RegenAntiExplode());
         hookPlaceholderAPI();
         RegenSaveQueueManager.get.runSaveQueue();

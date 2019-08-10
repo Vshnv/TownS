@@ -758,7 +758,13 @@ public class TownCmd implements CommandExecutor {
                     Town twn = TownS.g().getTown(sndr);
                     if (twn.getMayor().getUniqueId() == sndr.getUniqueId()) {
                         boolean d = this.isDouble(args[1]);
+
                         if (d) {
+                            if (Double.parseDouble(args[1]) < 0) {
+                                Format.CmdErrFrmt.use().a(sndr, "Invalid input for rent: " + args[1] + "!");
+
+                                return true;
+                            }
                             twn.setRent(Double.parseDouble(args[1]));
                             Format.CmdInfoFrmt.use().a(sndr, "Successfully set per plot rent to members to " + args[1] + "$");
                         } else {
