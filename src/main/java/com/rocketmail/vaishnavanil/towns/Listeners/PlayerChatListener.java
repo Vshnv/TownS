@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.messaging.Messenger;
 
 public class PlayerChatListener implements Listener {
 
@@ -45,6 +46,7 @@ public class PlayerChatListener implements Listener {
                 if(TownS.g().hasTown(town_player)){
                     if(TownS.g().getTown(town_player).equals(player_town)){
                         town_player.sendMessage(chatPrefix+chatMessage);
+                        Bukkit.getServer().getConsoleSender().sendMessage("[TOWN CHAT SPY] "+chatPrefix+chatMessage);
                     }
                 }
             }

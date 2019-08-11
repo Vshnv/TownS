@@ -23,7 +23,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="worldguard-bukkit-7.0.1-beta-01" level="project" />
     <orderEntry type="library" name="worldedit-bukkit-7.0.1-SNAPSHOT-dist" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot:1.14.1-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: de.ruedigermoeller:fst:2.56" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.8" level="project" />
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.21.0-GA" level="project" />
