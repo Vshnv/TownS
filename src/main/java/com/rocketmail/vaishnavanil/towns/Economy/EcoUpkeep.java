@@ -4,6 +4,7 @@ import com.rocketmail.vaishnavanil.towns.TownS;
 import com.rocketmail.vaishnavanil.towns.Towns.Claim;
 import com.rocketmail.vaishnavanil.towns.Towns.RegenBuilder;
 import com.rocketmail.vaishnavanil.towns.Towns.Town;
+import com.rocketmail.vaishnavanil.towns.Utilities.ActionBar;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -20,11 +21,11 @@ public enum EcoUpkeep {
         for(Town t:TownS.g().getAllTowns()){
             if (t.getTownBalance() + t.getPayingClaims().size() * t.getRent() < UPKEEP_PER_CLAIM * t.getClaims().size()) {
                 if(t.getMayor().isOnline()){
-                    t.getMayor().getPlayer().sendActionBar('&',"&cYour town will fall into ruins soon if upkeep is not met");
+                    ActionBar.use.send(t.getMayor().getPlayer(), "&cYour town will fall into ruins soon if upkeep is not met");
                 }
                 for(OfflinePlayer p:t.getMembers()){
                     if(p.isOnline()){
-                        p.getPlayer().sendActionBar('&',"&cBEWARE Your town will fall into ruins soon if upkeep is not met");
+                        ActionBar.use.send(p.getPlayer(), "&cBEWARE Your town will fall into ruins soon if upkeep is not met");
                     }
                 }
 
@@ -53,11 +54,11 @@ public enum EcoUpkeep {
             if(c.getOwnerID() == c.getTown().getTownUUID())continue;
             if(EconomyHandler.INSTANCE.depositIntoTown(c.getOwner(),c.getTown(),c.getTown().getRent())){
                 if(c.getOwner().isOnline()){
-                    c.getOwner().getPlayer().sendActionBar('&',"&3You paid today's rent for a plot");
+                    ActionBar.use.send(c.getOwner().getPlayer(), "&3You paid today's rent for a plot");
                 }
             }else{
                 if(c.getOwner().isOnline()){
-                    c.getOwner().getPlayer().sendActionBar('&',"&cYou failed to pay rent for one of your plots");
+                    ActionBar.use.send(c.getOwner().getPlayer(), "&cYou failed to pay rent for one of your plots");
                 }
                 c.setOwner(c.getTown().getMayor().getUniqueId());
             }
@@ -69,14 +70,14 @@ public enum EcoUpkeep {
         for(Town t:TownS.g().getAllTowns()){
             if (t.getTownBalance() < UPKEEP_PER_CLAIM * t.getClaims().size()) {
                 if(t.getMayor().isOnline()){
-                    t.getMayor().getPlayer().sendActionBar('&',"&cYour town fell into ruins");
+                    ActionBar.use.send(t.getMayor().getPlayer(), "&cYour town fell into ruins");
                 }
                 for(OfflinePlayer p:t.getMembers()){
                     if(p.isOnline()){
-                        p.getPlayer().sendActionBar('&',"&cYour town fell into ruins");
+                        ActionBar.use.send(p.getPlayer(), "&cYour town fell into ruins");
                     }
                 }
-                Bukkit.broadcastMessage(ChatColor.RED+"The town " + t.getName() + " fell into ruins!");
+                Bukkit.broadcastMessage(ChatColor.RED+"The Town " + t.getName() + " fell into ruins!");
                 t.deleteTown();
             } else {
                 t.changeTownBalanceBy(-1 * UPKEEP_PER_CLAIM * t.getClaims().size());
