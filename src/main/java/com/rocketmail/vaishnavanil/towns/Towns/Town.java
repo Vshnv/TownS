@@ -161,11 +161,14 @@ public class Town implements Serializable {
         if (TownS.g().hasTown(id)) {
             if (TownS.g().getTown(id).equals(this)) {
                 Mayor_ID = id;
+                System.out.println("success mayor set");
                 return true;
             } else {
+                System.out.println("fail not same town mayor set");
                 return false;
             }
         } else {
+            System.out.println("fail mayor set has no town");
             return false;
         }
     }
@@ -219,6 +222,18 @@ public class Town implements Serializable {
         if (spawnChunkID == null || chunk == null)
             return false;
         return TownS.getChunkID(chunk).equals(spawnChunkID);
+    }
+
+    public void resetClaim(Claim claim){
+        if(this.townClaims.contains(claim)){
+            Chunk chunk = claim.getChunk();
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    new RegenBuilder((Material[][][]) LoadManager.get.loadObject("ChunkSaves", chunk.getX() + "TT" + chunk.getZ() + "TT" + chunk.getWorld().getName() + ".dat"), chunk);
+                }
+            }.runTask(TownS.g());
+        }
     }
 
     public void unclaim(Chunk chunk) {

@@ -326,6 +326,22 @@ public class PlotCmd implements CommandExecutor {
                     return true;
                 }
                 break;
+            case "resetbuilds":
+                if(TownS.g().isClaimed(sndr_chunk)){
+                    if(TownS.g().getClaim(sndr_chunk).getOwner().getPlayer().equals(sndr)){
+
+                        Double reset_cost = 20000.0;
+                        if(EconomyHandler.INSTANCE.changePlayerBalance(sndr, -reset_cost)){
+                            TownS.g().getTown(sndr_chunk).resetClaim(TownS.g().getClaim(sndr_chunk));
+                            Format.AlrtFrmt.use().a(sndr, "You paid $"+reset_cost.toString()+" to reset your plot.");
+                        }else{
+                            Format.CmdErrFrmt.use().a(sndr, "Resetting this Plot costs: $"+reset_cost.toString());
+                        }
+                        return true;
+                    }
+                }
+                Format.CmdErrFrmt.use().a(sndr, "You lack the power to do this.");
+                return true;
             case "allow":
                 //TODO:: CLEAR UNNECCESSARY CLAIM TRUSTS ON ENABLE LATER ON ----> VAISHNAV
                 if(args.length == 4){
@@ -471,7 +487,7 @@ public class PlotCmd implements CommandExecutor {
                             Format.CmdInfoFrmt.use().a(sndr,"Not allowing rank " + rnk_name + " to build here anymore!");
                             return true;
                         }else if (args[2].equalsIgnoreCase("player")){
-                            OfflinePlayer TBOplayer = Bukkit.getOfflinePlayer(args[3]);
+                            OfflinePlayer TBOplayer = Bukkit.getOfflinePlayer(args[3]).getPlayer();
                             if(!TBOplayer.hasPlayedBefore()){
                                 Format.CmdErrFrmt.use().a(sndr,"Could not find player with name "+ args[3]);
                                 return true;
@@ -496,7 +512,7 @@ public class PlotCmd implements CommandExecutor {
                             Format.CmdInfoFrmt.use().a(sndr,"Not allowing rank " + rnk_name + " to use Containers here anymore!");
                             return true;
                         }else if (args[2].equalsIgnoreCase("player")){
-                            OfflinePlayer TBOplayer = Bukkit.getOfflinePlayer(args[3]);
+                            OfflinePlayer TBOplayer = Bukkit.getOfflinePlayer(args[3]).getPlayer();
                             if(!TBOplayer.hasPlayedBefore()){
                                 Format.CmdErrFrmt.use().a(sndr,"Could not find player with name "+ args[3]);
                                 return true;

@@ -616,7 +616,7 @@ public class TownCmd implements CommandExecutor {
             case "kick":
 
                 if(args.length == 2){
-                    OfflinePlayer opl = Bukkit.getOfflinePlayer(args[1]);
+                    Player opl = Bukkit.getOfflinePlayer(args[1]).getPlayer();
                     if(!opl.hasPlayedBefore()){
                         Format.CmdErrFrmt.use().a(sndr, "Could not find player with name "+ args[1]);
                         return false;
@@ -629,7 +629,7 @@ public class TownCmd implements CommandExecutor {
 
                     Town kt = TownS.g().getTown(sndr);
 
-                    if(kt.getMayor().getPlayer().equals(sndr)){
+                    if(kt.getMayor().getPlayer().equals(opl)){
                         Format.CmdErrFrmt.use().a(sndr, "A Mayor can not be kicked");
                         return true;
                     }
@@ -760,7 +760,7 @@ public class TownCmd implements CommandExecutor {
                         return true;
                     }
                     if (Bukkit.getOfflinePlayer(player_name).hasPlayedBefore()) {
-                        if (TownS.g().getTown(sndr).setOwner(Bukkit.getOfflinePlayer(player_name).getUniqueId())) {
+                        if (TownS.g().getTown(sndr).setOwner((Player) Bukkit.getOfflinePlayer(player_name))) {
                             Format.AlrtFrmt.use().broadcast(TownS.g().getTown(sndr).getName() + " has a new Mayor -> &c" + player_name);
                             Format.AlrtFrmt.use().a(sndr, "Successfully made " + player_name + " the new mayor");
                         } else {
