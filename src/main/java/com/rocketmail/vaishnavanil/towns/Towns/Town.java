@@ -102,7 +102,10 @@ public class Town implements Serializable {
 
     public void unregClaim(Chunk c) {
         if (!TownS.g().isClaimed(c)) return;
-        townClaims.remove(TownS.g().getClaim(c));
+        Claim claim = TownS.g().getClaim(c);
+        if(this.townClaims.contains(claim)){
+            this.townClaims.remove(claim);
+        }
     }
 
     public String getName() {
@@ -219,9 +222,8 @@ public class Town implements Serializable {
     }
 
     public void unclaim(Chunk chunk) {
-
         TownS.g().rCfT(TownS.g().getClaim(chunk));
-        //unregClaim(chunk);
+        unregClaim(chunk);
         new BukkitRunnable() {
             @Override
             public void run() {
