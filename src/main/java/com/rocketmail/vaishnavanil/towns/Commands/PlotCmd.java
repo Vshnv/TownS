@@ -34,6 +34,7 @@ public class PlotCmd implements CommandExecutor {
             /*MSG ADDED N.E.A.*/
             TownsMainMessage.get.sendSubCommandPLOTS(sndr);
             return true;
+
         }
 
         String sub_cmd = args[0].toLowerCase();
