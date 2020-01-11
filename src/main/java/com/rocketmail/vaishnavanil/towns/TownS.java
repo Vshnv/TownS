@@ -151,6 +151,7 @@ public final class TownS extends JavaPlugin {
 
     public void rCfT(Claim claim) { /*REMOVE CLAIM FROM CLAIM MAP*/
         Map.remove(claim.x() + "::" + claim.z() + "::" + claim.getWorldName());
+
         claim.getTown().unregClaim(claim);
     }
 

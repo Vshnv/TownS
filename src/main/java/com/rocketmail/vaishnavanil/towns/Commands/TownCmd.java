@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static org.bukkit.Bukkit.getOnlinePlayers;
+
 
 public class TownCmd implements CommandExecutor {
     private static final Pattern DOUBLE_PATTERN = Pattern.compile(
@@ -612,8 +614,9 @@ public class TownCmd implements CommandExecutor {
 
                 break;
             case "kick":
+
                 if(args.length == 2){
-                    OfflinePlayer opl = Bukkit.getOfflinePlayer(args[1]);
+                    Player opl = Bukkit.getOfflinePlayer(args[1]).getPlayer();
                     if(!opl.hasPlayedBefore()){
                         Format.CmdErrFrmt.use().a(sndr, "Could not find player with name "+ args[1]);
                         return false;
@@ -625,6 +628,11 @@ public class TownCmd implements CommandExecutor {
                     }
 
                     Town kt = TownS.g().getTown(sndr);
+
+                    if(kt.getMayor().getPlayer().equals(opl)){
+                        Format.CmdErrFrmt.use().a(sndr, "A Mayor can not be kicked");
+                        return true;
+                    }
 
                     if(kt.hasPermission("kick",sndr)){
                         if(TownS.g().getTown(opl).getTownUUID() != kt.getTownUUID()){
@@ -665,6 +673,23 @@ public class TownCmd implements CommandExecutor {
 
                 }
                 break;
+            case "online":
+                Integer count = 0;
+                if(TownS.g().hasTown(sndr)){
+                    Town town = TownS.g().getTown(sndr);
+                    List<String> list = new ArrayList<String>();
+                    for (Player player: Bukkit.getOnlinePlayers()){
+                        if(TownS.g().hasTown(player) && TownS.g().getTown(player).equals(TownS.g().getTown(sndr))){
+                            count++;
+                            list.add(player.getDisplayName());
+                        }
+                    }
+                    if(count == 0){ sndr.sendMessage(ChatColor.translateAlternateColorCodes('&',"&cNo one else but you is online in your Town.")); }
+                    else{ sndr.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aTown Members Online: &2"+count.toString()+"\n&7Online Members: &2"+list.toString())); }
+                }else{
+                    Format.CmdErrFrmt.use().a(sndr, "You don't belong to a town");
+                }
+                break;
             case "setopen":
                 if(args.length == 2){
                     boolean open;
@@ -679,7 +704,7 @@ public class TownCmd implements CommandExecutor {
                         Format.CmdErrFrmt.use().a(sndr, "You do not belong to a town yet!");
                         return true;
                     }
-                    if (TownS.g().getTown(sndr).hasPermission("setopen",sndr)) {
+                    if (TownS.g().getTown(sndr).hasPermission("setopen",sndr) == false) {
                         /*MSG ADDED A.I.T.*/
                         Format.CmdErrFrmt.use().a(sndr, "You do not have permission use this command!");
                         return true;
@@ -735,7 +760,7 @@ public class TownCmd implements CommandExecutor {
                         return true;
                     }
                     if (Bukkit.getOfflinePlayer(player_name).hasPlayedBefore()) {
-                        if (TownS.g().getTown(sndr).setOwner(Bukkit.getOfflinePlayer(player_name).getUniqueId())) {
+                        if (TownS.g().getTown(sndr).setOwner((Player) Bukkit.getOfflinePlayer(player_name))) {
                             Format.AlrtFrmt.use().broadcast(TownS.g().getTown(sndr).getName() + " has a new Mayor -> &c" + player_name);
                             Format.AlrtFrmt.use().a(sndr, "Successfully made " + player_name + " the new mayor");
                         } else {

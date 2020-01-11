@@ -11,8 +11,10 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 public class EntityInteractRestrictor implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEIE(PlayerInteractEntityEvent e) {
-        if (!TownS.g().isClaimed(e.getRightClicked().getLocation().getChunk())) return;
+        System.out.println("tridddggered");
 
+        if (!TownS.g().isClaimed(e.getRightClicked().getLocation().getChunk())) return;
+        System.out.println("triggered");
         Claim c = TownS.g().getClaim(e.getRightClicked().getLocation().getChunk());
         if (c.getOwnerID() == e.getPlayer().getUniqueId() || c.getTown().getMayor().getUniqueId() == e.getPlayer().getUniqueId()) {
 

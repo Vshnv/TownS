@@ -14,7 +14,7 @@ import static java.lang.System.out;
 
 public class SaveObject {
     public static boolean SaveObject(Object o,String path,String filename){
-        Bukkit.broadcastMessage("Saving Data...");
+        Bukkit.getConsoleSender().sendMessage("Saving Data....");
         File f = new File(path,filename);
         if(!f.getParentFile().exists()){
             f.getParentFile().mkdirs();
@@ -40,7 +40,7 @@ public class SaveObject {
             e.printStackTrace();
             return false;
         }
-        Bukkit.broadcastMessage("Successfully Saved Data....");
+        Bukkit.getConsoleSender().sendMessage("Successfully Saved Data....");
         return true;
     }
 }

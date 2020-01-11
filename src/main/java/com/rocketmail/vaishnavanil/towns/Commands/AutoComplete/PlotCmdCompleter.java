@@ -32,6 +32,7 @@ public class PlotCmdCompleter implements TabCompleter {
 
                 suggestions.add("disallow");
                 suggestions.add("access");
+                suggestions.add("resetbuilds");
                 return suggestions;
             case 2:
                 switch (args[0]){

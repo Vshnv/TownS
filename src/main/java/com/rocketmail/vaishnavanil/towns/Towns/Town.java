@@ -2,6 +2,7 @@ package com.rocketmail.vaishnavanil.towns.Towns;
 
 import com.rocketmail.vaishnavanil.towns.Economy.EcoUpkeep;
 import com.rocketmail.vaishnavanil.towns.TownS;
+import com.rocketmail.vaishnavanil.towns.Utilities.ActionBar;
 import com.rocketmail.vaishnavanil.towns.Utilities.LoadManager;
 import com.rocketmail.vaishnavanil.towns.Utilities.RegenSaveQueueManager;
 import com.rocketmail.vaishnavanil.towns.Utilities.WarpLocation;
@@ -101,7 +102,10 @@ public class Town implements Serializable {
 
     public void unregClaim(Chunk c) {
         if (!TownS.g().isClaimed(c)) return;
-        townClaims.remove(TownS.g().getClaim(c));
+        Claim claim = TownS.g().getClaim(c);
+        if(this.townClaims.contains(claim)){
+            this.townClaims.remove(claim);
+        }
     }
 
     public String getName() {
@@ -157,11 +161,14 @@ public class Town implements Serializable {
         if (TownS.g().hasTown(id)) {
             if (TownS.g().getTown(id).equals(this)) {
                 Mayor_ID = id;
+                System.out.println("success mayor set");
                 return true;
             } else {
+                System.out.println("fail not same town mayor set");
                 return false;
             }
         } else {
+            System.out.println("fail mayor set has no town");
             return false;
         }
     }
@@ -217,10 +224,21 @@ public class Town implements Serializable {
         return TownS.getChunkID(chunk).equals(spawnChunkID);
     }
 
-    public void unclaim(Chunk chunk) {
+    public void resetClaim(Claim claim){
+        if(this.townClaims.contains(claim)){
+            Chunk chunk = claim.getChunk();
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    new RegenBuilder((Material[][][]) LoadManager.get.loadObject("ChunkSaves", chunk.getX() + "TT" + chunk.getZ() + "TT" + chunk.getWorld().getName() + ".dat"), chunk);
+                }
+            }.runTask(TownS.g());
+        }
+    }
 
+    public void unclaim(Chunk chunk) {
         TownS.g().rCfT(TownS.g().getClaim(chunk));
-        //unregClaim(chunk);
+        unregClaim(chunk);
         new BukkitRunnable() {
             @Override
             public void run() {

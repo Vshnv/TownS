@@ -96,7 +96,10 @@ public class TownCmdCompleter implements TabCompleter {
                     case "setname":
                         suggestions.add("NewName");
                         return suggestions;
-
+                    case "visit":
+                        return getTowns();
+                    case "setopen":
+                        return getBools();
                     case "join":
                         return getTowns();
                     default:
@@ -131,6 +134,13 @@ public class TownCmdCompleter implements TabCompleter {
         for(String townuuid: townuuids){
             suggestions.add(TownS.g().getTown(UUID.fromString(townuuid)).getName());
         }
+        return suggestions;
+    }
+
+    public List<String> getBools(){
+        List<String> suggestions = new ArrayList<>();
+        suggestions.add("true");
+        suggestions.add("false");
         return suggestions;
     }
 
